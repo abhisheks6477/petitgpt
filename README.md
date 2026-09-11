@@ -83,6 +83,8 @@ The published format is **native PyTorch**, not a Transformers `AutoModel` packa
 
 ## Navigate the repository
 
+See the [repository guide](docs/REPOSITORY_GUIDE.md) for reading entry points, directory roles, and the distinction between released code and historical research artifacts.
+
 | Location | Purpose |
 |---|---|
 | [`inference_native/`](inference_native/) | Released native inference code, without model weights |
