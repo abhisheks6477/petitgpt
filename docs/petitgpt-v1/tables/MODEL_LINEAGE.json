@@ -1,0 +1,235 @@
+{
+  "kind": "PETITGPT_MODEL_LINEAGE",
+  "schema_version": 2,
+  "statement_of_scope": "Two histories are kept separate. Track A is the parameter ancestry of the selected alpha075 weights. Track B lists later research branches that were initialized FROM alpha075 (or from other checkpoints) but whose updates are NOT present in alpha075. No branch below is summed into a cumulative exposure figure for alpha075.",
+  "selected_artifact": {
+    "name": "alpha075",
+    "identity": "petitgpt-alpha075-native-research-v1",
+    "source_checkpoint_path": "<retained privately>",
+    "source_checkpoint_sha256": "1da85cc329d55e92dacf51c36623779558c4c6c9a39d78a34a064f61fcddbe97",
+    "unique_parameters": 124635456,
+    "status": "TECHNICAL_EXPORT_ACCEPTED_FOR_OFFLINE_RESEARCH",
+    "evidence_id": "EVID-EXPORT-PROVENANCE",
+    "historical_publication_permission": "PENDING_OWNER_DECISION",
+    "current_licence_authorization": "Approved through explicit research-v1 execution instruction; publication receipts tracked separately"
+  },
+  "track_a_ancestry_of_alpha075": [
+    {
+      "step": 1,
+      "node": "tokenizer_release_v_g_production_2026-08-21",
+      "kind": "tokenizer",
+      "artifact": "Private tokenizer release",
+      "sha256": "d8f84df5\u2026",
+      "notes": "ByteLevel BPE, exactly 32000 IDs, 7 registered specials at fixed IDs, no normalizer, no automatic post-processor, add_prefix_space false. Trained on the frozen F corpus with the pre-tokenizer reference reserve excluded.",
+      "evidence_id": "EVID-TOK-MANIFEST"
+    },
+    {
+      "step": 2,
+      "node": "pretrain_stage_a",
+      "kind": "pretraining",
+      "parent": "random initialization, model_init_seed 20260831",
+      "stop_step": 38146,
+      "train_release": "Private pretrain_stage_a training release",
+      "stage_release_manifest_sha256": "33456430\u2026",
+      "terminal_checkpoint_sha256": "cdff2e39\u2026",
+      "evidence_id": "EVID-PT-RUN",
+      "endpoint_validation": {
+        "step": 38146,
+        "val_loss": 2.7486005008441414,
+        "val_ppl": 15.620755345740001,
+        "recorded_by": "the Stage A governed run's own metrics series",
+        "note": "Distinct from the first Stage-B readout at step 38147 (2.742657180890175), which a different invocation recorded one optimizer step later."
+      },
+      "training_sources": {
+        "count": 4,
+        "nodes": [
+          "fineweb_edu_dedup",
+          "dclm_edu",
+          "finewiki_en",
+          "python_gate_c_full"
+        ],
+        "selected_serialized_tokens": 10000003234,
+        "evidence": "Stage I realization result (lookup L01)",
+        "note": "Stage A used FOUR sources. PES2O, StackExchange and structured_tutorial are Stage B only."
+      }
+    },
+    {
+      "step": 3,
+      "node": "pretrain_stage_b",
+      "kind": "continued_pretraining",
+      "parent": "exact full-state resume of pretrain_stage_a step 38146",
+      "start_step": 38146,
+      "stop_step": 49590,
+      "train_release": "Private pretrain_stage_b training release",
+      "stage_release_manifest_sha256": "fe634de7\u2026",
+      "accepted_base_checkpoint": "<retained privately>",
+      "accepted_base_checkpoint_sha256_declared": "95ae1201\u2026",
+      "sha_declared_in": "p2/report/EVALUATION_COMPARISON.json (via EXPERIMENT_SCORECARD.csv row base_pretrain)",
+      "sha_independently_rehashed_here": false,
+      "evidence_id": "EVID-PT-RUN",
+      "final_validation": {
+        "step": 49590,
+        "val_loss": 2.4702483468921344,
+        "val_ppl": 11.825383284191247
+      },
+      "training_sources": {
+        "count": 7,
+        "nodes": [
+          "fineweb_edu_dedup",
+          "dclm_edu",
+          "structured_tutorial",
+          "python_gate_c_full",
+          "finewiki_en",
+          "pes2o",
+          "stackexchange"
+        ],
+        "selected_serialized_tokens": 3000004240,
+        "evidence": "Stage I realization result (lookup L01)"
+      }
+    },
+    {
+      "step": 4,
+      "node": "sft_p2_step000750",
+      "kind": "supervised_fine_tuning",
+      "parent": "accepted Base step_049590.pt via --init_from_pretrain (weights-only stage initialization)",
+      "checkpoint": "<retained privately>",
+      "sha256": "20afc400\u2026",
+      "updates": 750,
+      "evidence_id": "EVID-P2-RUN"
+    },
+    {
+      "step": 5,
+      "node": "p3_basic_step000320",
+      "kind": "basic_instruction_adaptation",
+      "parent": "sft_p2_step000750 (fresh AdamW, model weights only)",
+      "checkpoint": "<retained privately>",
+      "sha256": "b11cb018\u2026",
+      "note": "Parent B of the interpolation is step 320, NOT the step 640 endpoint. The step 640 endpoint exists (sha ed22050e\u2026) but is not an alpha075 parent.",
+      "evidence_id": "EVID-INTERP-SPEC"
+    },
+    {
+      "step": 6,
+      "node": "alpha075",
+      "kind": "weight_interpolation",
+      "parents": [
+        "sft_p2_step000750",
+        "p3_basic_step000320"
+      ],
+      "formula": "theta(alpha) = theta_P2_step750 + alpha * (theta_P3_step320 - theta_P2_step750), alpha = 0.75",
+      "optimizer_updates": 0,
+      "backward_calls": 0,
+      "sibling": "alpha050 (alpha = 0.50), sha256 cde4797c\u2026",
+      "evidence_id": "EVID-INTERP-SPEC"
+    },
+    {
+      "step": 7,
+      "node": "petitgpt-alpha075-native-research-v1",
+      "kind": "numerically_unchanged_export",
+      "parent": "alpha075",
+      "model_safetensors_sha256": "4396efb7\u2026",
+      "model_safetensors_bytes": 498562192,
+      "evidence_id": "EVID-EXPORT-PROVENANCE"
+    }
+  ],
+  "track_b_research_branches_not_in_alpha075": [
+    {
+      "branch": "P4 micro-calibration (231 rows)",
+      "initialized_from": "alpha075 line",
+      "in_alpha075": false,
+      "parent_evidence": "exact init checkpoint not stated in the bound records"
+    },
+    {
+      "branch": "P4 QA increment (393 rows)",
+      "initialized_from": "alpha075 line",
+      "in_alpha075": false,
+      "parent_evidence": "exact init checkpoint not stated in the bound records"
+    },
+    {
+      "branch": "natural curriculum dose 6",
+      "initialized_from": "alpha075 line",
+      "in_alpha075": false,
+      "parent_evidence": "exact init checkpoint not stated in the bound records"
+    },
+    {
+      "branch": "R1 one-pass behaviour mix",
+      "initialized_from": "alpha075 weights only, fresh optimizer",
+      "in_alpha075": false,
+      "parent_evidence": "stated in the R1 run record"
+    },
+    {
+      "branch": "DP0 preference-data construction",
+      "initialized_from": "alpha075 greedy generations",
+      "in_alpha075": false,
+      "parent_evidence": "data construction only; DP0 produced no trained checkpoint"
+    },
+    {
+      "branch": "DP1 standard DPO pilot",
+      "initialized_from": "alpha075 policy and separately allocated frozen alpha075 reference",
+      "in_alpha075": false,
+      "parent_evidence": "stated in the DP1 run record"
+    },
+    {
+      "branch": "KD1 chosen-answer CE control",
+      "initialized_from": "alpha075 weights, fresh AdamW",
+      "in_alpha075": false,
+      "parent_evidence": "stated in the KD1 run record"
+    },
+    {
+      "branch": "KD2 shared-tokenizer soft-logit KD lab",
+      "initialized_from": "SmolLM2-135M-Instruct (external)",
+      "in_alpha075": false,
+      "parent_evidence": "no PetitGPT checkpoint was opened; the lab isolates method learning and token alignment on shared-tokenizer public models"
+    },
+    {
+      "branch": "RKD1 dense response distillation",
+      "initialized_from": "alpha075 weights only, fresh optimizer",
+      "in_alpha075": false,
+      "parent_evidence": "stated in the RKD1 run record"
+    },
+    {
+      "branch": "RKD2 LoRA response-KD curve",
+      "initialized_from": "alpha075 base frozen + rank-16 adapters",
+      "in_alpha075": false,
+      "parent_evidence": "stated in the RKD2 run record"
+    },
+    {
+      "branch": "unified Base SFT curve (1209 updates)",
+      "initialized_from": "the accepted pretrained Base",
+      "in_alpha075": false,
+      "parent_evidence": "stated in the unified Base SFT run record"
+    },
+    {
+      "branch": "unified P3 loss-allocation A/B",
+      "initialized_from": "unified Base SFT step_000403.pt (identical model, AdamW moments and RNG in both arms)",
+      "in_alpha075": false,
+      "parent_evidence": "stated in the A/B run record"
+    },
+    {
+      "branch": "A/B five-point interpolation grid (Q25, C, Q75)",
+      "initialized_from": "the A_TOKEN_MEAN and B_P3_FAMILY_MEAN loss-allocation endpoints",
+      "in_alpha075": false,
+      "parent_evidence": "alpha075 appears only as a read-only off-grid comparator"
+    }
+  ],
+  "explicitly_excluded_from_alpha075": [
+    "later DeepSeek response-KD",
+    "unified Base-SFT",
+    "DPO",
+    "soft-KD",
+    "LoRA"
+  ],
+  "non_inferences": [
+    "Track B updates must not be summed into a cumulative training-exposure figure for alpha075.",
+    "Response-distillation data were consumed by later branches; that does not place them in the alpha075 weight path.",
+    "lambda_B in the five-point A/B grid is unrelated to the alpha coefficient that produced alpha075; alpha075 is a read-only off-grid comparator there, never a parent.",
+    "The shared-tokenizer soft-KD lab used external SmolLM2 models to isolate method learning and token alignment on a matched-tokenizer pair. Describing it as chosen 'precisely so it could not contaminate PetitGPT' overstated the recorded rationale."
+  ],
+  "supersedes": "tables/MODEL_LINEAGE.json (V1)",
+  "amendments_applied": [
+    "E03: Stage A node gained its own step-38146 endpoint validation readout.",
+    "E03: Stage B node gained the explicit final validation readout.",
+    "Both pretraining nodes gained an evidence-bound training_sources block.",
+    "E06: every Track B branch now states its parent at the precision the records support, with a parent_evidence field."
+  ],
+  "public_copy_note": "Public-safe copy. Absolute filesystem paths are replaced by descriptors and full 64-character digests by short identifying prefixes. Parentage, evidence fields, stage boundaries and all measurements are unchanged from the private table. Upstream public dataset revision identifiers are retained in full, because publishing them is the point of the provenance record."
+}

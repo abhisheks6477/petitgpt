@@ -1,0 +1,26 @@
+{
+  "project": "petitgpt",
+  "author": "Yang Qi",
+  "checkpoint": "alpha075",
+  "lineage": [
+    "Base",
+    "P2 step750",
+    "P3 step320",
+    "interpolation alpha=0.75"
+  ],
+  "excluded_updates": [
+    "DeepSeek-response-KD",
+    "unified Base-SFT",
+    "DPO",
+    "soft-KD",
+    "LoRA"
+  ],
+  "source_checkpoint_sha256": "1da85cc329d55e92dacf51c36623779558c4c6c9a39d78a34a064f61fcddbe97",
+  "model_safetensors_sha256": "4396efb7a52b047e7fdf513e46d1b401dfc70582d3aca1f9cb5a07e97d426ef1",
+  "tokenizer_sha256": "d8f84df58928023edebd809e152b3b38a0dac53b9f887bd2455f427661e9b9ce",
+  "accepted_archive_sha256": "0c844962c6ebfcc1cd6b17cdb19c05d88936fa280f0173c080ff864bb54dca1e",
+  "unique_parameters": 124635456,
+  "release_model_operations": 0,
+  "license": "Apache-2.0 only for author-controlled rights; see notices",
+  "tokenizer_source_linkage": "Digest-linked to six pinned corpus releases; PES2O and StackExchange not in tokenizer corpus"
+}

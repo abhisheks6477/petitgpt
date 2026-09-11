@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "Please cite this research record when using petitgpt."
+title: "petitgpt: Building and Evaluating a 124.6M-Parameter Language Model"
+authors:
+  - family-names: Qi
+    given-names: Yang
+version: research-v1
+license: CC-BY-4.0
+repository-code: "https://github.com/yangqi0/petitgpt"

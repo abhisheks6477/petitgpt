@@ -1,0 +1,1636 @@
+{
+  "kind": "PETITGPT_PUBLIC_EVIDENCE_INDEX",
+  "schema_version": 1,
+  "purpose": "Public-safe resolution for the claim identifiers used in the technical report, model card and run guide. Each entry names the originating artifact and version, and the aggregate table shipped alongside where one exists.",
+  "what_is_deliberately_absent": [
+    "absolute filesystem paths",
+    "full file hashes (long digests appear only as a short identifying prefix)",
+    "checkpoint identities",
+    "raw evaluation prompts, model outputs and benchmark rows",
+    "private run-directory names and internal ledgers",
+    "the full internal claim-to-evidence map"
+  ],
+  "not_a_reproducibility_claim": "Naming an artifact here does not make it publicly available, and this index is not an independently reproducible audit of any answer label. The underlying raw evaluation texts are not published.",
+  "public_tables_shipped_alongside": [
+    "tables/PUBLIC_BENCHMARK_RESULTS.csv",
+    "tables/ASSISTANT_RESULTS_VERSIONED.csv",
+    "tables/RESEARCH_EXPERIMENT_LEDGER.csv",
+    "tables/MODEL_LINEAGE.json",
+    "tables/PRETRAIN_SOURCE_MIXTURE.csv",
+    "tables/VAL_LOSS_BY_SOURCE.csv"
+  ],
+  "counts": {
+    "claims": 92
+  },
+  "claims": [
+    {
+      "claim_id": "C-ARCH-01",
+      "topic": "Model and tokenizer",
+      "claim": "124,635,456 unique parameters; 30 layers; d_model 576; d_ff 1536; 9 query and 3 KV heads; vocab 32,000; context 2,048; tied input/output embedding; dropout 0.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Export Provenance record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Export Config record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Pt Contract record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-ARCH-02",
+      "topic": "Model and tokenizer",
+      "claim": "RMSNorm epsilon 1e-6; RoPE theta 10000 with full head rotation (rope_pct 1.0); head_dim 64.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Export Provenance record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Export Config record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-ARCH-03",
+      "topic": "Model and tokenizer",
+      "claim": "The bias-free GQA dense formula reproduces 124,635,456 exactly from the recorded shape.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-ASSIST-01",
+      "topic": "Evaluation",
+      "claim": "Assistant-review scope: 189 prompts per model, 567 answers, 565 distinct prompt/output/contract units, three models (alpha075, EXT-A, EXT-B). 93 old-suite + 96 new-suite prompts = 189.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Assist Addendum record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Export Readme record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-ASSIST-02",
+      "topic": "Evaluation",
+      "claim": "Two named versions exist and must not be mixed: assistant_review_fable_v1 (the executor's original 567 FINAL records) and assistant_owner_clarification_4_v1 (four explicit final-content decisions, all other axes preserved). Exactly 18 of 284 leaf fields differ between them; practical27 bounds are identical in both.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Assist V1 record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Assist C4 record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Assist Views record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Assist Addendum record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-ASSIST-03",
+      "topic": "Evaluation",
+      "claim": "alpha075 under assistant_owner_clarification_4_v1: old_qa41 content 6 true / 33 false / 2 unknown; old_practical38 10/26/2; old_python14 0/14/0 with interface 11/14; new_natural64 3/61/0; new_python32 0/32/0 with interface 31/32.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Assist C4 record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Assist Views record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-ASSIST-04",
+      "topic": "Evaluation",
+      "claim": "practical27 is 27 equally weighted dialogue groups over 38 scored turns, averaged within a group first. alpha075 final bounds 26/81..10/27 = 52/162..60/162 = 32.098765%..37.037037%; EXT-A 47/81..17/27; EXT-B 8/81..1/9. These are exact unknown-retention bounds, not confidence intervals.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Assist C4 record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Assist Views record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Snapshot Notes record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-ASSIST-05",
+      "topic": "Evaluation",
+      "claim": "The four amendments are: EXT-B R1DEV-PYTHON-021 and EXT-A PYTHON_047_M1 content/joint true->false; alpha075 DOLLY_007_M1 true->unknown; alpha075 R1DEV-FOLLOWUP-007 false->true. Derived unresolved content records rise from 7 to 8.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Assist Addendum record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Assist Views record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Export Report record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-ASSIST-06",
+      "topic": "Evaluation",
+      "claim": "alpha075 old_python14 finite execution is recorded as {not_recorded: 14}: unavailable in this bound imported view, not proof that no historical function test ever ran.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Assist C4 record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Assist Views record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Export Readme record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-ASSIST-07",
+      "topic": "Evaluation",
+      "claim": "In the bound Python diagnostics alpha075 shows 42/46 interface successes and 0/46 whole-answer content successes (old_python14 11/14 and 0/14; new_python32 31/32 and 0/32). This does not establish that it can never write correct code.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Export Readme record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Export Report record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Assist C4 record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-ASSIST-08",
+      "topic": "Evaluation",
+      "claim": "The assistant review chronology: an initial pass over the 565 units with model metadata masked and its own recorded limitations; then a pass with the mapping visible producing 17 consistency edits; then four owner clarifications forming a separate named version. Neither strict blinding throughout nor all labels visible throughout.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Assist Addendum record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Assist Views record",
+          "version": "project record"
+        }
+      ],
+      "public_table": "tables/ASSISTANT_RESULTS_VERSIONED.csv"
+    },
+    {
+      "claim_id": "C-BENCH-01",
+      "topic": "Evaluation",
+      "claim": "Frozen FP32 V2 public results: PetitGPT-alpha075 ARC-Easy test 1372/2376 acc = 0.57744107\u2026 and acc_norm 1244/2376 = 0.52356902\u2026; PIQA validation 1167/1838 acc = 0.63492927\u2026 and acc_norm 1145/1838 = 0.62295973\u2026.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Bench 01 record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Bench Report record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-BENCH-02",
+      "topic": "Evaluation",
+      "claim": "Comparators under the identical protocol: SmolLM-135M-Instruct ARC-Easy 0.49242424\u2026 / PIQA 0.67083786\u2026; SmolLM2-135M-Instruct ARC-Easy 0.53998316\u2026 / PIQA 0.66702937\u2026.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Bench 01 record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Bench Report record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-BENCH-03",
+      "topic": "Evaluation",
+      "claim": "Protocol: zero-shot raw 'Question: ...\\nAnswer:' completion, candidate-answer likelihood, no chat template, no BOS, no scored EOS, FP32 parameters and forward, autocast disabled, TF32 off both paths, float32_matmul_precision highest, SDPA MATH, batch 1 unpadded, no KV cache, no compile; acc_norm divides by Python len() of the ORIGINAL choice text in Unicode characters; ties take the first argmax.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Bench Protocol record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Bench Report record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-BENCH-04",
+      "topic": "Evaluation",
+      "claim": "The evaluator is a native protocol-compatible implementation pinned to lm-evaluation-harness commit b954108c\u2026; lm_eval was not installed and a full installed-harness execution is not claimed.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Bench Protocol record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Bench Report record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-BENCH-05",
+      "topic": "Evaluation",
+      "claim": "Scope arithmetic: 2,376 + 1,838 = 4,214 documents per model, 12,642 document-model evaluations, 39,531 unique primary candidate sequences; ARC choice distribution 2365x4 + 7x3 + 4x5 = 9,501; PIQA 1838x2 = 3,676.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Bench 01 record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Bench Protocol record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-BENCH-06",
+      "topic": "Evaluation",
+      "claim": "ARC-Easy and PIQA are prior project diagnostics with no decontamination or training-overlap audit; V1 remains BLOCKED_LIKELIHOOD_PARITY_FAILED and supplies no replacement scores.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Bench Report record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Bench 01 record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Bench Protocol record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-DATA-01",
+      "topic": "Pretraining data",
+      "claim": "The cross-stage reference validation reserve draws whole documents from seven source families: DCLM-Edu, FineWeb-Edu, PES2O, Python-Edu, StackExchange, Wikipedia and structured_tutorial (Cosmopedia v2 plus FinePhrase tutorial), 23,035 documents and 14,003,201 serialized tokens against a 2,000,000-token quota per family.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Refval Manifest record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-DATA-02",
+      "topic": "Pretraining data",
+      "claim": "A single reference-reserve exclusion manifest of 172,483 cleaned-text SHA-256 hashes was applied to tokenizer training (0 excluded samples matched, so the tokenizer corpus was already disjoint) and enforced at stage_i for both training releases.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Tok Manifest record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Data Stage A record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Data Stage B record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Refval Manifest record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-DATA-03",
+      "topic": "Pretraining data",
+      "claim": "Release contract flags: canonical mode, dtype uint16, source_exhaustion_policy fail_fast, replay_on_exhaustion false, allow_noncanonical_contract false, padding tokens 0.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Data Stage A record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Data Stage B record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Pretraining shard-production accounting report",
+          "version": "M production"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-EVAL-00",
+      "topic": "Evaluation",
+      "claim": "The export's evaluation index keeps two families explicitly separate: the frozen public likelihood results (copied, recomputed false) and the historical assistant review (two named versions, labelled model-assisted, limited blinding, non-human judgments); the eight export fixtures are parity only, not semantic evaluation.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Export Evalindex record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-EVAL-P3",
+      "topic": "Evaluation",
+      "claim": "The 512-item development battery factorizes as 32 shared group IDs x 4 task families x 4 presentations = 512, with 128 distinct family-group pairs at 4 rows each. Neither the 32 nor the 128 is a certified independent sampling unit.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Development-battery group arithmetic (metadata only)",
+          "version": "supplied metadata"
+        },
+        {
+          "artifact": "Arithmetic derivation for this report",
+          "version": "V2"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-EXP-01",
+      "topic": "Reproducibility and export",
+      "claim": "All 213 named source state entries match exactly in dtype, shape and value after strict native loading and safetensors reload; 212 unique tensors are stored with the alias tok_emb.weight -> lm_head.weight; 60 non-persistent RoPE buffers also match; 487 total tensor equality comparisons.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Export Report record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Export Counters record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Owner Export Check record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-EXP-02",
+      "topic": "Reproducibility and export",
+      "claim": "Exactly eight frozen fixture pairs (4 bf16_native, 4 fp32_math) matched on prompt IDs, boundaries, full-shape logits, greedy output IDs and stop reason, with maximum absolute logit difference 0 in every pair; 16 witness forwards, 16 completions, 908 generated tokens, capped at 64 tokens.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Export Report record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Export Counters record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Owner Export Check record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-EXP-03",
+      "topic": "Reproducibility and export",
+      "claim": "src/model.py, src/chat_template.py and src/special_tokens.py are byte-identical to the repository originals; the only behavioural code change is an explicit autocast_enabled argument added to the generation helper so the fp32_math profile can disable autocast.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Export Closure record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Export Diff record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Export Report record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-EXP-04",
+      "topic": "Reproducibility and export",
+      "claim": "Recorded artifacts: inference archive 462,274,113 bytes SHA-256 0c844962\u2026 (20 files); model.safetensors 498,562,192 bytes SHA-256 4396efb7\u2026; private evidence archive 244,055 bytes SHA-256 76f3d5af\u2026 (70 files).",
+      "evidence_artifacts": [
+        {
+          "artifact": "Export Archive record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Export Receipts record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Export Provenance record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Export Manifest record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-EXP-05",
+      "topic": "Reproducibility and export",
+      "claim": "Tested runtime: Python 3.10.12 at a private project record, torch 2.11.0+cu126, numpy 2.2.6, tokenizers 0.22.2, safetensors 0.8.0, NVIDIA GeForce RTX 4090 driver 580.178.04. Local import closure was demonstrated in one fresh process with cwd=/tmp and an empty PYTHONPATH under an audit hook denying network and out-of-bundle repository access; no denied access occurred.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Export Report record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Export Reqs record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-EXP-06",
+      "topic": "Reproducibility and export",
+      "claim": "The artifact is native PyTorch CUDA inference only. No Transformers AutoModel, GGUF, ONNX, vLLM or llama.cpp compatibility is implemented or tested; special_tokens_map.json is descriptive native metadata.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Export Readme record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-EXP-07",
+      "topic": "Reproducibility and export",
+      "claim": "Generation contract: greedy temperature 0, top_k 0, top_p 1, EOS 3, default max_new_tokens 384 with an explicit 1..384 override, prompt plus budget must fit 2048 with no cropping, output preserves the raw text including terminal EOS and a stop reason of eos or max_new_tokens.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Export Readme record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Owner Export Check record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-INT-01",
+      "topic": "Post-training",
+      "claim": "alpha075 = theta_P2_step750 + 0.75 * (theta_P3_step320 - theta_P2_step750). Parent B is P3 step 320, not step 640. Zero optimizer constructions, backward passes and optimizer updates; two inference-only artifacts (alpha 0.50 and 0.75).",
+      "evidence_artifacts": [
+        {
+          "artifact": "Interp Spec record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Interp Status record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Interp Verify record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-INT-02",
+      "topic": "Post-training",
+      "claim": "Interpolation recovered 0.074023 of reference val500 NLL relative to the P3 step-640 endpoint (1.439334 -> 1.365311) at a cost of 0.043201 relative to P2 (1.322110), while dev512 rose to 487/512.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Snapshot Scorecard record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Snapshot Card record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-LIC-01",
+      "topic": "Licensing evidence",
+      "claim": "No LICENSE, LICENSE.md, LICENSE.txt, COPYING or NOTICE file is present at the repository root; none was found in the copied src closure or accepted helper runtime directory in the export's bounded inspection. Absence is neither a grant nor proof of prohibited use.",
+      "evidence_artifacts": [
+        {
+          "artifact": "License Status record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Source Notice record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-LIC-02",
+      "topic": "Licensing evidence",
+      "claim": "Weight and release licensing is recorded as PENDING_OWNER_DECISION in the export provenance; comparator model licences do not supply PetitGPT's licence.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Export Provenance record",
+          "version": "project record"
+        },
+        {
+          "artifact": "License Status record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-LIC-03",
+      "topic": "Licensing evidence",
+      "claim": "The pinned PIQA repository revision had no README or licence file recorded; no new redistribution permission is inferred, and the full datasets, request text and token encodings remain local only.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Bench Report record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Bench Protocol record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-LIC-04",
+      "topic": "Licensing evidence",
+      "claim": "KD2's external models record Apache-2.0 in their official README metadata (SmolLM2-1.7B-Instruct and SmolLM2-135M-Instruct). That is a research-branch third-party record and says nothing about PetitGPT's own licence.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Kd2 Report record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-LIC-05",
+      "topic": "Licensing evidence",
+      "claim": "Third-party dependencies are declared, not vendored: the tested inference set is torch 2.11.0+cu126, numpy 2.2.6, tokenizers 0.22.2 and safetensors 0.8.0; the wider training stack additionally declares scipy, tqdm, PyYAML, transformers, datasets, huggingface_hub, sentence-transformers, pandas, pyarrow, scikit-learn, boto3, requests, openai, matplotlib, ipython and jupyter. Each retains its own upstream licence.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Repo Reqs record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Export Reqs record",
+          "version": "project record"
+        },
+        {
+          "artifact": "License Status record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-LIN-01",
+      "topic": "Model ancestry",
+      "claim": "Branch parentage at the precision the records support: R1, DP1, KD1, RKD1 and RKD2 loaded the selected weights with a fresh optimizer; P4 micro, P4 QA and dose 6 belong to the same line but their exact init checkpoint is not stated; DP0 produced data from generations and no checkpoint; the unified SFT curve started from the accepted Base; the A/B split from that curve's step 403; the grid interpolated the A/B endpoints; KD2 used external SmolLM2 weights only.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Snapshot Card record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Dp1 Report record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Kd1 Report record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Response-distillation run report",
+          "version": "accepted run report"
+        },
+        {
+          "artifact": "Rkd2 Report record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Ubase Report record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Ab Report record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Grid Report record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Kd2 Report record",
+          "version": "project record"
+        }
+      ],
+      "public_table": "tables/MODEL_LINEAGE.json"
+    },
+    {
+      "claim_id": "C-MIX-01",
+      "topic": "Model and data",
+      "claim": "The executed training mixture, per source and per stage. Stage A drew on FOUR sources (FineWeb-Edu dedup 71.11%, DCLM-Edu 20.32%, FineWiki EN 5.08%, Python-Edu 3.50%) totalling 10,000,003,234 selected serialized tokens over 9,989,324 documents. Stage B drew on SEVEN totalling 3,000,004,240 over 3,766,407 documents. PES2O, StackExchange and structured_tutorial appear only in Stage B.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Pretraining selection realization record",
+          "version": "accepted Stage I pass-1 result"
+        },
+        {
+          "artifact": "Arithmetic derivation for this report",
+          "version": "V2"
+        }
+      ],
+      "public_table": "tables/PRETRAIN_SOURCE_MIXTURE.csv"
+    },
+    {
+      "claim_id": "C-MIX-02",
+      "topic": "Evaluation",
+      "claim": "Between the Stage A endpoint and the final step, every reference source ABSENT from the Stage A mixture improved more (0.328-0.619) than every source PRESENT in it (0.072-0.242). Descriptive ordering over seven recorded readouts on one run; not a controlled experiment and not a causal claim.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Stage A governed training metrics series",
+          "version": "governed Stage N run"
+        },
+        {
+          "artifact": "Pretraining selection realization record",
+          "version": "accepted Stage I pass-1 result"
+        },
+        {
+          "artifact": "Arithmetic derivation for this report",
+          "version": "V2"
+        }
+      ],
+      "public_table": "tables/VAL_LOSS_BY_SOURCE.csv"
+    },
+    {
+      "claim_id": "C-MIX-03",
+      "topic": "Model and data",
+      "claim": "Every pretraining source resolves to an upstream dataset and pinned revision, and each Gate C release documents_sha256 equals the Stage I binding digest for that source: dclm-edu@dbad8ad7, smollm-corpus@3ba9d605 (fineweb-edu-dedup and cosmopedia-v2), finewiki@8bd13e72 (en), dolmino-mix-1124@a319f19e (pes2o and stackexchange), finephrase@78cf4a5e (tutorial), stackv2_edu_filtered@c354dbe8.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Corpus gate release manifest \u2014 DCLM-Edu",
+          "version": "gate C production"
+        },
+        {
+          "artifact": "Corpus gate release manifest \u2014 FineWeb-Edu dedup",
+          "version": "gate C production"
+        },
+        {
+          "artifact": "Corpus gate release manifest \u2014 FineWiki EN",
+          "version": "gate C production"
+        },
+        {
+          "artifact": "Corpus gate release manifest \u2014 PES2O",
+          "version": "gate C production"
+        },
+        {
+          "artifact": "Corpus gate release manifest \u2014 StackExchange",
+          "version": "gate C production"
+        },
+        {
+          "artifact": "Corpus gate release manifest \u2014 Cosmopedia v2",
+          "version": "gate C production"
+        },
+        {
+          "artifact": "Corpus gate release manifest \u2014 FinePhrase tutorial",
+          "version": "gate C production"
+        },
+        {
+          "artifact": "Corpus gate release manifest \u2014 Python-Edu",
+          "version": "gate C full"
+        },
+        {
+          "artifact": "Pretraining selection realization record",
+          "version": "accepted Stage I pass-1 result"
+        }
+      ],
+      "public_table": "tables/PRETRAIN_SOURCE_MIXTURE.csv"
+    },
+    {
+      "claim_id": "C-NOTICE-01",
+      "topic": "Licence and provenance",
+      "claim": "The V2 source-notice register holds 25 entries: 13 RECORDED_NOTICE, 8 NOT_LOCATED, 1 IDENTITY_NOT_ESTABLISHED, 1 CONFLICT_REQUIRES_REVIEW, 2 OWNER_CHOICE_PENDING. Every category total is computed from the entries rather than typed.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Source-notice register",
+          "version": "V2"
+        },
+        {
+          "artifact": "Arithmetic derivation for this report",
+          "version": "V2"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-NOTICE-02",
+      "topic": "Licence and provenance",
+      "claim": "The pinned lm-evaluation-harness snapshot carries the MIT licence (Copyright (c) 2020 EleutherAI), read in full locally. ARC-Easy's pinned README declares CC-BY-SA-4.0. The pinned PIQA revision has no README or licence file and a historical README retrieval returned HTTP 404; no redistribution authorization is inferred.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Pinned evaluation-harness licence text",
+          "version": "pinned harness snapshot"
+        },
+        {
+          "artifact": "Benchmark source and redistribution notices",
+          "version": "frozen FP32 benchmark run"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-NOTICE-03",
+      "topic": "Licence and provenance",
+      "claim": "Exact upstream repository and revision are NOT established for any of the seven post-training instruction subsets, so no notice is attributed to them. A similarly named source must not be substituted.",
+      "evidence_artifacts": [
+        {
+          "artifact": "P2 frozen data manifest",
+          "version": "P2 run"
+        },
+        {
+          "artifact": "Source-notice register",
+          "version": "V2"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-P2-01",
+      "topic": "Post-training",
+      "claim": "P2 initialized from the accepted Base checkpoint step_049590.pt via --init_from_pretrain (a weights-only new-stage initialization), then ran exactly 750 AdamW updates at lr 5e-5, weight decay 0.1, warmup 38, micro_bsz 2 x grad_accum 16, seq_len 2048, bf16 forward with selected-FP32 CE, seed 20260906.",
+      "evidence_artifacts": [
+        {
+          "artifact": "P2 Run record",
+          "version": "project record"
+        },
+        {
+          "artifact": "P2 Runinfo record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-P2-02",
+      "topic": "Post-training",
+      "claim": "P2 data: 12,000 training and 500 new-validation conversations; 997,427 shifted supervised targets per exposure at 2 exposures per row = 1,994,854 actual supervised targets and 24,000 row exposures; validation 43,573 targets.",
+      "evidence_artifacts": [
+        {
+          "artifact": "P2 data composition record",
+          "version": "P2 run"
+        },
+        {
+          "artifact": "P2 Runinfo record",
+          "version": "project record"
+        },
+        {
+          "artifact": "P2 frozen data manifest",
+          "version": "P2 run"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-P2-03",
+      "topic": "Post-training",
+      "claim": "P2 supervised-target mix: GENERAL_QA 44.99%, TEXT_TRANSFORM 22.00%, INSTRUCTION 20.00%, PYTHON_BASIC 8.00%, PRACTICAL_CHAT 5.00%; source shares openhermes-50k 31.72%, smollm-rewrite-30k 15.59%, smol-magpie-ultra-short 15.51%, smol-contraints 19.29%, self-oss-instruct 7.75%, smol-summarize-20k 5.64%, everyday-conversations 4.51%.",
+      "evidence_artifacts": [
+        {
+          "artifact": "P2 frozen data manifest",
+          "version": "P2 run"
+        },
+        {
+          "artifact": "P2 data composition record",
+          "version": "P2 run"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-P2-04",
+      "topic": "Post-training",
+      "claim": "P2 terminal quality: new-validation token NLL 1.32210964\u2026, old203 NLL 1.56211356\u2026, dev100 strict 0/100, fixed24 joint 0; quality_acceptance_demonstrated false.",
+      "evidence_artifacts": [
+        {
+          "artifact": "P2 Runinfo record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Snapshot Scorecard record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-P2-05",
+      "topic": "Post-training",
+      "claim": "P2's own run README records the same conclusion its RUN_INFO does: the single 750-step training exited 0 and terminal dev100 strict is 0/100, and NLL or EOS improvements must not be read as usability acceptance.",
+      "evidence_artifacts": [
+        {
+          "artifact": "P2 Readme record",
+          "version": "project record"
+        },
+        {
+          "artifact": "P2 Runinfo record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-P2-06",
+      "topic": "Method",
+      "claim": "P2's executed formatter supervises EVERY assistant turn's content plus that turn's trailing EOS, masking BOS, role tokens and all system and user content. Established from the P2-era frozen trainer snapshot (build_example imported from the pinned formatter) and the formatter whose SHA-256 equals the value pinned in the P2 FROZEN_MANIFEST.",
+      "evidence_artifacts": [
+        {
+          "artifact": "P2-era frozen trainer snapshot",
+          "version": "P2 run implementation snapshot"
+        },
+        {
+          "artifact": "Chat formatter pinned by the P2 frozen manifest",
+          "version": "hash-pinned"
+        },
+        {
+          "artifact": "P2 frozen data manifest",
+          "version": "P2 run"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-P2-07",
+      "topic": "Method",
+      "claim": "P2's execution-time preflight records 12,000 train records, 2,403,722 encoded tokens, 997,427 supervised tokens and 0 truncated examples, with default_system null. Corroborated by 13,889 assistant turns over 12,000 conversations, which a final-turn-only policy could not produce.",
+      "evidence_artifacts": [
+        {
+          "artifact": "P2 execution-time data preflight",
+          "version": "P2 run"
+        },
+        {
+          "artifact": "P2 data composition record",
+          "version": "P2 run"
+        },
+        {
+          "artifact": "Arithmetic derivation for this report",
+          "version": "V2"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-P3-01",
+      "topic": "Post-training",
+      "claim": "P3 basic-instruction adaptation started from P2 step_000750.pt with a fresh AdamW (cosine, peak lr 5e-5, weight decay 0.0, warmup 32, micro 2 x accum 16, seq_len 512, 640 planned updates over 2 passes, 7 procedural + 3 replay updates per block, seed 20260907).",
+      "evidence_artifacts": [
+        {
+          "artifact": "P3 Run record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-P3-02",
+      "topic": "Post-training",
+      "claim": "P3 data: 7,168 training rows / 44,544 shifted targets; 3,072 replay rows / 216,932 targets; development and final batteries 512 rows each.",
+      "evidence_artifacts": [
+        {
+          "artifact": "P3 Data record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-P3-03",
+      "topic": "Post-training",
+      "claim": "P3 recorded an explicit trade-off: controlled transfer improved markedly while natural capability regressed (val500 NLL 1.322110 -> 1.439334; ARC-Easy 58.46% -> 56.36%; PIQA 64.04% -> 63.33%).",
+      "evidence_artifacts": [
+        {
+          "artifact": "P3Basic Interp record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Snapshot Scorecard record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-PT-01",
+      "topic": "Pretraining",
+      "claim": "Stage A ran 38,146 optimizer steps and Stage B continued to the global stop 49,590, resuming Stage A's exact full state without an optimizer or scheduler reset at the A/B boundary.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Pt Run record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Pt Contract record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Pt Result record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-PT-02",
+      "topic": "Pretraining",
+      "claim": "Batch geometry: micro_bsz 8 x grad_accum 16 = 128 sequences per optimizer step at seq_len 2048 = 262,144 effective batch tokens.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Pt Run record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Pt Contract record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-PT-03",
+      "topic": "Pretraining",
+      "claim": "Planned budget 13,000,000,000 target tokens; the published immutable releases emit 13,000,005,634 packed uint16 tokens over 13,000,007,474 serialized tokens and 13,755,731 documents; the trainer actually stepped over 12,999,720,960 model-input positions (6,347,520 blocks), leaving 126 Stage A and 13 Stage B batch-alignment blocks unconsumed. These are four different quantities.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Data Stage A record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Data Stage B record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Pretraining shard-production accounting report",
+          "version": "M production"
+        },
+        {
+          "artifact": "Pt Run record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-PT-04",
+      "topic": "Pretraining",
+      "claim": "Each document is stored as [BOS] content [EOS] with an empty textual separator; total boundary tokens 27,511,462 equal exactly two per document.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Data Stage A record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Data Stage B record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-PT-05",
+      "topic": "Pretraining",
+      "claim": "Optimizer: Muon (Newton-Schulz, 5 steps, coefficients [3.4445, -4.775, 2.0315], momentum 0.95, Nesterov, RMS matching 0.2*sqrt(max(fan_in,fan_out))) on hidden 2D matrices, with an auxiliary AdamW (betas 0.9/0.95, eps 1e-8) on embeddings, lm_head, router gates and ndim<2 parameters, in one optimizer instance; peak LR 6e-4, weight decay 0.1, grad clip 1.0.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Pt Contract record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Pt Run record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-PT-06",
+      "topic": "Pretraining",
+      "claim": "Schedule: one absolute warmup-stable-decay timeline, warmup 500 steps, schedule_total_steps 49,590, decay from 44,631 to 49,590, min_lr_ratio 0.1, bf16 precision, torch.compile realized with 1 dynamo graph and 0 graph breaks.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Pt Run record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Pt Contract record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-PT-07",
+      "topic": "Pretraining",
+      "claim": "Stage A's own run recorded reference validation loss 2.74860050\u2026 / perplexity 15.62075534\u2026 at its final step 38,146. The Stage B invocation separately recorded 2.74265718\u2026 at step 38,147, one optimizer step later from a different process. Stage B's final readout is 2.47024834\u2026 / 11.82538328\u2026 at step 49,590.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Stage A governed training metrics series",
+          "version": "governed Stage N run"
+        },
+        {
+          "artifact": "Stage B governed training metrics series",
+          "version": "governed Stage N/O run"
+        },
+        {
+          "artifact": "Arithmetic derivation for this report",
+          "version": "V2"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-PT-08",
+      "topic": "Pretraining",
+      "claim": "Per-source reference validation loss at the final step: Python-Edu 1.4720, structured_tutorial 2.0822, StackExchange 2.5514, Wikipedia 2.6285, PES2O 2.7737, DCLM-Edu 2.8799, FineWeb-Edu 2.9042.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Stage B governed training metrics series",
+          "version": "governed Stage N/O run"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-PT-09",
+      "topic": "Pretraining",
+      "claim": "Observed Stage B throughput over the logged window: 2,993,684,480 serialized positions in 32,403.486 s, i.e. about 92,388 positions/s on one RTX 4090 (driver 580.126.20, CUDA 12.6, torch 2.11.0+cu126, 2 dataloader workers). This is an interval average, not a peak or a benchmark.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Stage B governed training metrics series",
+          "version": "governed Stage N/O run"
+        },
+        {
+          "artifact": "Pt Fingerprint record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-PT-10",
+      "topic": "Pretraining",
+      "claim": "Deterministic no-replacement sampling: requested_exposures 1, permutation identities recorded per stage, committed sampler cursor checkpointed; the Stage A permutation identity is 0a6cdbfb... with range 0..4,882,688.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Pt Result record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Pt Contract record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-PT-11",
+      "topic": "Pretraining",
+      "claim": "Four token boundaries reconcile exactly: serialized 13,000,007,474 minus 1,840 recorded tail tokens = retained packed 13,000,005,634; minus 2 lookahead positions = full model-input block positions 13,000,005,632; minus 139 x 2,048 = 284,672 alignment positions = 12,999,720,960 consumed. Retained minus consumed 284,674 = 2 + 284,672.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Pretraining shard-production accounting report",
+          "version": "M production"
+        },
+        {
+          "artifact": "Arithmetic derivation for this report",
+          "version": "V2"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-PT-12",
+      "topic": "Pretraining",
+      "claim": "Stage A's logged train rows span 2026-09-01T17:29:56Z to 2026-09-02T23:19:41Z, an elapsed range of 107,384.6 s. This is a timestamp span between logged rows, not certified uninterrupted GPU time, and was not converted into GPU time or compute cost.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Stage A governed training metrics series",
+          "version": "governed Stage N run"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-PUB-01",
+      "topic": "Document",
+      "claim": "Public claim identifiers resolve through a public-safe evidence index naming artifact titles, versions and the aggregate tables shipped alongside; the private map holding absolute paths and file hashes is retained separately and is not in any public bundle.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Arithmetic derivation for this report",
+          "version": "V2"
+        }
+      ],
+      "public_table": "provenance/PUBLIC_EVIDENCE_INDEX.json"
+    },
+    {
+      "claim_id": "C-REG-01",
+      "topic": "Research branches",
+      "claim": "The research registry records alpha075's status as WORKING_REFERENCE / NOT_A_PROVEN_BEST_GENERAL_ASSISTANT and dp1_step000020 as REJECTED_FOR_PROMOTION / EXPERIMENT_ONLY, with no default model selected and no release status issued.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Snapshot Registry record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Snapshot Card record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-RES-01",
+      "topic": "Research branches",
+      "claim": "R1 and DP1 both stopped themselves at predeclared midpoints on the practical-retention screen (upper bounds 35/162 and 37/162 against the fixed alpha075 lower bound 22/81 = 44/162) without promoting a model or changing the recipe after seeing scores.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Snapshot Card record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Dp1 Report record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Snapshot Scorecard record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-RES-02",
+      "topic": "Research branches",
+      "claim": "DP1: mean DPO loss fell from about ln 2 = 0.693147 to 0.215138 on 160 training pairs and to 0.362027 on 29 heldout pairs, with all 189 reference-relative margins positive, while TRAIN-pair generation joint was 3/32, DPO-heldout 2/29 and 10 of 34 previously accepted answers were lost.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Dp1 Report record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Snapshot Card record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Dp1 Addendum record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-RES-02B",
+      "topic": "Research findings",
+      "claim": "DP1's terminal state retained 24/34 joint passes with 9 recorded content losses; the tenth recorded joint failure is a format violation (a banned pronoun) already present in the baseline text for the same item, so a symmetric reading makes it fail-to-fail. Original scores and the one-item sensitivity are kept separate and no stop rule changes.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Preference-pilot result addendum",
+          "version": "accepted addendum"
+        },
+        {
+          "artifact": "Dp1 Report record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Arithmetic derivation for this report",
+          "version": "V2"
+        }
+      ],
+      "public_table": "tables/RESEARCH_EXPERIMENT_LEDGER.csv"
+    },
+    {
+      "claim_id": "C-RES-03",
+      "topic": "Research branches",
+      "claim": "dose6 drove its own training rows to NLL 0.0267 while its P3 development score fell to 443/512 and practical27 to [25/162..1/6]: the clearest single case that low training loss establishes nothing about task reliability.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Snapshot Card record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Snapshot Scorecard record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-RES-04",
+      "topic": "Research branches",
+      "claim": "The unified Base SFT curve reached MAIN NLL 0.785709 at 1,209 updates while HOLDOUT NLL reached its minimum 1.657365 at step 403 and then rose to 1.725114; the terminal engineering screen was not passed (P3 412 < 485; HOLDOUT 21/92 not strictly above 24/92).",
+      "evidence_artifacts": [
+        {
+          "artifact": "Ubase Report record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-RES-05",
+      "topic": "Research branches",
+      "claim": "The matched A/B changed only the within-P3 family loss allocation, preserving the MAIN coefficient and total P3 mass. B gained 10 MEMBERSHIP development passes (67 -> 77) with development true positives 29 -> 46 but true negatives 38 -> 31, while MEMBERSHIP TRAIN NLL rose 0.293201 -> 0.298189 and TRAIN two-label argmax fell 20/32 -> 19/32, and practical27 fell from 5/18 to 13/54.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Ab Report record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-RES-06",
+      "topic": "Research branches",
+      "claim": "Five-point A/B interpolation grid at lambda_B 0, 1/4, 1/2, 3/4, 1: P3 418, 420, 426, 430, 429 and MEMBERSHIP 67, 69, 75, 76, 77. From A to Q75 the +12 total decomposes as COPY +1, FIELD +3, JSON -1, MEMBERSHIP +9. Neither frozen screen passed at either new point.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Grid Report record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Grid Addendum record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-RES-07",
+      "topic": "Research branches",
+      "claim": "Five observed coefficients cannot prove a criterion is unreachable over the whole continuous segment; the supported statement is that none of the five evaluated points meets the envelope or the historical screen.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Grid Addendum record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-RES-08",
+      "topic": "Research branches",
+      "claim": "alpha075's practical bounds [22/81, 23/81] = [44/162, 46/162] overlap arm A's 5/18 = 45/162, so alpha075 is not established to beat A on practical performance; its QA interval [4,7]/41 likewise overlaps each grid score of 6 or 7.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Grid Addendum record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-RES-09",
+      "topic": "Research branches",
+      "claim": "exp(-mean NLL) is a teacher-forced geometric-mean reference-token probability, not accuracy: at unified-1209 MEMBERSHIP it is 0.57824855\u2026 while greedy TRAIN is 20/32 = 0.625 and DEV is 70/128 = 0.546875.",
+      "evidence_artifacts": [
+        {
+          "artifact": "P3 Owner Check record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Ab Report record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-RES-10",
+      "topic": "Research branches",
+      "claim": "Token share, scalar loss share and gradient share are distinct: the P3 target share is 0.10880514\u2026 while the P3 cumulative raw NLL share is 0.00748723\u2026, and neither measures gradient contribution.",
+      "evidence_artifacts": [
+        {
+          "artifact": "P3 Owner Check record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-RES-11",
+      "topic": "Research branches",
+      "claim": "Teacher-logit distillation is NOT EVIDENCED anywhere in the PetitGPT weight path: no run in the permitted source set computes or stores teacher logits for PetitGPT, and no KD loss term appears in any recorded PetitGPT objective. KD2 is a separate SmolLM2 lab, not a PetitGPT update.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Distill Status record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Kd2 Report record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-RES-12",
+      "topic": "Research branches",
+      "claim": "The same P2 checkpoint, prompts and greedy settings produced 30 differing answers out of 96 between torch 2.2.0+cu121 and torch 2.11.0+cu126, with exactly one label moving.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Snapshot Card record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Snapshot Notes record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Snapshot Scorecard record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-RES-13",
+      "topic": "Research branches",
+      "claim": "KD1 (chosen-answer CE on the DP0 chosen sides, 20 updates from alpha075) raised chosen-answer likelihood more than DP1's DPO did on both splits (train chosen NLL 1.385687 -> 1.147131 versus 1.224815; heldout 1.403504 -> 1.303023 versus 1.341860), yet failed the historical retention gate with practical27 upper 19/81 < 22/81 and produced 1 natural gain against 2 losses in a single class.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Kd1 Report record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-RES-14",
+      "topic": "Research branches",
+      "claim": "RKD1 (dense response distillation, stopped at update 77 of 154) lowered TRAIN NLL 2.010386 -> 1.838430 and HOLDOUT NLL 1.825066 -> 1.715917 while HOLDOUT96 joint fell 25/96 -> 20/96 with 4 confirmed gains against 9 losses, and P3's unchanged 487/512 total concealed 13 gains and 13 losses.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Rkd1 Report record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-RES-15",
+      "topic": "Research branches",
+      "claim": "RKD2 (rank-16 LoRA, alpha 32, 4,331,520 trainable adapter parameters over 150 wrapped Linear modules, one full pass to update 154) lowered TRAIN NLL to 1.736833 and HOLDOUT to 1.684378 and raised P3 to 489/512, while HOLDOUT96 fell to 18/96 and practical27 to 1/6; every original parameter was verified unchanged tensor by tensor.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Rkd2 Report record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-RES-16",
+      "topic": "Research findings",
+      "claim": "Ordinary QA and complete natural-task generation remained limited across the evaluated configurations. Individual points with their own source and label version: unified Base SFT terminal 7/41; R1 step 96 6/41 unk=1; selected model 6/41 unk=2 under the clarification version and 4/41 unk=3 under the scorecard row; on the newer natural suite RKD1 step 77 5/64, R1 step 96 4/64 unk=1, selected model 3/64. Not combined into a cross-version maximum.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Ubase Report record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Response-distillation run report",
+          "version": "accepted run report"
+        },
+        {
+          "artifact": "Snapshot Scorecard record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Assist C4 record",
+          "version": "project record"
+        }
+      ],
+      "public_table": "tables/RESEARCH_EXPERIMENT_LEDGER.csv"
+    },
+    {
+      "claim_id": "C-SCOPE-01",
+      "topic": "Scope",
+      "claim": "The repository README is a historical experimental narrative and states plainly that its described historical runs used an earlier 16-layer x 768-dim MHA configuration with 133,128,960 parameters. Those planning-era figures must not be substituted for the measured 124,635,456 / 30L / 576 / 9Q-3KV shape of the artifact reported here.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Repo Readme record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Export Provenance record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-SRC-01",
+      "topic": "Post-training",
+      "claim": "The seven P2 instruction source labels are values of a row-level 'source' column inside one pinned collection, HuggingFaceTB/smol-smoltalk at revision f73fe857 (config default, train split, 460,341 rows). Two project build records name that collection and revision, and the P2 frozen manifest binds both of their outputs by digest, closing the chain by hash rather than by name.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Instruction-source census run record",
+          "version": "project build record"
+        },
+        {
+          "artifact": "Instruction-data cleanup run record",
+          "version": "project build record"
+        },
+        {
+          "artifact": "P2 frozen data manifest",
+          "version": "P2 run"
+        },
+        {
+          "artifact": "Publisher dataset card at the pinned revision",
+          "version": "pinned publisher notice"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-SRC-02",
+      "topic": "Post-training",
+      "claim": "The pinned collection card carries a flat Apache-2.0 badge. Its parent collection limits that grant to four newly generated subsets and directs readers to the original dataset for each incorporated public dataset. Four of the seven labels correspond to the newly generated subsets; of the three incorporated components one declares apache-2.0, one declares odc-by, and one declares no licence in its card metadata. All component notices are current publisher pages, not revisions contemporaneous with the training run, and no component revision is established.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Publisher dataset card at the pinned revision",
+          "version": "pinned publisher notice"
+        },
+        {
+          "artifact": "Parent collection card at its current head",
+          "version": "current-only publisher notice"
+        },
+        {
+          "artifact": "Component dataset card metadata",
+          "version": "current-only publisher notice"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-SRC-03",
+      "topic": "Model and tokenizer",
+      "claim": "The tokenizer release pins its corpus manifest by digest; that manifest names each contributing corpus release by path and records the source document digest, and those digests equal the ones the pretraining selection stage bound for the same releases. The tokenizer corpus draws on six of the eight frozen releases: PES2O and StackExchange are in the pretraining mixture but not in the tokenizer corpus.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Tokenizer release manifest",
+          "version": "tokenizer release"
+        },
+        {
+          "artifact": "Tokenizer corpus manifest",
+          "version": "corpus build record"
+        },
+        {
+          "artifact": "Corpus gate release manifests",
+          "version": "gate C production"
+        }
+      ],
+      "public_table": "tables/PRETRAIN_SOURCE_MIXTURE.csv"
+    },
+    {
+      "claim_id": "C-TOK-01",
+      "topic": "Model and tokenizer",
+      "claim": "Tokenizer SHA-256 d8f84df5\u2026; 32,000 IDs = 7 specials + 256 ByteLevel alphabet + 31,737 merges; specials [PAD]=0 [UNK]=1 [BOS]=2 [EOS]=3 <|system|>=4 <|user|>=5 <|assistant|>=6.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Tok Manifest record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Tok Closeout record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-TOK-02",
+      "topic": "Model and tokenizer",
+      "claim": "Tokenizer training consumed 2,511,569 documents and 10,000,043,658 UTF-8 bytes from five buckets (DCLM, FineWeb, Python, structured/tutorial, Wikipedia), producing 2,323,110,079 tokens at 4.3046 bytes/token.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Tok Manifest record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Tok Closeout record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Derived record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-TOK-03",
+      "topic": "Model and tokenizer",
+      "claim": "Full-corpus streaming validation over all 2,511,569 documents recorded 0 round-trip failures, 0 unexpected [UNK] and 0 special IDs; 32 fixtures with no failures and injection hardening intact.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Tok Manifest record",
+          "version": "project record"
+        },
+        {
+          "artifact": "Tok Closeout record",
+          "version": "project record"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-TOK-04",
+      "topic": "Model and tokenizer",
+      "claim": "bytes_per_token 4.3046 is a measurement on the tokenizer-training corpus, explicitly not a budget for the 13B pretraining selection.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Tok Closeout record",
+          "version": "project record"
+        }
+      ]
+    }
+  ],
+  "amendments": [
+    "Source-linkage revision: added C-SRC-01..03 so the updated provenance paragraphs resolve publicly. No existing entry was altered."
+  ],
+  "release_edition_note": "Entries describe historical source records, including historical pending licence decisions. The owner approved the scoped research-v1 licence in the separate execution task; historical claims are preserved."
+}
