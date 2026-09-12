@@ -81,6 +81,28 @@ Greedy decoding and two numerical profiles are supported: `bf16_native` and `fp3
 
 The published format is **native PyTorch**, not a Transformers `AutoModel` package. GGUF, ONNX, vLLM, llama.cpp, and CPU inference are not implemented or validated by this release.
 
+## Train and evaluate your own run
+
+Follow the [practical manual](TRAINING_AND_REPRODUCIBILITY.md):
+[model/token contract](tokenizer/README.md) → [prepared inputs](recipes/research-v1/PREPARED_INPUTS.md)
+→ [pretrain A/B](TRAINING_AND_REPRODUCIBILITY.md#pretrain-ab)
+→ [P2/P3 and fixed blend](TRAINING_AND_REPRODUCIBILITY.md#posttraining)
+→ [native export and likelihood evaluation](TRAINING_AND_REPRODUCIBILITY.md#export-and-evaluate).
+The Python entry point is `recipes/research-v1/reader.py`, with `--policy new-run`.
+It accepts newly produced compatible checkpoints; private approval files and
+historical data hashes belong only to the separate historical replay interfaces.
+
+You supply local prepared data and an environment matching the recorded dependencies.
+No reader command downloads data, models or teacher responses. The release-sized
+recipe uses the canonical tokenizer, 30-layer model and original schedule/batch settings;
+P3's step320 is taken from a **640-update** schedule. Different data produces a new
+model, not another copy of the published alpha075 or its reported scores.
+
+CLI/schema/tokenizer/order tests and small synthetic CPU tensor/serialization checks
+have run. Full reader training, real-checkpoint conversion and scoring have not been
+executed through these new interfaces. See the manual for inputs, outputs, resume
+limits, omitted optional hooks and the one proposed bounded runtime check.
+
 ## Navigate the repository
 
 See the [repository guide](docs/REPOSITORY_GUIDE.md) for reading entry points, directory roles, and the distinction between released code and historical research artifacts.
@@ -92,8 +114,8 @@ See the [repository guide](docs/REPOSITORY_GUIDE.md) for reading entry points, d
 | [`pretrain/`](pretrain/), [`tokenizer/`](tokenizer/) | Pretraining and tokenizer tooling |
 | [`sft/`](sft/), [`distill/`](distill/), [`dpo/`](dpo/) | Reusable post-training implementations; exact P2 uses the recovered recipe |
 | [`experiments/`](experiments/README.md) | Measured research index and implementation-only GRPO |
-| [`recipes/research-v1/`](recipes/research-v1/README.md), [`configs/research-v1/`](configs/research-v1/README.md) | Recovered release sources, effective settings, public P2 path adapter and explicit reproduction gaps |
-| [`legacy/`](legacy/README.md) | Superseded tokenizers, configs, output/sample records and diagnostic tools |
+| [`recipes/research-v1/`](recipes/research-v1/README.md), [`configs/research-v1/`](configs/research-v1/README.md) | New-run reader workflows, historical replay interfaces, recovered sources and effective settings |
+| [`legacy/`](legacy/README.md) | Retained experiment summaries/configs and a short Git-history guide; obsolete snapshots removed |
 | [`scripts/`](scripts/) | Reusable helpers |
 | [`tests/`](tests/) | Repository checks |
 | [`docs/petitgpt-v1/`](docs/petitgpt-v1/) | Current report, versioned results, model card, and run guide |

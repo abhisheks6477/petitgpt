@@ -1,0 +1,48 @@
+{
+  "schema": "petitgpt-reader-source-v3",
+  "parent_commit": "e76cc03ad1a9f863911612defd2e07c977aef144",
+  "policy": "new-run; historical V2 records and original checks unchanged",
+  "self_excluded": "READER_V3.json; hash covered by Git/review manifest",
+  "files": [
+    {
+      "path": "recipes/research-v1/reader.py",
+      "sha256": "a9b26b2cef34e7c742f7f47a848b483ad87682249b87bd2ba419a5aeedc23f94"
+    },
+    {
+      "path": "recipes/research-v1/reader_posttrain.py",
+      "sha256": "73f40e3d6781edcc86bfbe669baab79419c9d1b30df57ef5b967a0bb9d4b2a30"
+    },
+    {
+      "path": "recipes/research-v1/reader_tensors.py",
+      "sha256": "7d17cd1506ef6d66bb305d44b55f32b77692c504a68e768ff8d2ebd6a9587cb3"
+    },
+    {
+      "path": "recipes/research-v1/reader_contracts.py",
+      "sha256": "a10efead59666d29a8caafdb046d9fa9cfe5a4504f04bf43a9004e9e482fa3ab"
+    },
+    {
+      "path": "recipes/research-v1/reader_pretrain.py",
+      "sha256": "51741bb6c047a113c846f3c817f7755333dd7c597875575cd6970f8700d1913e"
+    },
+    {
+      "path": "recipes/research-v1/reader_prepare.py",
+      "sha256": "a21f4576b93c3f3e8de2478cd4bbec2baba7d8eec8b92aed550b1978e60979b1"
+    },
+    {
+      "path": "recipes/research-v1/reader_evaluate.py",
+      "sha256": "de68a1a50e407e1bce934ee3191dca81b78b216d3f43c084ddbc6b98adb0cafe"
+    },
+    {
+      "path": "tests/test_reader_v3.py",
+      "sha256": "377dc84bb3e257abd79051ab8d792e0bdf9e2070c605620befb1dc2b27b46f54"
+    }
+  ],
+  "adaptations": {
+    "pretrain": "Original A/B numerical trainer and full-state resume. New bin/meta/plan validators replace old acquisition/approval bindings, with explicit A-to-B seed transition and unchanged strict state checks. Optional validation/generation hooks omitted. Restricted NumPy RNG unpickler; receipts emitted after actual saves.",
+    "posttrain": "Original P2 plan/trainer and P3 training-only function allowlist. New prepared records, hashes and plans replace historical input restrictions. P3 horizon640 and mainline320 remain fixed. No private baseline marker. P2/P3 resume not exposed.",
+    "interpolation": "Unchanged frozen blend function bodies with new parents and fixed .75 default/.50 optional. Actual state checks, no old tensor digest equality. New artifact names.",
+    "export": "Analytical canonical state schema, tied safetensors serialization/reload equality against supplied source. No full GPT construction; native buffers derived by unchanged code/config. Frozen assets copied. No parity claim.",
+    "evaluation": "Pinned harness encode_pair and recovered likelihood helpers. Local ARC/PIQA raw records, file/revision/row identities, FP32 MATH batch1 raw-completion policy; no network or baseline models."
+  },
+  "historical_sources": "INTEGRATION.json and RELOCATION_V2.json remain immutable; reader verify_code checks their source hashes plus this map."
+}

@@ -1,4 +1,10 @@
-# Posttraining entry points V2
+# Advanced historical posttraining entry points V2
+
+For ordinary supplied-data training and newly trained checkpoint linkage, start with
+[the new-run manual](../../TRAINING_AND_REPRODUCIBILITY.md). The V2 entry points below
+remain original-artifact replay interfaces; `reader.py STAGE --policy historical`
+delegates to them without relaxing their checks.
+
 
 Start here for P2 → P3 → fixed interpolation → native export. These are small
 public adapters over the recovered source closures, with explicit local bindings.
@@ -41,7 +47,7 @@ directory, including for validation; validation does not create it. Relative inp
 paths resolve against the caller's working directory. No input is downloaded.
 
 ```bash
-export REPO=/home/yang/projects/petitgpt-public
+export REPO=/path/to/your/petitgpt-checkout
 export PYTHONDONTWRITEBYTECODE=1
 cd /tmp
 python -B "$REPO/recipes/research-v1/p2.py" --help

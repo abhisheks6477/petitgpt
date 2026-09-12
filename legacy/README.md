@@ -1,33 +1,21 @@
-# Historical implementations and artifacts
+# Earlier research and history
 
-Superseded public artifacts live under this single root. Start with the
-[current repository guide](../docs/REPOSITORY_GUIDE.md) and
-[release recipe](../TRAINING_AND_REPRODUCIBILITY.md).
+Current training/evaluation starts in the [reader manual](../TRAINING_AND_REPRODUCIBILITY.md).
+This directory keeps experiment configs, aggregate metrics and result summaries,
+old diagnostic source and the immutable [migration record](MIGRATIONS.csv).
+The migration CSV describes the tree at commit `5044497`; it is not a current
+runtime file manifest and does not assert that every migrated artifact remains at HEAD.
 
-| Location | Evidence and interpretation |
-|---|---|
-| [tokenizers/](tokenizers/README.md) | Two old four-special-token BPE versions and their former root metadata. |
-| [configs/](configs/) | v1–v6 SFT mixtures, including the old 137M token-budget specification and local code mixtures; none is the frozen P2 12,000/500-row selection. |
-| [outputs/](outputs/) | Earlier `pretrain_140m_*` 12-layer/768-width runs and named SFT/distillation run records. Configs, metrics and evaluation records remain byte-identical. |
-| [samples/](samples/) | Step-based text outputs paired with those historical pretraining run names. These are existing public evidence, not newly published data. |
-| [evaluation-results/](evaluation-results/) | Earlier nine-row generated-answer benchmark and shard sanity snapshots, including the nine previously moved roundA files. Not the research-v1 likelihood protocol. |
-| [tools/](tools/) | Fixed old bracket-role/MHA diagnostics and the superseded `eval_bench` v1–v5 family. Some execute model work at import; they are historical source, not supported CLIs. |
+Reader closeout removed 665 obsolete files from HEAD: 378 per-step sample texts,
+281 per-step output/sample/benchmark snapshots, four old tokenizer/config JSONs,
+and two old shard-sanity dumps. No active code/test/report reference to their current
+or migration-original paths was found. Aggregate metrics/configs, meaningful experiment
+summaries, negative findings, published tables and notices remain. These removals
+change browsing, not the scientific results or Git history.
 
-[MIGRATIONS.csv](MIGRATIONS.csv) records each original/new path, original Git blob,
-SHA256 and classification evidence. The new migration baseline is
-`318bc90a2b3afa4ef39c9f2c1a3d3da458271de3`; the first nine rows retain their earlier
-baseline. GRPO's moves to `experiments/` are recorded in the same map.
-
-Classification used the handoff lineage, run configs/checkpoint names, tokenizer
-structure and Git history, evaluator subprocess behavior, caller-selected output
-paths, imports, tests and CI. Generic training/sample/plot utilities write or read
-caller-selected paths; they do not require the checked-in old output files to stay
-in their original directories. The migration is not proof about external notebooks.
-
-Embedded historical paths, scores and text were deliberately preserved. To replay
-an old snapshot, use its original commit and original missing inputs; simply running
-a relocated script against today's shared model is not an exact replay. The old
-benchmark family refers to historical sampling interfaces. No compatibility shims
-or archived test exclusions were introduced. Active GRPO tests were updated and
-remain in the test suite. The frozen versioned reports and source/legal notices
-remain at their established locations.
+For removed content, use the same path at pre-removal commit
+`e76cc03ad1a9f863911612defd2e07c977aef144`, for example
+`git show e76cc03:legacy/samples/<run>/<file>`. For pre-migration names, consult
+MIGRATIONS.csv. Original embedded paths in historical scripts/records are evidence;
+those scripts are not the current supported launchers. No model assets or private
+backups were deleted.

@@ -32,6 +32,6 @@ launch, start at [Training and reproducibility](../TRAINING_AND_REPRODUCIBILITY.
 [Preparation](data_preparation/) and [training/validation tools](tokenizer_training/)
 remain available; their presence does not mean all frozen historical inputs ship here.
 
-The older four-special-token versions and their root metadata are now under
-[legacy/tokenizers/](../legacy/tokenizers/README.md). They are incompatible with
-the current chat contract and are not alternatives for research-v1.
+The unused four-special-token predecessors were removed from HEAD. Their exact
+pre-removal commit/paths are described in [the history note](../legacy/tokenizers/README.md).
+They are incompatible with the current chat contract and are not alternatives for research-v1.

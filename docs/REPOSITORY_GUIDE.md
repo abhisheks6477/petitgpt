@@ -31,7 +31,7 @@ These are reading entry points, not an instruction to run every script or a clai
 | [distill/](../distill/) | Retained distillation/KD research tooling, including teacher-data preparation and verification. [train_distill.py](../distill/train_distill.py) delegates text-response training to the SFT engine; it does not by itself reproduce the separate soft-logit lab. Some data-preparation scripts call external teachers. |
 | [dpo/](../dpo/) | Retained preference-data preparation and DPO research implementation; see [dpo.py](../dpo/dpo.py). |
 | [experiments/](../experiments/README.md) | Measured research index; [GRPO](../experiments/grpo/README.md) is implementation-only with active tests, not an established research-v1 run. |
-| [recipes/research-v1/](../recipes/research-v1/README.md) | Separate recovered source roots, validation-only entry point and public P2 path adapter. |
+| [recipes/research-v1/](../recipes/research-v1/README.md) | Reader new-run training/evaluation entry point, prepared input schemas and separate historical adapters over recovered source roots. |
 | [configs/research-v1/](../configs/research-v1/README.md) | Effective launch/parameter/input evidence; projected JSON is not an executable frozen contract. Old mixture YAMLs moved to legacy. |
 | [scripts/](../scripts/) | Supporting utilities. [plot_metrics.py](../scripts/plot_metrics.py) reads explicit run directories or metrics files; it is not the evaluator for every saved result JSON. |
 | [tests/](../tests/) | Repository contract and unit tests. Read [pytest.ini](../pytest.ini), the [shared fixtures](../tests/conftest.py), and the [CI workflow](../.github/workflows/ci.yml) before choosing checks; CPU-only does not mean model-free. |
@@ -41,13 +41,11 @@ DPO, KD/distillation, and GRPO code is retained research tooling. Its presence d
 
 ## Read historical artifacts in context
 
-[legacy/](../legacy/README.md) now groups earlier tokenizer versions and metadata,
-six superseded SFT mixture configs, historical output records and samples, early
-evaluation snapshots, and obsolete diagnostic/evaluator scripts. The
-[migration map](../legacy/MIGRATIONS.csv) preserves original/new paths, byte hashes,
-Git blobs and classification evidence. Historical embedded paths/scores are unchanged;
-replay may require the original commit and missing inputs. Generic output path options
-in supported tools do not require old checked-in records to remain in active directories.
+[legacy/](../legacy/README.md) retains aggregate experiment records and historical
+source that still helps interpretation. Obsolete per-step samples, output snapshots
+and unused predecessor tokenizers were removed from HEAD; the short history note
+points to their pre-removal commit. The immutable migration CSV describes its older
+snapshot, not the current runtime. Published scientific evidence remains unchanged.
 
 DPO/KD shared code remains in functional directories. GRPO moved to experiments
 with its imports, direct-script bootstrap, CI and active tests updated. No test was
@@ -56,8 +54,9 @@ released-weight or completed research-v1 experiment claim.
 
 The full [training/evaluation guide](../TRAINING_AND_REPRODUCIBILITY.md) separates
 source recovery, syntax/config checks, data-path checks and model-work validation.
-Private source datasets, frozen plans, some run-specific helpers and exact evaluation
-rows are absent; public evidence does not imply one-command historical reproduction.
+Prepared caller data can run through the new-run interfaces without private approvals.
+Original data/approvals still limit exact historical replay; synthetic validation does
+not establish full-model runtime or the published numerical results.
 
 ## A reading route for project discussion
 
