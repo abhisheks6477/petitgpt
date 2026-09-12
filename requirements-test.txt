@@ -8,6 +8,9 @@
 pytest>=8.0
 numpy>=1.24
 tokenizers>=0.15
+# tests/test_reader_v3.py exercises recipes/research-v1/reader_tensors.py, which
+# serializes and reloads native tensors through safetensors.
+safetensors>=0.6.2
 ruff>=0.6
 # tests/test_corpus_gate_c_parquet.py imports pyarrow at module level to build the
 # synthetic Parquet fixtures, so collection fails without it in a clean CI environment.
