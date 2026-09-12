@@ -99,9 +99,13 @@ P3's step320 is taken from a **640-update** schedule. Different data produces a 
 model, not another copy of the published alpha075 or its reported scores.
 
 CLI/schema/tokenizer/order tests and small synthetic CPU tensor/serialization checks
-have run. Full reader training, real-checkpoint conversion and scoring have not been
-executed through these new interfaces. See the manual for inputs, outputs, resume
-limits, omitted optional hooks and the one proposed bounded runtime check.
+have run. One bounded real CPU export of the existing alpha075 passed after a
+separate earlier attempt failed before deserialization and the NumPy loader was
+repaired. Source/output tensor equality passed in the recorded laptop environment;
+this was a temporary re-export, not newly trained reader output. Full reader
+training, P3 real runtime, inference/generation parity and scoring remain unverified
+through these interfaces. See the manual for the tested environment and runtime
+scope, inputs, outputs, resume limits and omitted optional hooks.
 
 ## Navigate the repository
 

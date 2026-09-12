@@ -17,8 +17,9 @@ tokenizers 0.22.2 and safetensors 0.8.0. Training and the recorded likelihood pr
 require a BF16-capable CUDA GPU; export and interpolation use CPU tensors. See
 [recorded requirements](recipes/research-v1/runtime-support-v2/frozen_native/requirements-inference-tested.txt).
 Dependencies are not installed by the scripts. Metadata/encoding validation uses
-installed Python/tokenizers/NumPy; P2 plan utilities also import torch. Full-model
-execution on a different environment has not been validated.
+installed Python/tokenizers/NumPy; P2 plan utilities also import torch. The bounded
+CPU export result below covers a different laptop environment; reader training,
+inference/parity and scoring in that environment remain unverified.
 
 ```bash
 export REPO=/path/to/your/petitgpt-checkout
@@ -218,9 +219,11 @@ outputs already include this sidecar.
 
 The new interfaces are implemented. Targeted CLI/import/schema/encoding/plan and
 small synthetic CPU tensor/serialization tests have run; see the V3 review logs.
-No real checkpoint was deserialized, no full model instantiated, no optimizer,
-backward/training update, GPU, generation or benchmark scoring was run in this
-closeout. Real new-run end-to-end runtime therefore remains unverified.
+The subsequent loader repair passed 13 synthetic regression cases plus the 40
+accepted reader/P3 boundary cases. These include both fixed NumPy reconstruction
+pickle names, restricted-object rejection and unchanged schema/step checks.
+Only NumPy 1.26.4 was actually tested for this repair; simulated serialized names
+do not establish a NumPy 2.x environment test or universal version support.
 
 The accepted RunPod P2 validation PASS and P3 original data/640-plan checks are
 supplied historical input evidence. They are not this new-run implementation's
@@ -228,17 +231,26 @@ training results. The published negative/retention findings remain unchanged.
 The new local likelihood interface closes the missing public callable entrypoint;
 full historical benchmark/private-answer-review orchestration remains separate.
 
-One optional **later** bounded runtime check (not executed here): export exactly one
-trusted model-only new blend checkpoint (≤600MB), zero data rows/tokens/updates,
-CPU only, fresh output, ≤180 seconds and ≤8GiB virtual memory. This checks real
-conversion only; it does not certify training or scoring. Optional command (not run during interface validation):
+On 2026-09-12 the first bounded CPU export attempt failed before `torch.load`
+because the loader accessed an unloaded NumPy compatibility submodule. After the
+explicit-import/scoped-allowlist repair, one separately authorized additional
+attempt passed through the public `export --policy new-run --execute` entrypoint.
+It used the existing 498,608,319-byte historical alpha075, not a new reader-trained
+blend. The prior failure remains a separate result. The staged blend's step0 is
+the model-only container convention, not zero historical training updates.
 
-```bash
-(ulimit -v 8388608; CUDA_VISIBLE_DEVICES='' timeout --signal=TERM 180s \
-  python -B "$REPO/recipes/research-v1/reader.py" export --policy new-run \
-  --parent "$OUT/blend/weights/new_alpha075.pt" --tokenizer "$TOK" \
-  --out-dir "$OUT/one-export-runtime-check" --execute)
-```
+The tested stack was Linux x86_64, Python 3.11.7, torch 2.11.0+cu130, NumPy 1.26.4,
+tokenizers 0.22.1 and safetensors 0.6.2, with two CPU threads and no dependency
+changes. This differs from the historical execution reference above. The successful
+attempt took 36.49 seconds; measured peak RSS was 1,838,408 KiB. Limits were
+180 seconds, 8 GiB virtual memory and less than 4 GiB of new working files.
 
-Stop on timeout/failure and inspect its output; no automatic retry or formal
-training is queued. A synthetic test is not a substitute for this runtime check.
+The real source passed complete native config and 213 FP32 state-entry checks.
+The exporter stored 212 entries plus tied-alias metadata, reloaded its own output,
+and compared source/output dtypes, shapes and values. Tokenizer/frozen asset hashes,
+all 17 bundle-manifest entries and all 18 native archive members also matched.
+This verifies a temporary re-export of existing alpha075 in this environment;
+it does not replace the release or claim historical safetensors file-byte equality.
+No full GPT was constructed. Reader training, P3 real runtime, forward/backward,
+optimization, inference/generation parity, scoring and GPU work were not run.
+CPU conversion is not CPU inference support or end-to-end training validation.
