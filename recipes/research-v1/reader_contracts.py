@@ -184,19 +184,47 @@ def state(sd):
     return sd
 
 
-def raw_load(path):
-    """Same restricted NumPy RNG allowlist as recovered loader, for NumPy 1.x/2.x."""
+def numpy_reconstruct():
+    """Resolve the concrete submodule; NumPy 1.26's _core can be a lazy stub."""
+    try:
+        module = importlib.import_module("numpy._core.multiarray")
+    except ModuleNotFoundError as exc:
+        # Older NumPy layouts may lack this exact compatibility namespace.
+        # Missing native dependencies or other import failures must propagate.
+        if exc.name not in {"numpy._core", "numpy._core.multiarray"}:
+            raise
+        module = importlib.import_module("numpy.core.multiarray")
+    return module._reconstruct
+
+
+def restricted_load(path):
+    """CPU weights-only deserialization with fixed, scoped NumPy RNG roles.
+
+    Both historical pickle spellings name the same intended reconstruction
+    function. No globals are discovered/authorized from checkpoint contents.
+    Config/state/step validation remains the responsibility of raw_load/load.
+    """
     import numpy as np
     import torch
 
-    core = np._core if hasattr(np, "_core") else np.core
-    with torch.serialization.safe_globals([
-        core.multiarray._reconstruct,
+    reconstruct = numpy_reconstruct()
+    allowed = [
+        (reconstruct, "numpy.core.multiarray._reconstruct"),
+        (reconstruct, "numpy._core.multiarray._reconstruct"),
         np.ndarray,
         np.dtype,
         type(np.dtype("uint32")),
-    ]):
-        ck = torch.load(str(path), map_location="cpu", weights_only=True)
+    ]
+    # safe_globals removes its entries on exit; avoid removing a caller's
+    # already-present entries when contexts overlap, including on failure.
+    existing = torch.serialization.get_safe_globals()
+    with torch.serialization.safe_globals([item for item in allowed if item not in existing]):
+        return torch.load(path, map_location="cpu", weights_only=True)
+
+
+def raw_load(path):
+    """Restricted load followed by unchanged complete native config/state checks."""
+    ck = restricted_load(str(path))
     config(ck.get("config") or ck.get("cfg"))
     ck["model"] = state(ck["model"])
     return ck

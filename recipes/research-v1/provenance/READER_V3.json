@@ -18,7 +18,7 @@
     },
     {
       "path": "recipes/research-v1/reader_contracts.py",
-      "sha256": "a10efead59666d29a8caafdb046d9fa9cfe5a4504f04bf43a9004e9e482fa3ab"
+      "sha256": "75192c13c0303ad3810bebb0a55b779e590c31e973ae358e779843158a82a1e8"
     },
     {
       "path": "recipes/research-v1/reader_pretrain.py",
@@ -43,6 +43,10 @@
     {
       "path": "tests/test_p3_reader_boundary.py",
       "sha256": "7065da49b73b9959c008b8e4fd28be811b964974a3e24690f69974d007fdbe67"
+    },
+    {
+      "path": "tests/test_reader_numpy_loader.py",
+      "sha256": "e2e660dab5888375bc842d23b857306a48beb4c40e1ca2531d5b85745c4c40e7"
     }
   ],
   "adaptations": {
@@ -50,13 +54,22 @@
     "posttrain": "Original P2 plan/trainer and P3 function allowlist. New prepared records, hashes and plans replace historical input restrictions. New-run-only checked AST omits the baseline gate and private checkpoint hook expressions before argument evaluation, preserving checkpoint/CUDA bookkeeping. P3 receipts follow each finalized checkpoint, independently of run completion. Horizon640 and mainline320 remain fixed; no P2/P3 resume. Frozen source and separate V2 bindings unchanged; V2 training-only is not repaired or runtime-validated by this change.",
     "interpolation": "Unchanged frozen blend function bodies with new parents and fixed .75 default/.50 optional. Actual state checks, no old tensor digest equality. New artifact names.",
     "export": "Analytical canonical state schema, tied safetensors serialization/reload equality against supplied source. No full GPT construction; native buffers derived by unchanged code/config. Frozen assets copied. No parity claim.",
-    "evaluation": "Pinned harness encode_pair and recovered likelihood helpers. Local ARC/PIQA raw records, file/revision/row identities, FP32 MATH batch1 raw-completion policy; no network or baseline models."
+    "evaluation": "Pinned harness encode_pair and recovered likelihood helpers. Local ARC/PIQA raw records, file/revision/row identities, FP32 MATH batch1 raw-completion policy; no network or baseline models.",
+    "reader_loader": "Explicit numpy._core.multiarray import, with fallback only when that exact namespace is absent. Both fixed NumPy reconstruction pickle paths bind the intended callable. Scoped ndarray/dtype/uint32 roles, CPU weights_only=True, unchanged config/state/step validation. No universal NumPy version support claim."
   },
   "historical_sources": "INTEGRATION.json and RELOCATION_V2.json remain immutable; reader verify_code checks their source hashes plus this map.",
   "current_revision": {
-    "task": "P3 reader boundary fix",
-    "base_commit": "f26166c7c4df1009491a60ae6d65aaef88efd2ce",
-    "previous_reader_posttrain_sha256": "73f40e3d6781edcc86bfbe669baab79419c9d1b30df57ef5b967a0bb9d4b2a30",
-    "scope": "Current new-run binding only; frozen sources and V2 adapter identities unchanged"
-  }
+    "task": "Restricted NumPy reader loader fix",
+    "base_commit": "07031e1dba3e32cd809db4f476886d221fc4e06f",
+    "previous_reader_contracts_sha256": "a10efead59666d29a8caafdb046d9fa9cfe5a4504f04bf43a9004e9e482fa3ab",
+    "scope": "Explicit reconstruction submodule resolver and scoped exact-name NumPy globals; complete native config/state/step checks unchanged"
+  },
+  "revision_history": [
+    {
+      "task": "P3 reader boundary fix",
+      "base_commit": "f26166c7c4df1009491a60ae6d65aaef88efd2ce",
+      "previous_reader_posttrain_sha256": "73f40e3d6781edcc86bfbe669baab79419c9d1b30df57ef5b967a0bb9d4b2a30",
+      "scope": "Current new-run binding only; frozen sources and V2 adapter identities unchanged"
+    }
+  ]
 }
