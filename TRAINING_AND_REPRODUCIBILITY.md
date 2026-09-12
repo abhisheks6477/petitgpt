@@ -154,6 +154,14 @@ P2 retains evaluation on the supplied public-format validation split. Materializ
 P2 and P3 do not expose resume; start a fresh run if interrupted. Pretrain's full
 resume mechanism must not be confused with posttraining's fresh optimizers.
 
+New-run P3 writes each adjacent `.reader.json` immediately after that checkpoint's
+finalized save. Step320 can therefore pass downstream metadata validation even if
+later work fails; this does not mark the run complete or enable resume. Receipt
+write errors stop the run. The private hook calls (including their arguments) are
+omitted before execution. These boundaries are tested with synthetic files and
+stub callbacks only; real P3 runtime remains unverified. This fix does not repair
+or runtime-validate the separate V2 `training-only` interface.
+
 Plans are derived and checked during validation; execution writes `PLAN.json` (P2)
 or `PLAN.jsonl` (P3). Pass `--plan` to require exact equality with a separately
 prepared plan. P3 records its new `INPUTS.json` identity in checkpoint metadata;

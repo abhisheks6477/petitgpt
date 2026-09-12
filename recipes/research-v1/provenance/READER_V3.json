@@ -10,7 +10,7 @@
     },
     {
       "path": "recipes/research-v1/reader_posttrain.py",
-      "sha256": "73f40e3d6781edcc86bfbe669baab79419c9d1b30df57ef5b967a0bb9d4b2a30"
+      "sha256": "431c5f98886e6044538b87c4faa9c5ca23695296094b976409468f26e8afacd3"
     },
     {
       "path": "recipes/research-v1/reader_tensors.py",
@@ -35,14 +35,28 @@
     {
       "path": "tests/test_reader_v3.py",
       "sha256": "377dc84bb3e257abd79051ab8d792e0bdf9e2070c605620befb1dc2b27b46f54"
+    },
+    {
+      "path": "recipes/research-v1/reader_p3.py",
+      "sha256": "37aae1189a915d31e6314e34087bd8551c5f7a17591f0b672f15fe4fa3887fc4"
+    },
+    {
+      "path": "tests/test_p3_reader_boundary.py",
+      "sha256": "7065da49b73b9959c008b8e4fd28be811b964974a3e24690f69974d007fdbe67"
     }
   ],
   "adaptations": {
     "pretrain": "Original A/B numerical trainer and full-state resume. New bin/meta/plan validators replace old acquisition/approval bindings, with explicit A-to-B seed transition and unchanged strict state checks. Optional validation/generation hooks omitted. Restricted NumPy RNG unpickler; receipts emitted after actual saves.",
-    "posttrain": "Original P2 plan/trainer and P3 training-only function allowlist. New prepared records, hashes and plans replace historical input restrictions. P3 horizon640 and mainline320 remain fixed. No private baseline marker. P2/P3 resume not exposed.",
+    "posttrain": "Original P2 plan/trainer and P3 function allowlist. New prepared records, hashes and plans replace historical input restrictions. New-run-only checked AST omits the baseline gate and private checkpoint hook expressions before argument evaluation, preserving checkpoint/CUDA bookkeeping. P3 receipts follow each finalized checkpoint, independently of run completion. Horizon640 and mainline320 remain fixed; no P2/P3 resume. Frozen source and separate V2 bindings unchanged; V2 training-only is not repaired or runtime-validated by this change.",
     "interpolation": "Unchanged frozen blend function bodies with new parents and fixed .75 default/.50 optional. Actual state checks, no old tensor digest equality. New artifact names.",
     "export": "Analytical canonical state schema, tied safetensors serialization/reload equality against supplied source. No full GPT construction; native buffers derived by unchanged code/config. Frozen assets copied. No parity claim.",
     "evaluation": "Pinned harness encode_pair and recovered likelihood helpers. Local ARC/PIQA raw records, file/revision/row identities, FP32 MATH batch1 raw-completion policy; no network or baseline models."
   },
-  "historical_sources": "INTEGRATION.json and RELOCATION_V2.json remain immutable; reader verify_code checks their source hashes plus this map."
+  "historical_sources": "INTEGRATION.json and RELOCATION_V2.json remain immutable; reader verify_code checks their source hashes plus this map.",
+  "current_revision": {
+    "task": "P3 reader boundary fix",
+    "base_commit": "f26166c7c4df1009491a60ae6d65aaef88efd2ce",
+    "previous_reader_posttrain_sha256": "73f40e3d6781edcc86bfbe669baab79419c9d1b30df57ef5b967a0bb9d4b2a30",
+    "scope": "Current new-run binding only; frozen sources and V2 adapter identities unchanged"
+  }
 }

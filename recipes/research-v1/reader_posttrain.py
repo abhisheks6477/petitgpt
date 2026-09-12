@@ -169,9 +169,8 @@ def p2_execute(a, plan):
 
 
 def p3_execute(a):
-    from p3 import P3_SOURCE
-    from p3_execution import training_only_gate
     from reader_contracts import load
+    from reader_p3 import bind_new_run
     from sft.p2_loss import assistant_nll_sum_fp32
     import torch
 
@@ -236,18 +235,9 @@ def p3_execute(a):
         DATA=data,
         TRAIN=a.out_dir / "train",
         EVAL=a.out_dir / "evaluation",
-        evaluate=lambda *args: None,
-        val500=lambda *args: None,
     )
-    definitions(
-        P3_SOURCE,
-        ["load_model", "encoded_rows", "checkpoint", "train"],
-        ns,
-        transform=training_only_gate,
-    )
+    bind_new_run(ns)
     ns["train"](load_chat_tokenizer(str(a.tokenizer)), start)
-    for path in (a.out_dir / "train").glob("step_*.pt"):
-        receipt(path, "p3", int(path.stem.split("_")[1]), checked=True)
 
 
 def interpolate_execute(a, evidence):
