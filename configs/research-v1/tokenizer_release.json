@@ -1,0 +1,223 @@
+{
+  "schema_version": 2,
+  "kind": "petitgpt_tokenizer_release",
+  "status": "complete",
+  "contract": {
+    "canonical": true,
+    "issues": [],
+    "legacy_allow_noncanonical_contract": false
+  },
+  "publication": "sibling_staging_then_atomic_rename",
+  "tokenizer_sha256": "d8f84df58928023edebd809e152b3b38a0dac53b9f887bd2455f427661e9b9ce",
+  "vocab_size": 32000,
+  "special_token_ids": {
+    "[PAD]": 0,
+    "[UNK]": 1,
+    "[BOS]": 2,
+    "[EOS]": 3,
+    "<|system|>": 4,
+    "<|user|>": 5,
+    "<|assistant|>": 6
+  },
+  "training": {
+    "data": [
+      "runs/f_production_2026-08-21/release/dclm.jsonl",
+      "runs/f_production_2026-08-21/release/fineweb.jsonl",
+      "runs/f_production_2026-08-21/release/python.jsonl",
+      "runs/f_production_2026-08-21/release/structured_tutorial.jsonl",
+      "runs/f_production_2026-08-21/release/wikipedia.jsonl"
+    ],
+    "fields": [
+      "text"
+    ],
+    "messages_key": "messages",
+    "allow_messages": false,
+    "vocab_size_target": 32000,
+    "min_frequency": 2,
+    "add_prefix_space": false,
+    "post_processor_enabled": false,
+    "elapsed_seconds": 202.455,
+    "per_file": [
+      {
+        "path": "runs/f_production_2026-08-21/release/dclm.jsonl",
+        "physical_lines": 355030,
+        "yielded_samples": 355030,
+        "utf8_bytes": 2000001793,
+        "canonical_bucket": "DCLM",
+        "expected_occurrences": 355030
+      },
+      {
+        "path": "runs/f_production_2026-08-21/release/fineweb.jsonl",
+        "physical_lines": 1127813,
+        "yielded_samples": 1127813,
+        "utf8_bytes": 5000037482,
+        "canonical_bucket": "FineWeb",
+        "expected_occurrences": 1127813
+      },
+      {
+        "path": "runs/f_production_2026-08-21/release/python.jsonl",
+        "physical_lines": 613172,
+        "yielded_samples": 613172,
+        "utf8_bytes": 1500000962,
+        "canonical_bucket": "Python",
+        "expected_occurrences": 613172
+      },
+      {
+        "path": "runs/f_production_2026-08-21/release/structured_tutorial.jsonl",
+        "physical_lines": 153726,
+        "yielded_samples": 153726,
+        "utf8_bytes": 500003412,
+        "canonical_bucket": "structured/tutorial",
+        "expected_occurrences": 153726
+      },
+      {
+        "path": "runs/f_production_2026-08-21/release/wikipedia.jsonl",
+        "physical_lines": 261828,
+        "yielded_samples": 261828,
+        "utf8_bytes": 1000000009,
+        "canonical_bucket": "Wikipedia",
+        "expected_occurrences": 261828
+      }
+    ],
+    "consumed_occurrences": 2511569,
+    "consumed_utf8_bytes": 10000043658
+  },
+  "corpus_binding": {
+    "verified_before_training": true,
+    "manifest_path": "runs/f_production_2026-08-21/release/manifest.json",
+    "manifest_sha256": "c5d6d39ab1ba12fc3421dc936755e62efca77a8edcf2abf876208e54bed5cd04",
+    "manifest_schema_version": "petitgpt-f-tokenizer-corpus-v1",
+    "run_fingerprint_sha256": "3e01d58a6f487477bddcdb62d4fdc95571709dd319b41cb09e9317b128625334",
+    "selected_occurrence_set_sha256": "fc4fdcfb610edaffc07e9a6f4900baa68705e1555b6b3f7bf2e3a79fde1e2ec7",
+    "total_selected_documents": 2511569,
+    "total_realized_cleaned_utf8_bytes": 10000043658,
+    "files": [
+      {
+        "canonical_bucket": "DCLM",
+        "path": "./runs/f_production_2026-08-21/release/dclm.jsonl",
+        "manifest_relative_path": "dclm.jsonl",
+        "sha256": "0294fc8ea663a5b486a47de1a350b3d25166154665e647847a086c53ee4c4b26",
+        "size_bytes": 2088098606,
+        "expected_occurrences": 355030,
+        "supplied_as": "runs/f_production_2026-08-21/release/dclm.jsonl",
+        "verified_sha256": "0294fc8ea663a5b486a47de1a350b3d25166154665e647847a086c53ee4c4b26"
+      },
+      {
+        "canonical_bucket": "FineWeb",
+        "path": "./runs/f_production_2026-08-21/release/fineweb.jsonl",
+        "manifest_relative_path": "fineweb.jsonl",
+        "sha256": "e2f4e003042226b5b032a94239bcbf90d0e31b0aca1804abc8813a4bffe51be9",
+        "size_bytes": 5251938927,
+        "expected_occurrences": 1127813,
+        "supplied_as": "runs/f_production_2026-08-21/release/fineweb.jsonl",
+        "verified_sha256": "e2f4e003042226b5b032a94239bcbf90d0e31b0aca1804abc8813a4bffe51be9"
+      },
+      {
+        "canonical_bucket": "Python",
+        "path": "./runs/f_production_2026-08-21/release/python.jsonl",
+        "manifest_relative_path": "python.jsonl",
+        "sha256": "f147981c899396aba92787bdec0cf53017ffdf3ca4d243b99cfed6e29db62637",
+        "size_bytes": 1687621643,
+        "expected_occurrences": 613172,
+        "supplied_as": "runs/f_production_2026-08-21/release/python.jsonl",
+        "verified_sha256": "f147981c899396aba92787bdec0cf53017ffdf3ca4d243b99cfed6e29db62637"
+      },
+      {
+        "canonical_bucket": "structured/tutorial",
+        "path": "./runs/f_production_2026-08-21/release/structured_tutorial.jsonl",
+        "manifest_relative_path": "structured_tutorial.jsonl",
+        "sha256": "99d0679fb0a909f58b625eb4d83f97e93bd79df9764ab283a954a0272ff8e9c6",
+        "size_bytes": 536676479,
+        "expected_occurrences": 153726,
+        "supplied_as": "runs/f_production_2026-08-21/release/structured_tutorial.jsonl",
+        "verified_sha256": "99d0679fb0a909f58b625eb4d83f97e93bd79df9764ab283a954a0272ff8e9c6"
+      },
+      {
+        "canonical_bucket": "Wikipedia",
+        "path": "./runs/f_production_2026-08-21/release/wikipedia.jsonl",
+        "manifest_relative_path": "wikipedia.jsonl",
+        "sha256": "f2843a330a970bfc390b6471be4aeb6d948e5330cc42b92b342c8764fbacefe2",
+        "size_bytes": 1061130319,
+        "expected_occurrences": 261828,
+        "supplied_as": "runs/f_production_2026-08-21/release/wikipedia.jsonl",
+        "verified_sha256": "f2843a330a970bfc390b6471be4aeb6d948e5330cc42b92b342c8764fbacefe2"
+      }
+    ]
+  },
+  "validation": {
+    "status": "PASS",
+    "vocab_size": 32000,
+    "fixtures": {
+      "count": 32,
+      "failures": 0,
+      "failed_repr": [],
+      "injection_hardening_ok": true
+    },
+    "full_corpus_stream": {
+      "totals": {
+        "occurrences": 2511569,
+        "utf8_bytes": 10000043658,
+        "tokens": 2323110079,
+        "roundtrip_failures": 0,
+        "special_id_occurrences": 0,
+        "unk_occurrences": 0
+      },
+      "status": "PASS",
+      "bytes_per_token": 4.3045931178192784,
+      "elapsed_seconds": 3770.539
+    },
+    "report_path": "validation.json"
+  },
+  "environment": {
+    "python_version": "3.10.12",
+    "tokenizers_version": "0.22.2",
+    "trainer_sha256": "7bd6b759b20196c8743b3092e7e8195826ab7a8eaf6d97b7c80ce18b364bae71",
+    "git_head": "e0408a3487c0d6244ffab7ce579a278ca1a0cd8e",
+    "report_path": "environment.json"
+  },
+  "artifacts": {
+    "canonical_runtime_artifact": "tokenizer.json",
+    "model_serialization": [
+      "vocab.json",
+      "merges.txt"
+    ],
+    "authoritative_manifest": "tokenizer_release_manifest.json",
+    "byte_identical_manifest_copy": "manifest.json"
+  },
+  "reference_reserve_exclusion": {
+    "enabled": true,
+    "hash_algorithm": "sha256-cleaned-text-utf8-v1",
+    "cleaning": {
+      "strip_leading_noise": false,
+      "normalize_quotes": false,
+      "underscores_policy": "keep",
+      "min_chars": 0,
+      "min_ascii_ratio": 0.0
+    },
+    "manifest_count": 1,
+    "union_hash_count": 172483,
+    "considered_samples": 2511569,
+    "excluded_samples": 0,
+    "yielded_samples": 2511569,
+    "manifests": [
+      {
+        "enabled": true,
+        "manifest_path": "runs/l1_production_2026-08-20/reference_reserve_v1/exclusion_hash_manifest.json",
+        "manifest_resolved": "./runs/l1_production_2026-08-20/reference_reserve_v1/exclusion_hash_manifest.json",
+        "manifest_size_bytes": 29675319,
+        "manifest_sha256": "7e768eb992456cca9b7ba64dd6fda0410f87843faff72d573027139a917e1dd4",
+        "kind": "petitgpt_reference_validation_exclusions",
+        "hash_algorithm": "sha256-cleaned-text-utf8-v1",
+        "hash_count": 172483,
+        "cleaning": {
+          "strip_leading_noise": false,
+          "normalize_quotes": false,
+          "underscores_policy": "keep",
+          "min_chars": 0,
+          "min_ascii_ratio": 0.0
+        },
+        "matched_samples": 0
+      }
+    ]
+  }
+}

@@ -19,7 +19,7 @@ What it checks:
 Usage:
   python sanity_check_pretrain_shards.py \
     --out_dir datasets/pretrain_mix_7b_v2 \
-    --tokenizer_path tokenizer/tokenizer.json \
+    --tokenizer_path tokenizer/releases/tokenizer_v1/tokenizer.json \
     --seq_len 2048 \
     --sample_shards 6 \
     --blocks_per_shard 12 \

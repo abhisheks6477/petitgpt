@@ -1,0 +1,200 @@
+{
+  "training": {
+    "compile": true,
+    "decay_fraction": 0.1,
+    "effective_batch_tokens": 262144,
+    "grad_accum": 16,
+    "grad_clip": 1.0,
+    "lr_schedule": "wsd",
+    "micro_bsz": 8,
+    "min_lr_ratio": 0.1,
+    "muon_lr": 0.0,
+    "muon_momentum": 0.95,
+    "optimizer": "muon",
+    "peak_lr": 0.0006,
+    "precision": "bf16",
+    "warmup_steps": 500,
+    "weight_decay": 0.1
+  },
+  "model": {
+    "architecture_features": [
+      "GQA",
+      "RoPE",
+      "RMSNorm",
+      "SwiGLU",
+      "SDPA",
+      "tied_embeddings",
+      "bf16"
+    ],
+    "d_ff": 1536,
+    "d_model": 576,
+    "dropout": 0.0,
+    "n_heads": 9,
+    "n_kv_heads": 3,
+    "n_layers": 30,
+    "parameter_count": 124635456,
+    "seq_len": 2048,
+    "tie_embeddings": true,
+    "tied_embeddings": true,
+    "vocab_size": 32000
+  },
+  "optimizer_realization": {
+    "adam_param_name_keys": [
+      "tok_emb",
+      "lm_head",
+      ".gate."
+    ],
+    "aux_adamw_betas": [
+      0.9,
+      0.95
+    ],
+    "aux_adamw_eps": 1e-08,
+    "grad_clip": 1.0,
+    "group_roles": [
+      "muon_matrices",
+      "aux_adamw_decay",
+      "aux_adamw_no_decay"
+    ],
+    "lr_ratio_required_on_every_group": 1.0,
+    "membership_rule": {
+      "aux_adamw_decay": "params whose name contains any of ['tok_emb', 'lm_head', '.gate.']",
+      "aux_adamw_no_decay": "params with ndim < 2 (norm gains, biases)",
+      "muon_matrices": "2D params not matched by ADAM_PARAM_NAME_KEYS"
+    },
+    "muon_class": "Muon",
+    "muon_lr": 0.0,
+    "muon_lr_resolution": "build_optimizer: muon_lr = float(muon_lr) if muon_lr and muon_lr > 0 else float(lr). With --muon_lr 0.0 the Muon matrix groups reuse the scheduled main --lr and lr_ratio is exactly 1.0.",
+    "muon_momentum": 0.95,
+    "nesterov": true,
+    "newton_schulz_coefficients": [
+      3.4445,
+      -4.775,
+      2.0315
+    ],
+    "newton_schulz_steps": 5,
+    "optimizer": "muon",
+    "rms_matching": {
+      "constant": 0.2,
+      "formula": "adjusted_lr = lr * 0.2 * sqrt(max(fan_in, fan_out))"
+    },
+    "role_weight_decay": {
+      "aux_adamw_decay": 0.1,
+      "aux_adamw_no_decay": 0.0,
+      "muon_matrices": 0.1
+    },
+    "single_optimizer_instance": true,
+    "weight_decay": 0.1
+  },
+  "optimizer_reset_at_a_b": false,
+  "scheduler_reset_at_a_b": false,
+  "checkpoint_policy": {
+    "cli_serialization": "repeated_--save_steps_flags_from_numeric_plan_list",
+    "extra_checkpoints": "FORBIDDEN",
+    "mode": "exact_plan_milestones_only",
+    "periodic_save_every": 0,
+    "periodic_save_status": "DISABLED",
+    "save_steps": [
+      3815,
+      11445,
+      22889,
+      38146,
+      38147,
+      43868,
+      43870,
+      44631,
+      49590
+    ]
+  },
+  "evaluation_policy": {
+    "benchmark_eval_every": 0,
+    "benchmark_eval_status": "DISABLED",
+    "eos_weight": 1.0,
+    "evaluation_steps": [
+      500,
+      3815,
+      11445,
+      22889,
+      38146,
+      38147,
+      43868,
+      43870,
+      44631,
+      49590
+    ],
+    "loss_reduction": "canonical_global_token_mean",
+    "mode": "explicit_milestones_only",
+    "periodic_eval_every": 0,
+    "periodic_eval_status": "DISABLED",
+    "random_validation_subset": false,
+    "validation_full_set": true,
+    "validation_order": "deterministic_no_shuffle",
+    "validation_release": "runs/g2_production_2026-08-21/release/val",
+    "validation_samples": 0,
+    "validation_samples_per_source": 0,
+    "validation_seed": 20260834,
+    "validation_shuffle": false
+  },
+  "seeds": {
+    "model_init_seed": 20260831,
+    "stage_a_sampler_seed": 20260832,
+    "stage_b_sampler_seed": 20260833,
+    "validation_seed": 20260834
+  },
+  "special_token_ids": {
+    "ASSISTANT": 6,
+    "BOS": 2,
+    "EOS": 3,
+    "PAD": 0,
+    "SYSTEM": 4,
+    "UNK": 1,
+    "USER": 5
+  },
+  "compatibility_bridge": {
+    "backward_calls": 0,
+    "data_batches_consumed": 0,
+    "optimizer_updates": 0,
+    "sampler_advances": 0,
+    "scheduler_advances": 0,
+    "schema_version": "petitgpt-stage-n-successor-bridge-governed-run-contract-v1",
+    "semantic_comparison_manifest_path": "artifacts/base_recovery/runs/n3_module_origin_canonical_loader_repair_r3_2026-09-04/candidate/CORE_TRAINING_SEMANTICS_BYTE_COMPARISON_MANIFEST.json",
+    "semantic_comparison_manifest_sha256": "dd0f35094eca08fa8baf56584c10c7b00d1eacd3b2ee879f28a45e29fa381190",
+    "source_bundle_sha256": "bbd49b9d73d3cb2fa18aacb3eee861a901e5a7511ed334b85b37239ab1d50043",
+    "source_checkpoint_sha256": "d1a8008e7d1cb4ffda63f596126aadb0bfce46f71ec4a63e66d42cd0225623d4",
+    "source_head": "6d80423adc16d4a160a7fe42660020c585b5185d",
+    "start_step": 38146,
+    "stop_step": 38146,
+    "successor_bridge_tool_bundle_sha256": "701c7bf76ca6aa04cc6d6298d1ae93ab8b7e97e5236745071b4c89cd8bbf5800",
+    "successor_head": "7686fd811642dd6246ca3a3c21a4bf43bc28cd3b",
+    "successor_repository_root": "artifacts/base_recovery",
+    "successor_runtime_fingerprint_sha256": "7ad3024a3c0efd27768a575efb815e30dad0980473510cfcf3735a43e7f3c661",
+    "successor_trainer_execution_bundle_sha256": "1086af0b6821b2fdc4b2850371845c992f831dfcd84a6d504d2938fad003e75d",
+    "trained_tokens": 0,
+    "training_loop_iterations": 0
+  },
+  "resume": {
+    "checkpoint_path": "./outputs/governed/stage_a_05c79c535a3c94a86d5aa93e2baf6599bd9a2813929bd7b2ee6e182add3c63f2/step_038146.pt",
+    "checkpoint_sha256": "d1a8008e7d1cb4ffda63f596126aadb0bfce46f71ec4a63e66d42cd0225623d4",
+    "expected_step": 38146,
+    "governed_run_contract_sha256": "aaa245475c99447223b08b2c1f13018e72faacf216915764980d00e4749857bf",
+    "mode": "RESUME_EXACT_CHECKPOINT",
+    "source_active_stage": "stage_a",
+    "source_base_governed_identity_digest": "d5c9f95aa1041f2aae438c8e91fe645b823e4eda5941d272d4ee914e711b9622",
+    "source_checkpoint_path": "./outputs/governed/stage_a_05c79c535a3c94a86d5aa93e2baf6599bd9a2813929bd7b2ee6e182add3c63f2/step_038146.pt",
+    "source_checkpoint_sha256": "d1a8008e7d1cb4ffda63f596126aadb0bfce46f71ec4a63e66d42cd0225623d4",
+    "source_checkpoint_stage": "stage_a",
+    "source_checkpoint_step": 38146,
+    "source_cursor": 4882688,
+    "source_invocation_range_start_position": 4882688,
+    "source_invocation_run_contract_path": "./outputs/governed/stage_a_05c79c535a3c94a86d5aa93e2baf6599bd9a2813929bd7b2ee6e182add3c63f2/GOVERNED_RUN_CONTRACT.json",
+    "source_invocation_run_contract_sha256": "f6314d40c56b563fed6d89613e6f6b4cf702028259ea4baadbd61d9f9216a2d2",
+    "source_permutation_identity": "0a6cdbfbdbc1416a51204e1355810c43c036beffb7015f2cdc9f53e4f005320f",
+    "source_range_start_position": 0,
+    "source_range_stop_position": 4882688,
+    "source_sampler_seed": 20260832,
+    "source_stage_authorization_path": "./runs/n_stage_n_n2_corrected_owner_authorization_and_verification_v2_2026-09-03/OWNER_AUTHORIZATION_STAGE_N_N2_CORRECTED_V2.json",
+    "source_stage_authorization_sha256": "05c79c535a3c94a86d5aa93e2baf6599bd9a2813929bd7b2ee6e182add3c63f2",
+    "stage": "stage_a"
+  },
+  "trainer_head": "7686fd811642dd6246ca3a3c21a4bf43bc28cd3b",
+  "trainer_execution_bundle_sha256": "1086af0b6821b2fdc4b2850371845c992f831dfcd84a6d504d2938fad003e75d"
+}

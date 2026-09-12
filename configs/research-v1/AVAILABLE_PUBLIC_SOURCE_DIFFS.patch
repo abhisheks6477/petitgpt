@@ -1,0 +1,2090 @@
+--- available_public_157ef969/src/canonical_loss.py
++++ sources/pretrain_stage_a/src/canonical_loss.py
+@@ -1,7 +1,6 @@
+ """Canonical masked, weighted cross-entropy primitives.
+ 
+-Extracted verbatim from the accepted production trainer preserved on the historical branch
+-``agent/stage-o-successor-launch-adapter-v1`` so that trainer and
++Extracted verbatim from ``pretrain/train_pretrain_with_bench.py`` so the production trainer and
+ the P-PILOT-CONTRACT-V2.3 pilot executor share **one** implementation rather than two that could drift. The mathematics is unchanged: this is a pure move, and
+ ``tests/test_canonical_loss.py`` pins parity against the previous production behaviour.
+ 
+
+--- available_public_157ef969/src/canonical_schedule.py
++++ sources/pretrain_stage_a/src/canonical_schedule.py
+@@ -1,7 +1,6 @@
+ """Canonical absolute-step learning-rate schedule.
+ 
+-Extracted verbatim from the accepted production trainer preserved on the historical branch
+-``agent/stage-o-successor-launch-adapter-v1`` so that trainer and
++Extracted verbatim from ``pretrain/train_pretrain_with_bench.py`` so the production trainer and
+ the P-PILOT-CONTRACT-V2.3 pilot verification share one implementation. The mathematics is
+ unchanged -- in particular the WSD decay is **cosine**, not linear -- and
+ ``tests/test_canonical_schedule.py`` pins parity.
+
+--- available_public_157ef969/src/canonical_loss.py
++++ sources/pretrain_stage_b/src/canonical_loss.py
+@@ -1,7 +1,6 @@
+ """Canonical masked, weighted cross-entropy primitives.
+ 
+-Extracted verbatim from the accepted production trainer preserved on the historical branch
+-``agent/stage-o-successor-launch-adapter-v1`` so that trainer and
++Extracted verbatim from ``pretrain/train_pretrain_with_bench.py`` so the production trainer and
+ the P-PILOT-CONTRACT-V2.3 pilot executor share **one** implementation rather than two that could drift. The mathematics is unchanged: this is a pure move, and
+ ``tests/test_canonical_loss.py`` pins parity against the previous production behaviour.
+ 
+
+--- available_public_157ef969/src/canonical_schedule.py
++++ sources/pretrain_stage_b/src/canonical_schedule.py
+@@ -1,7 +1,6 @@
+ """Canonical absolute-step learning-rate schedule.
+ 
+-Extracted verbatim from the accepted production trainer preserved on the historical branch
+-``agent/stage-o-successor-launch-adapter-v1`` so that trainer and
++Extracted verbatim from ``pretrain/train_pretrain_with_bench.py`` so the production trainer and
+ the P-PILOT-CONTRACT-V2.3 pilot verification share one implementation. The mathematics is
+ unchanged -- in particular the WSD decay is **cosine**, not linear -- and
+ ``tests/test_canonical_schedule.py`` pins parity.
+
+--- available_public_157ef969/sft/train_sft.py
++++ sources/posttraining/sft/train_sft.py
+@@ -16,11 +16,13 @@
+ import argparse
+ from collections.abc import Mapping
+ from dataclasses import asdict
++import hashlib
+ import json
+ import math
+ import os
+ from pathlib import Path
+ import random
++import signal
+ 
+ # Make imports work no matter where you run from
+ import sys
+@@ -112,7 +114,7 @@
+     *,
+     tok,
+     seq_len: int,
+-    default_system: str,
++    default_system: str | None,
+ ) -> dict[str, int]:
+     """Validate one full SFT row, or one prompt-only sampling row."""
+     messages = example.get("messages")
+@@ -121,7 +123,7 @@
+ 
+     if split == "sample_eval":
+         prompt_messages = prepare_prompt_messages(messages, default_system)
+-        ids = encode_prompt(tok, prompt_messages, default_system="", mode="full_context")
++        ids = encode_prompt(tok, prompt_messages, default_system=default_system, mode="full_context")
+         kept_ids, _ = truncate_chat_sequence(ids, labels=None, max_len=seq_len - 1)
+         return {
+             "encoded_prompt_tokens": len(ids),
+@@ -130,9 +132,11 @@
+         }
+ 
+     ids, labels = encode_chat(tok, messages, default_system)
++    if default_system is None and len(ids) > seq_len:
++        raise ValueError("source-preserving SFT rejects overlength conversations")
+     kept_ids, kept_labels = truncate_chat_sequence(ids, labels, max_len=seq_len)
+     assert kept_labels is not None
+-    supervised = sum(label != IGNORE_INDEX for label in kept_labels)
++    supervised = sum(label != IGNORE_INDEX for label in kept_labels[1:])
+     if supervised == 0:
+         raise ValueError("SFT example retained no supervised assistant target")
+     return {
+@@ -161,7 +165,7 @@
+ def collate_fn_builder(
+     tok,
+     seq_len: int,
+-    default_system: str,
++    default_system: str | None,
+     debug_first_batch: bool,
+     refusal_downweight: float,
+     refusal_patterns: list[str],
+@@ -205,7 +209,10 @@
+             else:
+                 print("[dbg] WARNING: no supervised tokens in sample0")
+ 
+-        return {"input_ids": input_ids, "labels": labels, "weights": weights}
++        row_ids = [str(ex.get("audit_id") or hashlib.sha256(
++            json.dumps(ex, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()
++        ).hexdigest()) for ex in batch]
++        return {"input_ids": input_ids, "labels": labels, "weights": weights, "row_ids": row_ids}
+ 
+     return collate
+ 
+@@ -261,6 +268,132 @@
+     raise ValueError(f"unknown reduction: {reduction}")
+ 
+ 
++def supervised_target_count(labels: torch.Tensor) -> int:
++    """Count shifted assistant/EOS targets and reject any all-masked row."""
++    if labels.ndim != 2 or labels.shape[1] < 2:
++        raise ValueError("expected [batch, sequence] labels with a next-token target")
++    counts = (labels[:, 1:] != IGNORE_INDEX).sum(dim=1)
++    if counts.numel() == 0 or bool((counts == 0).any().item()):
++        raise ValueError("zero supervised targets in an example")
++    return int(counts.sum().item())
++
++
++def assistant_nll_sum(logits: torch.Tensor, labels: torch.Tensor) -> torch.Tensor:
++    """Unweighted next-token CE numerator; includes every supervised EOS."""
++    return F.cross_entropy(
++        logits[:, :-1, :].contiguous().view(-1, logits.shape[-1]),
++        labels[:, 1:].contiguous().view(-1),
++        ignore_index=IGNORE_INDEX,
++        reduction="sum",
++    )
++
++
++def effective_batch_backward(model, batches, *, device, autocast_dtype=None, nll_sum_fn=None) -> dict:
++    """One CPU-buffered effective batch; backward CE_sum / shared target count.
++
++    This function never steps an optimizer or retains a microbatch graph.
++    Production permits bf16 single-GPU only; deterministic CPU tests use fp32.
++    """
++    if nll_sum_fn is None:
++        nll_sum_fn = assistant_nll_sum
++    if not batches:
++        raise ValueError("empty effective batch")
++    counts = []
++    row_ids = []
++    for batch in batches:
++        weights = batch.get("weights")
++        if weights is not None and not bool((weights == 1).all().item()):
++            raise ValueError("effective_batch_tokens does not support sample weighting")
++        counts.append(supervised_target_count(batch["labels"]))
++        row_ids.extend(batch.get("row_ids", []))
++    total_targets = sum(counts)
++    nll_total = 0.0
++    for batch in batches:
++        inputs = batch["input_ids"].to(device, non_blocking=True)
++        labels = batch["labels"].to(device, non_blocking=True)
++        with torch.autocast(device_type=torch.device(device).type, dtype=autocast_dtype,
++                            enabled=autocast_dtype is not None):
++            logits = model(inputs)
++            nll = nll_sum_fn(logits, labels)
++            loss = nll / total_targets
++        if not bool(torch.isfinite(loss).item()) or not bool(torch.isfinite(nll).item()):
++            raise FloatingPointError("nonfinite effective-batch loss before backward/optimizer.step")
++        nll_total += float(nll.detach().item())
++        loss.backward()
++        del loss, nll, logits, inputs, labels
++    return {"loss": nll_total / total_targets, "nll_sum": nll_total,
++            "supervised_targets": total_targets, "microbatches": len(batches),
++            "rows": sum(int(b["labels"].shape[0]) for b in batches),
++            "row_ids": row_ids,
++            "row_ids_sha256": hashlib.sha256("\n".join(row_ids).encode()).hexdigest()}
++
++
++def checked_optimizer_step(model, optimizer, *, loss: float, grad_clip: float) -> float:
++    """The actual pilot step gate: fail before changing any optimizer state."""
++    if not math.isfinite(loss):
++        raise FloatingPointError("nonfinite loss before optimizer.step")
++    parameters = [p for p in model.parameters() if p.grad is not None]
++    if not parameters:
++        raise RuntimeError("no gradients before optimizer.step")
++    finite = torch.stack([torch.isfinite(p.grad).all() for p in parameters]).all()
++    if not bool(finite.item()):
++        raise FloatingPointError("nonfinite gradients before optimizer.step")
++    norm = torch.nn.utils.clip_grad_norm_(
++        parameters, grad_clip if grad_clip > 0 else float("inf"), error_if_nonfinite=True
++    )
++    value = float(norm.item())
++    if not math.isfinite(value):
++        raise FloatingPointError("nonfinite gradient norm before optimizer.step")
++    optimizer.step()
++    return value
++
++
++@torch.no_grad()
++def evaluate_token_mean(model, loader, *, device, autocast_dtype=None, expected_rows=None, should_stop=None) -> dict:
++    """Full validation corpus CE sum / assistant+EOS targets, including singleton."""
++    was_training = model.training
++    model.eval()
++    total_nll, total_targets, rows, batches = 0.0, 0, 0, 0
++    row_ids = []
++    try:
++        for batch in loader:
++            if should_stop is not None and should_stop():
++                raise InterruptedError("pilot stop requested during validation")
++            count = supervised_target_count(batch["labels"])
++            inputs = batch["input_ids"].to(device, non_blocking=True)
++            labels = batch["labels"].to(device, non_blocking=True)
++            with torch.autocast(device_type=torch.device(device).type, dtype=autocast_dtype,
++                                enabled=autocast_dtype is not None):
++                logits = model(inputs)
++                nll = assistant_nll_sum(logits, labels)
++            if not bool(torch.isfinite(nll).item()):
++                raise FloatingPointError("nonfinite validation NLL")
++            total_nll += float(nll.item())
++            total_targets += count
++            rows += int(labels.shape[0])
++            batches += 1
++            row_ids.extend(batch.get("row_ids", []))
++            del logits, nll, inputs, labels
++    finally:
++        model.train(was_training)
++    if total_targets == 0:
++        raise ValueError("zero supervised targets in validation")
++    if expected_rows is not None and rows != expected_rows:
++        raise ValueError(f"incomplete validation coverage: {rows} != {expected_rows}")
++    if row_ids and (len(row_ids) != rows or len(set(row_ids)) != rows):
++        raise ValueError("validation row identities are missing or duplicated")
++    return {"val_loss": total_nll / total_targets, "nll_sum": total_nll,
++            "supervised_targets": total_targets, "rows": rows, "batches": batches,
++            "row_ids_sha256": hashlib.sha256("\n".join(row_ids).encode()).hexdigest()}
++
++
++def write_pilot_status(out_dir: str, status: dict) -> None:
++    path = Path(out_dir) / "TRAINING_STATUS.json"
++    temporary = path.with_suffix(".json.tmp")
++    temporary.write_text(json.dumps(status, indent=2, allow_nan=False) + "\n")
++    os.replace(temporary, path)
++
++
+ def save_checkpoint_atomic(path: str, obj: dict[str, Any]):
+     tmp = path + ".tmp"
+     torch.save(obj, tmp)
+@@ -268,7 +401,12 @@
+ 
+ 
+ def load_ckpt(path: str) -> dict[str, Any]:
+-    return torch.load(path, map_location="cpu")
++    # Accepted local checkpoints record NumPy's uint32 RNG state. Keep the
++    # restricted unpickler and scope only those metadata types to this load.
++    numpy_rng_types = [np._core.multiarray._reconstruct, np.ndarray, np.dtype,
++                       type(np.dtype("uint32"))]
++    with torch.serialization.safe_globals(numpy_rng_types):
++        return torch.load(path, map_location="cpu", weights_only=True)
+ 
+ 
+ def build_arg_parser() -> argparse.ArgumentParser:
+@@ -307,6 +445,8 @@
+         "and deterministic data cursor; use --init_from_pretrain for weights-only.",
+     )
+     ap.add_argument("--default_system", default="You are a helpful assistant.")
++    ap.add_argument("--preserve_messages", action="store_true",
++                    help="Keep source content verbatim, add no system turn, and reject overlength training rows.")
+ 
+     ap.add_argument("--n_layers", type=int, default=30)
+     ap.add_argument("--d_model", type=int, default=576)
+@@ -327,6 +467,16 @@
+         help="token_mean (mainstream default): every supervised token weighs the same. "
+         "example_mean: every example weighs the same (upweights short answers).",
+     )
++
++    ap.add_argument(
++        "--loss_normalization", choices=["legacy", "effective_batch_tokens"], default="legacy",
++        help="Explicit single-GPU bf16 pilot objective: every microbatch CE sum / shared effective-batch targets.",
++    )
++
++    ap.add_argument("--ce_precision", choices=["legacy", "selected_fp32"], default="legacy",
++                    help="P2 opt-in: cast selected supervised logits to FP32 before disabled-autocast CE.")
++    ap.add_argument("--p2_consumption_plan", default="",
++                    help="Frozen finite two-pass P2 row plan; requires fresh effective-token SFT.")
+ 
+     # ---- refusal downweight (TRAINING, not sampling) ----
+     ap.add_argument(
+@@ -403,6 +553,8 @@
+ 
+ 
+ def validate_sft_args(args: argparse.Namespace) -> None:
++    if getattr(args, "preserve_messages", False):
++        args.default_system = None
+     validate_training_controls(
+         args,
+         positive_fields=(
+@@ -419,6 +571,23 @@
+             "sample_in_domain_n",
+         ),
+     )
++    if getattr(args, "loss_normalization", "legacy") == "effective_batch_tokens":
++        if args.loss_reduction != "token_mean" or args.refusal_downweight != 1.0 or args.refusal_patterns.strip():
++            raise ValueError("effective_batch_tokens requires token_mean, refusal_downweight=1 and empty refusal_patterns")
++        if args.precision != "bf16":
++            raise ValueError("effective_batch_tokens pilot supports bf16 only")
++        if args.resume:
++            raise ValueError("effective_batch_tokens pilot requires fresh weights-only initialization, no resume")
++    if args.ce_precision == "selected_fp32" and args.loss_normalization != "effective_batch_tokens":
++        raise ValueError("selected_fp32 requires effective_batch_tokens")
++    if args.p2_consumption_plan:
++        if (args.loss_normalization != "effective_batch_tokens" or args.ce_precision != "selected_fp32"
++                or not args.init_from_pretrain or not args.preserve_messages or args.resume):
++            raise ValueError("P2 requires fresh Base, preserve_messages, effective tokens and selected_fp32")
++        if args.micro_bsz != 2 or args.grad_accum != 16 or args.seq_len != 2048 or args.optimizer != "adamw":
++            raise ValueError("P2 fixed geometry is micro2, accum16, context2048, AdamW")
++        if args.max_steps > 1000:
++            raise ValueError("P2 may not exceed 1000 updates")
+     if args.seq_len <= 1:
+         raise ValueError("--seq_len must be greater than 1")
+     if args.resume and args.sample_only_ckpt:
+@@ -435,6 +604,23 @@
+     run_args = {**vars(args), "stage_kind": stage_kind}
+     os.makedirs(args.out_dir, exist_ok=True)
+     device = "cuda" if torch.cuda.is_available() else "cpu"
++    effective_tokens = args.loss_normalization == "effective_batch_tokens"
++    p2_plan = None
++    ce_sum_fn = assistant_nll_sum
++    validation_fn = evaluate_token_mean
++    if args.ce_precision == "selected_fp32":
++        from sft.p2_loss import assistant_nll_sum_fp32
++        from sft.p2_evaluation import evaluate_position_nll
++        ce_sum_fn = assistant_nll_sum_fp32
++        validation_fn = evaluate_position_nll
++    if effective_tokens:
++        distributed = torch.distributed.is_available() and torch.distributed.is_initialized()
++        if (stage_kind != "sft" or device != "cuda" or torch.cuda.device_count() != 1
++                or int(os.environ.get("WORLD_SIZE", "1")) != 1
++                or (distributed and torch.distributed.get_world_size() != 1)):
++            raise ValueError("effective_batch_tokens pilot requires one CUDA GPU and a single process")
++        if not torch.cuda.is_bf16_supported():
++            raise ValueError("effective_batch_tokens pilot requires native bf16 support")
+ 
+     random.seed(args.seed)
+     np.random.seed(args.seed)
+@@ -477,6 +663,22 @@
+         rejected=report["total_rejected"],
+     )
+     require_preflight_passed(report)
++    if effective_tokens:
++        train_rows = int(report["splits"]["train"]["records"])
++        val_rows = int(report["splits"]["val"]["records"])
++        if args.p2_consumption_plan:
++            from sft.p2_plan import load_checked_plan
++            if not 8000 <= train_rows <= 16000 or not 300 <= val_rows <= 800:
++                raise ValueError("P2 selected supply is outside the authorized train/validation range")
++            p2_plan = load_checked_plan(args.p2_consumption_plan, train_path=args.train_jsonl,
++                dataset_rows=train_rows, seed=args.seed, micro_bsz=args.micro_bsz,
++                grad_accum=args.grad_accum, max_steps=args.max_steps)
++            if args.warmup_steps != p2_plan["warmup_steps"]:
++                raise ValueError("P2 warmup differs from the complete frozen plan")
++        elif args.max_steps * args.grad_accum > train_rows // args.micro_bsz:
++            raise ValueError("effective_batch_tokens pilot may not enter a second epoch")
++        if args.eval_batches < math.ceil(val_rows / args.micro_bsz):
++            raise ValueError("effective_batch_tokens requires complete validation coverage")
+ 
+     resume_checkpoint: Mapping[str, Any] | None = None
+     start_step = 0
+@@ -496,6 +698,8 @@
+         "train_jsonl": args.train_jsonl,
+         "val_jsonl": args.val_jsonl,
+     }
++    if args.p2_consumption_plan:
++        resume_inputs["p2_consumption_plan"] = args.p2_consumption_plan
+     if args.sample_eval_jsonl:
+         resume_inputs["sample_eval_jsonl"] = args.sample_eval_jsonl
+     if args.init_from_pretrain:
+@@ -509,6 +713,12 @@
+         batches_per_step=args.grad_accum,
+         seed=args.seed,
+     )
++    if p2_plan is not None:
++        resume_contract_base["data_order"].update({
++            "sampler": p2_plan["schema"], "drop_last": "terminal complete-update groups only",
++            "max_passes": 2, "planned_updates": p2_plan["max_steps"],
++            "consumed_row_ids_sha256": p2_plan["consumed_row_ids_sha256"],
++            "unused_tail_rows": p2_plan["unused_tail_rows"], "resume_authorized": False})
+     if resume_checkpoint is not None:
+         validate_resume_contract(
+             resume_checkpoint,
+@@ -528,6 +738,8 @@
+         if not isinstance(cfg_dict, dict):
+             raise RuntimeError("pretrain ckpt missing 'config' dict")
+         cfg_dict = dict(cfg_dict)
++        if p2_plan is not None and (cfg_dict["vocab_size"] != vocab_size or cfg_dict["max_seq_len"] != args.seq_len):
++            raise ValueError("P2 must retain the exact Base model configuration")
+         cfg_dict["vocab_size"] = vocab_size
+         cfg_dict["max_seq_len"] = args.seq_len
+         cfg = gpt_config_from_checkpoint_dict(cfg_dict)
+@@ -599,13 +811,14 @@
+         f"[*] refusal downweight: mode={args.refusal_mode} downweight={args.refusal_downweight} patterns={len(refusal_patterns)}"
+     )
+ 
+-    train_batch_sampler = DeterministicEpochBatchSampler(
+-        len(train_ds),
+-        args.micro_bsz,
+-        seed=args.seed,
+-        start_batch=start_step * args.grad_accum,
+-        drop_last=True,
+-    )
++    if p2_plan is not None:
++        from sft.p2_plan import MaterializedP2BatchSampler
++        train_batch_sampler = MaterializedP2BatchSampler(p2_plan)
++    else:
++        train_batch_sampler = DeterministicEpochBatchSampler(
++            len(train_ds), args.micro_bsz, seed=args.seed,
++            start_batch=start_step * args.grad_accum, drop_last=True,
++        )
+     train_loader = DataLoader(
+         train_ds,
+         batch_sampler=train_batch_sampler,
+@@ -841,7 +1054,7 @@
+ 
+                 prompt_messages = prepare_prompt_messages(msgs, args.default_system)
+                 prompt_ids = encode_prompt(
+-                    tok, prompt_messages, "", args.sample_in_domain_mode
++                    tok, prompt_messages, args.default_system, args.sample_in_domain_mode
+                 )
+                 ans = sample_from_ids(prompt_ids)
+ 
+@@ -940,113 +1153,238 @@
+         print(f"[ckpt] saved {ckpt_path}")
+ 
+     train_iter = iter(train_loader)
+-
+-    while step < args.max_steps:
+-        optimizer.zero_grad(set_to_none=True)
+-        micro_loss = 0.0
+-
+-        lr = get_lr(step)
+-        for pg in optimizer.param_groups:
+-            pg["lr"] = lr * pg.get("lr_ratio", 1.0)
+-
+-        for _ in range(args.grad_accum):
++    pilot_started = time.perf_counter()
++    stop_requested = {"signal": None}
++    previous_handlers = {}
++    buffered_batches = []
++    update_rng_state = None
++    phase = "before_first_update"
++    if effective_tokens:
++        def request_pilot_stop(signum, _frame):
++            stop_requested["signal"] = signum
++        for signum in (signal.SIGINT, signal.SIGTERM):
++            previous_handlers[signum] = signal.signal(signum, request_pilot_stop)
++        torch.cuda.reset_peak_memory_stats()
++        write_pilot_status(args.out_dir, {"status": "RUNNING", "last_completed_step": step,
++                           "pid": os.getpid(), "loss_normalization": args.loss_normalization})
++
++    try:
++        try:
++            while step < args.max_steps:
++                if effective_tokens and stop_requested["signal"] is not None:
++                    break
++                update_started = time.perf_counter()
++                optimizer.zero_grad(set_to_none=True)
++                micro_loss = 0.0
++
++                lr = get_lr(step)
++                for pg in optimizer.param_groups:
++                    pg["lr"] = lr * pg.get("lr_ratio", 1.0)
++
++                if effective_tokens:
++                    phase = "buffering_before_optimizer"
++                    buffered_batches = []
++                    for _ in range(args.grad_accum):
++                        try:
++                            buffered_batches.append(next(train_iter))
++                        except StopIteration as error:
++                            raise RuntimeError("finite pilot stream exhausted; refusing unplanned exposure") from error
++                    if p2_plan is not None:
++                        planned = p2_plan["updates"][step]
++                        actual_ids = [rid for batch in buffered_batches for rid in batch["row_ids"]]
++                        actual_targets = sum(supervised_target_count(batch["labels"]) for batch in buffered_batches)
++                        if actual_ids != planned["row_ids"] or actual_targets != planned["supervised_targets"]:
++                            raise RuntimeError("P2 buffered rows/targets differ from frozen update plan")
++                    update_rng_state = capture_rng_state()
++                    phase = "forward_backward_before_optimizer"
++                    update_metrics = effective_batch_backward(
++                        model, buffered_batches, device=device, autocast_dtype=autocast_dtype,
++                        nll_sum_fn=ce_sum_fn
++                    )
++                    micro_loss = update_metrics["loss"]
++                    phase = "finite_gate_before_optimizer"
++                    preclip_norm = checked_optimizer_step(
++                        model, optimizer, loss=micro_loss, grad_clip=args.grad_clip
++                    )
++                else:
++                    for _ in range(args.grad_accum):
++                        try:
++                            batch = next(train_iter)
++                        except StopIteration:
++                            train_iter = iter(train_loader)
++                            batch = next(train_iter)
++
++                        input_ids = batch["input_ids"].to(device, non_blocking=True)
++                        labels = batch["labels"].to(device, non_blocking=True)
++                        weights = batch["weights"].to(device, non_blocking=True)
++
++                        with torch.autocast(
++                            device_type="cuda",
++                            dtype=autocast_dtype,
++                            enabled=(autocast_dtype is not None),
++                        ):
++                            logits = model(input_ids)
++                            loss = (
++                                masked_ce_loss(
++                                    logits, labels, weights=weights, reduction=args.loss_reduction
++                                )
++                                / args.grad_accum
++                            )
++
++                        if use_fp16:
++                            scaler.scale(loss).backward()
++                        else:
++                            loss.backward()
++
++                        micro_loss += float(loss.item())
++
++                    if args.grad_clip > 0:
++                        if use_fp16:
++                            scaler.unscale_(optimizer)
++                        torch.nn.utils.clip_grad_norm_(model.parameters(), args.grad_clip)
++
++                    if use_fp16:
++                        scaler.step(optimizer)
++                        scaler.update()
++                    else:
++                        optimizer.step()
++
++                step += 1
++                running_loss += micro_loss
++                if effective_tokens:
++                    phase = "completed_update"
++                    torch.cuda.synchronize()
++                    elapsed = time.perf_counter() - update_started
++                    total_elapsed = time.perf_counter() - pilot_started
++                    event = {"event": "optimizer_update", "step": step, **update_metrics,
++                             "lr": lr, "preclip_gradient_norm": preclip_norm,
++                             "elapsed_seconds": elapsed, "training_elapsed_seconds": total_elapsed,
++                             "peak_cuda_allocated_bytes": torch.cuda.max_memory_allocated(),
++                             "peak_cuda_reserved_bytes": torch.cuda.max_memory_reserved(),
++                             "loss_normalization": args.loss_normalization}
++                    with open(os.path.join(args.out_dir, "UPDATE_METRICS.jsonl"), "a") as stream:
++                        stream.write(json.dumps(event, allow_nan=False) + "\n")
++                        stream.flush()
++                        os.fsync(stream.fileno())
++                    tracker.log("train", step, loss=micro_loss, lr=lr,
++                                supervised_targets=update_metrics["supervised_targets"],
++                                preclip_gradient_norm=preclip_norm, elapsed_seconds=elapsed,
++                                peak_cuda_allocated_bytes=event["peak_cuda_allocated_bytes"])
++                    write_pilot_status(args.out_dir, {"status": "RUNNING", "last_completed_step": step,
++                                       "last_update": event, "pid": os.getpid()})
++                    print(f"[train] step={step} loss={micro_loss:.6f} targets={update_metrics['supervised_targets']} "
++                          f"lr={lr:.8g} grad_norm={preclip_norm:.6f} elapsed={elapsed:.3f}s", flush=True)
++                    buffered_batches = []
++                    if stop_requested["signal"] is not None:
++                        break
++
++                if not effective_tokens and step % 50 == 0:
++                    dt = time.time() - t0
++                    tokens_per_step = args.micro_bsz * args.grad_accum * args.seq_len
++                    train_loss_avg = running_loss / 50
++                    tok_s = tokens_per_step * 50.0 / max(dt, 1e-9)
++                    print(
++                        f"[train] step={step} loss={train_loss_avg:.4f} lr={get_lr(step):.2e} tok/s≈{tok_s:.0f} dt={dt:.1f}s"
++                    )
++                    tracker.log("train", step, loss=train_loss_avg, lr=get_lr(step), tok_s=tok_s)
++                    running_loss = 0.0
++                    t0 = time.time()
++
++                evaluate_due = (step in p2_plan["evaluation_steps"] if p2_plan is not None
++                                else args.eval_every > 0 and step % args.eval_every == 0)
++                if evaluate_due:
++                    if effective_tokens:
++                        phase = "validation"
++                        validation = validation_fn(
++                            model, val_loader, device=device, autocast_dtype=autocast_dtype,
++                            expected_rows=len(val_ds), should_stop=lambda: stop_requested["signal"] is not None,
++                        )
++                        with open(os.path.join(args.out_dir, "VALIDATION_METRICS.jsonl"), "a") as stream:
++                            stream.write(json.dumps({"step": step, **validation}, allow_nan=False) + "\n")
++                            stream.flush()
++                            os.fsync(stream.fileno())
++                        tracker.log("val", step, **validation, loss_normalization="corpus_token_mean")
++                        print(f"[eval] step={step} val_loss={validation['val_loss']:.6f} "
++                              f"rows={validation['rows']} targets={validation['supervised_targets']}", flush=True)
++                    else:
++                        model.eval()
++                        losses = []
++                        with torch.no_grad():
++                            for j, vb in enumerate(val_loader):
++                                if j >= args.eval_batches:
++                                    break
++                                vi = vb["input_ids"].to(device)
++                                vl = vb["labels"].to(device)
++                                with torch.autocast(
++                                    device_type="cuda",
++                                    dtype=autocast_dtype,
++                                    enabled=(autocast_dtype is not None),
++                                ):
++                                    v_logits = model(vi)
++                                    # Unweighted token-mean: val loss stays a clean metric,
++                                    # comparable across runs and refusal/weight settings.
++                                    v_loss = masked_ce_loss(
++                                        v_logits, vl, weights=None, reduction="token_mean"
++                                    )
++                                losses.append(float(v_loss.item()))
++                        val_loss_avg = sum(losses) / max(1, len(losses))
++                        print(
++                            f"[eval] step={step} val_loss={val_loss_avg:.4f}"
++                        )
++                        tracker.log("val", step, val_loss=val_loss_avg)
++                        tracker.render()
++                        model.train()
++
++                # ---- Sampling (fixed + in-domain) ----
++                if (
++                    args.sample_every
++                    and args.sample_every > 0
++                    and step % args.sample_every == 0
++                ):
++                    emit_samples(f"step_{step:06d}")
++
++                save_due = (step in p2_plan["checkpoint_steps"] if p2_plan is not None
++                            else args.save_every > 0 and step % args.save_every == 0)
++                if save_due:
++                    save_training_checkpoint(step)
++
++        except InterruptedError:
++            if not effective_tokens or stop_requested["signal"] is None:
++                raise
++        save_training_checkpoint(step)
++    except Exception as error:
++        if effective_tokens:
++            failure = {"status": "FAILED", "last_completed_step": step,
++                       "attempted_step": step + 1 if phase.endswith("optimizer") else step,
++                       "phase": phase, "exception_type": type(error).__name__, "error": str(error),
++                       "pid": os.getpid(), "optimizer_step_retried": False, "exit_reason": "exception",
++                       "buffered_row_ids": [rid for batch in buffered_batches for rid in batch.get("row_ids", [])]}
+             try:
+-                batch = next(train_iter)
+-            except StopIteration:
+-                train_iter = iter(train_loader)
+-                batch = next(train_iter)
+-
+-            input_ids = batch["input_ids"].to(device, non_blocking=True)
+-            labels = batch["labels"].to(device, non_blocking=True)
+-            weights = batch["weights"].to(device, non_blocking=True)
+-
+-            with torch.autocast(
+-                device_type="cuda",
+-                dtype=autocast_dtype,
+-                enabled=(autocast_dtype is not None),
+-            ):
+-                logits = model(input_ids)
+-                loss = (
+-                    masked_ce_loss(
+-                        logits, labels, weights=weights, reduction=args.loss_reduction
+-                    )
+-                    / args.grad_accum
+-                )
+-
+-            if use_fp16:
+-                scaler.scale(loss).backward()
+-            else:
+-                loss.backward()
+-
+-            micro_loss += float(loss.item())
+-
+-        if args.grad_clip > 0:
+-            if use_fp16:
+-                scaler.unscale_(optimizer)
+-            torch.nn.utils.clip_grad_norm_(model.parameters(), args.grad_clip)
+-
+-        if use_fp16:
+-            scaler.step(optimizer)
+-            scaler.update()
+-        else:
+-            optimizer.step()
+-
+-        step += 1
+-        running_loss += micro_loss
+-
+-        if step % 50 == 0:
+-            dt = time.time() - t0
+-            tokens_per_step = args.micro_bsz * args.grad_accum * args.seq_len
+-            train_loss_avg = running_loss / 50
+-            tok_s = tokens_per_step * 50.0 / max(dt, 1e-9)
+-            print(
+-                f"[train] step={step} loss={train_loss_avg:.4f} lr={get_lr(step):.2e} tok/s≈{tok_s:.0f} dt={dt:.1f}s"
+-            )
+-            tracker.log("train", step, loss=train_loss_avg, lr=get_lr(step), tok_s=tok_s)
+-            running_loss = 0.0
+-            t0 = time.time()
+-
+-        if args.eval_every > 0 and step % args.eval_every == 0:
+-            model.eval()
+-            losses = []
+-            with torch.no_grad():
+-                for j, vb in enumerate(val_loader):
+-                    if j >= args.eval_batches:
+-                        break
+-                    vi = vb["input_ids"].to(device)
+-                    vl = vb["labels"].to(device)
+-                    with torch.autocast(
+-                        device_type="cuda",
+-                        dtype=autocast_dtype,
+-                        enabled=(autocast_dtype is not None),
+-                    ):
+-                        v_logits = model(vi)
+-                        # Unweighted token-mean: val loss stays a clean metric,
+-                        # comparable across runs and refusal/weight settings.
+-                        v_loss = masked_ce_loss(
+-                            v_logits, vl, weights=None, reduction="token_mean"
+-                        )
+-                    losses.append(float(v_loss.item()))
+-            val_loss_avg = sum(losses) / max(1, len(losses))
+-            print(
+-                f"[eval] step={step} val_loss={val_loss_avg:.4f}"
+-            )
+-            tracker.log("val", step, val_loss=val_loss_avg)
+-            tracker.render()
+-            model.train()
+-
+-        # ---- Sampling (fixed + in-domain) ----
+-        if (
+-            args.sample_every
+-            and args.sample_every > 0
+-            and step % args.sample_every == 0
+-        ):
+-            emit_samples(f"step_{step:06d}")
+-
+-        if args.save_every > 0 and step % args.save_every == 0:
+-            save_training_checkpoint(step)
+-
+-    save_training_checkpoint(step)
++                evidence_path = os.path.join(args.out_dir, f"FAILED_STEP_{step:06d}.pt")
++                save_checkpoint_atomic(evidence_path, {
++                    "last_completed_step": step, "model": model.state_dict(),
++                    "optimizer": optimizer.state_dict(), "buffered_batches": buffered_batches,
++                    "update_start_rng_state": update_rng_state, "failure": failure,
++                    "gradients": {name: param.grad for name, param in model.named_parameters() if param.grad is not None},
++                })
++                failure["evidence_path"] = evidence_path
++            except Exception as evidence_error:
++                failure["evidence_write_error"] = type(evidence_error).__name__ + ": " + str(evidence_error)
++            write_pilot_status(args.out_dir, failure)
++            print(json.dumps(failure), flush=True)
++        raise
++    finally:
++        for signum, handler in previous_handlers.items():
++            signal.signal(signum, handler)
++    if effective_tokens:
++        interrupted = stop_requested["signal"] is not None and step < args.max_steps
++        write_pilot_status(args.out_dir, {"status": "INTERRUPTED" if interrupted else "COMPLETED",
++                           "last_completed_step": step, "signal": stop_requested["signal"],
++                           "exit_reason": "operator_signal" if interrupted else "max_steps_reached",
++                           "pid": os.getpid(), "training_elapsed_seconds": time.perf_counter() - pilot_started,
++                           "loss_normalization": args.loss_normalization})
++        if interrupted:
++            raise SystemExit(128 + stop_requested["signal"])
+     tracker.render()
+     print("[done]")
+ 
+
+--- available_public_157ef969/src/chat_template.py
++++ sources/posttraining/src/chat_template.py
+@@ -85,14 +85,15 @@
+ 
+ def _normalized_messages(
+     messages: list[dict[str, str]],
+-    default_system: str,
++    default_system: str | None,
+     *,
+     expected_end: str | None,
+ ) -> list[dict[str, str]]:
+     """Clean and validate the canonical chat state machine.
+ 
+-    A chat has exactly one initial system turn, followed by non-empty user and
+-    assistant turns in strict alternation. ``expected_end`` is ``"user"`` for
++    Normally a chat has an initial system turn, followed by alternating user
++    and assistant turns. Explicit default_system=None preserves source content
++    verbatim and permits a missing system turn without injecting one. ``expected_end`` is ``"user"`` for
+     a generation prompt and ``"assistant"`` for a complete training sample.
+     No malformed turn is silently skipped.
+     """
+@@ -107,9 +108,11 @@
+         raw = message.get("content")
+         if not isinstance(raw, str):
+             raise ValueError(f"message {index} content must be a string")
+-        text = clean_text_assistant(raw) if role == "assistant" else clean_text(raw)
++        text = raw if default_system is None else (
++            clean_text_assistant(raw) if role == "assistant" else clean_text(raw)
++        )
+         if not text.strip():
+-            if index == 0 and role == "system":
++            if index == 0 and role == "system" and default_system is not None:
+                 fallback = clean_text(default_system)
+                 if not fallback:
+                     raise ValueError(
+@@ -120,7 +123,7 @@
+                 raise ValueError(f"message {index} ({role}) content must be non-empty")
+         out.append({"role": role, "content": text})
+ 
+-    if not out or out[0]["role"] != "system":
++    if (not out or out[0]["role"] != "system") and default_system is not None:
+         fallback = clean_text(default_system)
+         if not fallback:
+             raise ValueError(
+@@ -128,16 +131,20 @@
+             )
+         out.insert(0, {"role": "system", "content": fallback})
+ 
++    has_system = bool(out) and out[0]["role"] == "system"
++    if not out or (has_system and len(out) == 1):
++        raise ValueError("chat requires at least one non-empty user turn")
+     for index, message in enumerate(out):
+-        expected = "system" if index == 0 else ("user" if index % 2 else "assistant")
++        turn_index = index - int(has_system)
++        expected = "system" if has_system and index == 0 else (
++            "user" if turn_index % 2 == 0 else "assistant"
++        )
+         if message["role"] != expected:
+             raise ValueError(
+                 "invalid chat role order: initial system must be followed by "
+                 f"alternating user/assistant turns (index {index}: expected "
+                 f"{expected!r}, got {message['role']!r})"
+             )
+-    if len(out) == 1:
+-        raise ValueError("chat requires at least one non-empty user turn")
+     if expected_end is not None and out[-1]["role"] != expected_end:
+         raise ValueError(
+             f"chat must end with a non-empty {expected_end} turn; got {out[-1]['role']!r}"
+@@ -147,7 +154,7 @@
+ 
+ def prepare_prompt_messages(
+     messages: list[dict[str, str]],
+-    default_system: str = DEFAULT_SYSTEM,
++    default_system: str | None = DEFAULT_SYSTEM,
+ ) -> list[dict[str, str]]:
+     """Explicitly turn a valid conversation/example into a USER-ending prompt.
+ 
+@@ -194,7 +201,7 @@
+ def encode_chat(
+     tok: Tokenizer,
+     messages: list[dict[str, str]],
+-    default_system: str = DEFAULT_SYSTEM,
++    default_system: str | None = DEFAULT_SYSTEM,
+ ) -> tuple[list[int], list[int]]:
+     """Encode a full conversation for training.
+ 
+@@ -209,7 +216,7 @@
+ def encode_prompt(
+     tok: Tokenizer,
+     messages: list[dict[str, str]],
+-    default_system: str = DEFAULT_SYSTEM,
++    default_system: str | None = DEFAULT_SYSTEM,
+     mode: str = "full_context",
+ ) -> list[int]:
+     """Encode a generation prompt: context ending in the ``<|assistant|>`` cue.
+@@ -225,7 +232,7 @@
+     msgs = _normalized_messages(messages, default_system, expected_end="user")
+ 
+     if mode == "last_user":
+-        msgs = [msgs[0], msgs[-1]]
++        msgs = [msgs[0], msgs[-1]] if msgs[0]["role"] == "system" else [msgs[-1]]
+     elif mode != "full_context":
+         raise ValueError(f"unknown prompt mode: {mode}")
+ 
+@@ -238,7 +245,7 @@
+     tok: Tokenizer,
+     messages: list[dict[str, str]],
+     completion: str,
+-    default_system: str = DEFAULT_SYSTEM,
++    default_system: str | None = DEFAULT_SYSTEM,
+ ) -> tuple[list[int], list[int]]:
+     """Encode (prompt context + one assistant completion) for DPO-style scoring.
+ 
+@@ -251,7 +258,7 @@
+     labels = [IGNORE_INDEX] * len(ids)
+     if not isinstance(completion, str) or not completion.strip():
+         raise ValueError("DPO completion must be a non-empty, non-whitespace string")
+-    comp_ids = tok.encode(clean_text_assistant(completion)).ids
++    comp_ids = tok.encode(completion if default_system is None else clean_text_assistant(completion)).ids
+     if not comp_ids:
+         raise ValueError("DPO completion must encode to at least one token")
+     ids.extend(comp_ids)
+@@ -268,8 +275,8 @@
+ ) -> tuple[list[int], list[int] | None]:
+     """Validate and truncate only at complete user-turn boundaries.
+ 
+-    The mandatory prefix ``BOS + SYSTEM + non-empty system content`` is always
+-    retained. The remainder is the largest recent suffix that begins at a real
++    The prefix is BOS, plus the initial SYSTEM turn when present. It is always
++    retained; source-preserving conversations may begin BOS + USER. The remainder is the largest recent suffix that begins at a real
+     ``USER_ID`` marker and runs through the original sequence end. A training
+     sequence must end with an assistant EOS; a prompt must end with the final
+     assistant cue. Literal special-token text cannot create these boundaries
+@@ -283,18 +290,20 @@
+         raise ValueError("max_len must be positive")
+     if labels is not None and len(labels) != len(ids):
+         raise ValueError("ids and labels must have identical lengths")
+-    if len(ids) < 3 or ids[0] != BOS_ID or ids[1] != SYSTEM_ID:
+-        raise ValueError("chat sequence must start with BOS_ID, SYSTEM_ID, and system content")
++    if len(ids) < 3 or ids[0] != BOS_ID or ids[1] not in {SYSTEM_ID, USER_ID}:
++        raise ValueError("chat sequence must start with BOS_ID and a SYSTEM or USER turn")
+ 
+     forbidden_content_ids = {PAD_ID, BOS_ID, EOS_ID, SYSTEM_ID, USER_ID, ASSISTANT_ID}
+     role_ids = {SYSTEM_ID, USER_ID, ASSISTANT_ID}
+-    first_role = next((index for index in range(2, len(ids)) if ids[index] in role_ids), len(ids))
+-    if first_role == 2:
+-        raise ValueError("initial system content must contain at least one token")
+-    if any(token_id in forbidden_content_ids for token_id in ids[2:first_role]):
+-        raise ValueError("system content contains a structural special-token ID")
+-    if first_role == len(ids) or ids[first_role] != USER_ID:
+-        raise ValueError("chat sequence must contain a user turn after the initial system turn")
++    first_role = 1
++    if ids[1] == SYSTEM_ID:
++        first_role = next((index for index in range(2, len(ids)) if ids[index] in role_ids), len(ids))
++        if first_role == 2:
++            raise ValueError("initial system content must contain at least one token")
++        if any(token_id in forbidden_content_ids for token_id in ids[2:first_role]):
++            raise ValueError("system content contains a structural special-token ID")
++        if first_role == len(ids) or ids[first_role] != USER_ID:
++            raise ValueError("chat sequence must contain a user turn after the initial system turn")
+ 
+     user_starts: list[int] = []
+     cursor = first_role
+@@ -385,7 +394,7 @@
+ def count_chat_tokens(
+     tok: Tokenizer,
+     messages: list[dict[str, str]],
+-    default_system: str = DEFAULT_SYSTEM,
++    default_system: str | None = DEFAULT_SYSTEM,
+ ) -> int:
+     """Exact token count of the training encoding (for mix/token budgeting)."""
+     ids, _ = encode_chat(tok, messages, default_system)
+@@ -455,7 +464,7 @@
+     ex: dict[str, Any],
+     tok: Tokenizer,
+     seq_len: int,
+-    default_system: str,
++    default_system: str | None,
+     refusal_downweight: float,
+     refusal_patterns: list[str],
+     refusal_mode: str,
+@@ -486,6 +495,8 @@
+         ex_weight *= float(w0)
+ 
+     ids, labels = encode_chat(tok, messages, default_system)
++    if default_system is None and len(ids) > seq_len:
++        raise ValueError("source-preserving SFT rejects overlength conversations")
+     ids, labels = pad_or_truncate(ids, labels, seq_len, pad_id)
+     if all(label == IGNORE_INDEX for label in labels):
+         raise ValueError("SFT example requires a retained non-empty assistant turn")
+
+--- available_public_157ef969/src/canonical_schedule.py
++++ sources/posttraining/src/canonical_schedule.py
+@@ -1,7 +1,6 @@
+ """Canonical absolute-step learning-rate schedule.
+ 
+-Extracted verbatim from the accepted production trainer preserved on the historical branch
+-``agent/stage-o-successor-launch-adapter-v1`` so that trainer and
++Extracted verbatim from ``pretrain/train_pretrain_with_bench.py`` so the production trainer and
+ the P-PILOT-CONTRACT-V2.3 pilot verification share one implementation. The mathematics is
+ unchanged -- in particular the WSD decay is **cosine**, not linear -- and
+ ``tests/test_canonical_schedule.py`` pins parity.
+
+--- available_public_157ef969/sft/train_sft.py
++++ sources/benchmark/sft/train_sft.py
+@@ -16,11 +16,13 @@
+ import argparse
+ from collections.abc import Mapping
+ from dataclasses import asdict
++import hashlib
+ import json
+ import math
+ import os
+ from pathlib import Path
+ import random
++import signal
+ 
+ # Make imports work no matter where you run from
+ import sys
+@@ -112,7 +114,7 @@
+     *,
+     tok,
+     seq_len: int,
+-    default_system: str,
++    default_system: str | None,
+ ) -> dict[str, int]:
+     """Validate one full SFT row, or one prompt-only sampling row."""
+     messages = example.get("messages")
+@@ -121,7 +123,7 @@
+ 
+     if split == "sample_eval":
+         prompt_messages = prepare_prompt_messages(messages, default_system)
+-        ids = encode_prompt(tok, prompt_messages, default_system="", mode="full_context")
++        ids = encode_prompt(tok, prompt_messages, default_system=default_system, mode="full_context")
+         kept_ids, _ = truncate_chat_sequence(ids, labels=None, max_len=seq_len - 1)
+         return {
+             "encoded_prompt_tokens": len(ids),
+@@ -130,9 +132,11 @@
+         }
+ 
+     ids, labels = encode_chat(tok, messages, default_system)
++    if default_system is None and len(ids) > seq_len:
++        raise ValueError("source-preserving SFT rejects overlength conversations")
+     kept_ids, kept_labels = truncate_chat_sequence(ids, labels, max_len=seq_len)
+     assert kept_labels is not None
+-    supervised = sum(label != IGNORE_INDEX for label in kept_labels)
++    supervised = sum(label != IGNORE_INDEX for label in kept_labels[1:])
+     if supervised == 0:
+         raise ValueError("SFT example retained no supervised assistant target")
+     return {
+@@ -161,7 +165,7 @@
+ def collate_fn_builder(
+     tok,
+     seq_len: int,
+-    default_system: str,
++    default_system: str | None,
+     debug_first_batch: bool,
+     refusal_downweight: float,
+     refusal_patterns: list[str],
+@@ -205,7 +209,10 @@
+             else:
+                 print("[dbg] WARNING: no supervised tokens in sample0")
+ 
+-        return {"input_ids": input_ids, "labels": labels, "weights": weights}
++        row_ids = [str(ex.get("audit_id") or hashlib.sha256(
++            json.dumps(ex, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()
++        ).hexdigest()) for ex in batch]
++        return {"input_ids": input_ids, "labels": labels, "weights": weights, "row_ids": row_ids}
+ 
+     return collate
+ 
+@@ -261,6 +268,132 @@
+     raise ValueError(f"unknown reduction: {reduction}")
+ 
+ 
++def supervised_target_count(labels: torch.Tensor) -> int:
++    """Count shifted assistant/EOS targets and reject any all-masked row."""
++    if labels.ndim != 2 or labels.shape[1] < 2:
++        raise ValueError("expected [batch, sequence] labels with a next-token target")
++    counts = (labels[:, 1:] != IGNORE_INDEX).sum(dim=1)
++    if counts.numel() == 0 or bool((counts == 0).any().item()):
++        raise ValueError("zero supervised targets in an example")
++    return int(counts.sum().item())
++
++
++def assistant_nll_sum(logits: torch.Tensor, labels: torch.Tensor) -> torch.Tensor:
++    """Unweighted next-token CE numerator; includes every supervised EOS."""
++    return F.cross_entropy(
++        logits[:, :-1, :].contiguous().view(-1, logits.shape[-1]),
++        labels[:, 1:].contiguous().view(-1),
++        ignore_index=IGNORE_INDEX,
++        reduction="sum",
++    )
++
++
++def effective_batch_backward(model, batches, *, device, autocast_dtype=None, nll_sum_fn=None) -> dict:
++    """One CPU-buffered effective batch; backward CE_sum / shared target count.
++
++    This function never steps an optimizer or retains a microbatch graph.
++    Production permits bf16 single-GPU only; deterministic CPU tests use fp32.
++    """
++    if nll_sum_fn is None:
++        nll_sum_fn = assistant_nll_sum
++    if not batches:
++        raise ValueError("empty effective batch")
++    counts = []
++    row_ids = []
++    for batch in batches:
++        weights = batch.get("weights")
++        if weights is not None and not bool((weights == 1).all().item()):
++            raise ValueError("effective_batch_tokens does not support sample weighting")
++        counts.append(supervised_target_count(batch["labels"]))
++        row_ids.extend(batch.get("row_ids", []))
++    total_targets = sum(counts)
++    nll_total = 0.0
++    for batch in batches:
++        inputs = batch["input_ids"].to(device, non_blocking=True)
++        labels = batch["labels"].to(device, non_blocking=True)
++        with torch.autocast(device_type=torch.device(device).type, dtype=autocast_dtype,
++                            enabled=autocast_dtype is not None):
++            logits = model(inputs)
++            nll = nll_sum_fn(logits, labels)
++            loss = nll / total_targets
++        if not bool(torch.isfinite(loss).item()) or not bool(torch.isfinite(nll).item()):
++            raise FloatingPointError("nonfinite effective-batch loss before backward/optimizer.step")
++        nll_total += float(nll.detach().item())
++        loss.backward()
++        del loss, nll, logits, inputs, labels
++    return {"loss": nll_total / total_targets, "nll_sum": nll_total,
++            "supervised_targets": total_targets, "microbatches": len(batches),
++            "rows": sum(int(b["labels"].shape[0]) for b in batches),
++            "row_ids": row_ids,
++            "row_ids_sha256": hashlib.sha256("\n".join(row_ids).encode()).hexdigest()}
++
++
++def checked_optimizer_step(model, optimizer, *, loss: float, grad_clip: float) -> float:
++    """The actual pilot step gate: fail before changing any optimizer state."""
++    if not math.isfinite(loss):
++        raise FloatingPointError("nonfinite loss before optimizer.step")
++    parameters = [p for p in model.parameters() if p.grad is not None]
++    if not parameters:
++        raise RuntimeError("no gradients before optimizer.step")
++    finite = torch.stack([torch.isfinite(p.grad).all() for p in parameters]).all()
++    if not bool(finite.item()):
++        raise FloatingPointError("nonfinite gradients before optimizer.step")
++    norm = torch.nn.utils.clip_grad_norm_(
++        parameters, grad_clip if grad_clip > 0 else float("inf"), error_if_nonfinite=True
++    )
++    value = float(norm.item())
++    if not math.isfinite(value):
++        raise FloatingPointError("nonfinite gradient norm before optimizer.step")
++    optimizer.step()
++    return value
++
++
++@torch.no_grad()
++def evaluate_token_mean(model, loader, *, device, autocast_dtype=None, expected_rows=None, should_stop=None) -> dict:
++    """Full validation corpus CE sum / assistant+EOS targets, including singleton."""
++    was_training = model.training
++    model.eval()
++    total_nll, total_targets, rows, batches = 0.0, 0, 0, 0
++    row_ids = []
++    try:
++        for batch in loader:
++            if should_stop is not None and should_stop():
++                raise InterruptedError("pilot stop requested during validation")
++            count = supervised_target_count(batch["labels"])
++            inputs = batch["input_ids"].to(device, non_blocking=True)
++            labels = batch["labels"].to(device, non_blocking=True)
++            with torch.autocast(device_type=torch.device(device).type, dtype=autocast_dtype,
++                                enabled=autocast_dtype is not None):
++                logits = model(inputs)
++                nll = assistant_nll_sum(logits, labels)
++            if not bool(torch.isfinite(nll).item()):
++                raise FloatingPointError("nonfinite validation NLL")
++            total_nll += float(nll.item())
++            total_targets += count
++            rows += int(labels.shape[0])
++            batches += 1
++            row_ids.extend(batch.get("row_ids", []))
++            del logits, nll, inputs, labels
++    finally:
++        model.train(was_training)
++    if total_targets == 0:
++        raise ValueError("zero supervised targets in validation")
++    if expected_rows is not None and rows != expected_rows:
++        raise ValueError(f"incomplete validation coverage: {rows} != {expected_rows}")
++    if row_ids and (len(row_ids) != rows or len(set(row_ids)) != rows):
++        raise ValueError("validation row identities are missing or duplicated")
++    return {"val_loss": total_nll / total_targets, "nll_sum": total_nll,
++            "supervised_targets": total_targets, "rows": rows, "batches": batches,
++            "row_ids_sha256": hashlib.sha256("\n".join(row_ids).encode()).hexdigest()}
++
++
++def write_pilot_status(out_dir: str, status: dict) -> None:
++    path = Path(out_dir) / "TRAINING_STATUS.json"
++    temporary = path.with_suffix(".json.tmp")
++    temporary.write_text(json.dumps(status, indent=2, allow_nan=False) + "\n")
++    os.replace(temporary, path)
++
++
+ def save_checkpoint_atomic(path: str, obj: dict[str, Any]):
+     tmp = path + ".tmp"
+     torch.save(obj, tmp)
+@@ -268,7 +401,12 @@
+ 
+ 
+ def load_ckpt(path: str) -> dict[str, Any]:
+-    return torch.load(path, map_location="cpu")
++    # Accepted local checkpoints record NumPy's uint32 RNG state. Keep the
++    # restricted unpickler and scope only those metadata types to this load.
++    numpy_rng_types = [np._core.multiarray._reconstruct, np.ndarray, np.dtype,
++                       type(np.dtype("uint32"))]
++    with torch.serialization.safe_globals(numpy_rng_types):
++        return torch.load(path, map_location="cpu", weights_only=True)
+ 
+ 
+ def build_arg_parser() -> argparse.ArgumentParser:
+@@ -307,6 +445,8 @@
+         "and deterministic data cursor; use --init_from_pretrain for weights-only.",
+     )
+     ap.add_argument("--default_system", default="You are a helpful assistant.")
++    ap.add_argument("--preserve_messages", action="store_true",
++                    help="Keep source content verbatim, add no system turn, and reject overlength training rows.")
+ 
+     ap.add_argument("--n_layers", type=int, default=30)
+     ap.add_argument("--d_model", type=int, default=576)
+@@ -327,6 +467,16 @@
+         help="token_mean (mainstream default): every supervised token weighs the same. "
+         "example_mean: every example weighs the same (upweights short answers).",
+     )
++
++    ap.add_argument(
++        "--loss_normalization", choices=["legacy", "effective_batch_tokens"], default="legacy",
++        help="Explicit single-GPU bf16 pilot objective: every microbatch CE sum / shared effective-batch targets.",
++    )
++
++    ap.add_argument("--ce_precision", choices=["legacy", "selected_fp32"], default="legacy",
++                    help="P2 opt-in: cast selected supervised logits to FP32 before disabled-autocast CE.")
++    ap.add_argument("--p2_consumption_plan", default="",
++                    help="Frozen finite two-pass P2 row plan; requires fresh effective-token SFT.")
+ 
+     # ---- refusal downweight (TRAINING, not sampling) ----
+     ap.add_argument(
+@@ -403,6 +553,8 @@
+ 
+ 
+ def validate_sft_args(args: argparse.Namespace) -> None:
++    if getattr(args, "preserve_messages", False):
++        args.default_system = None
+     validate_training_controls(
+         args,
+         positive_fields=(
+@@ -419,6 +571,23 @@
+             "sample_in_domain_n",
+         ),
+     )
++    if getattr(args, "loss_normalization", "legacy") == "effective_batch_tokens":
++        if args.loss_reduction != "token_mean" or args.refusal_downweight != 1.0 or args.refusal_patterns.strip():
++            raise ValueError("effective_batch_tokens requires token_mean, refusal_downweight=1 and empty refusal_patterns")
++        if args.precision != "bf16":
++            raise ValueError("effective_batch_tokens pilot supports bf16 only")
++        if args.resume:
++            raise ValueError("effective_batch_tokens pilot requires fresh weights-only initialization, no resume")
++    if args.ce_precision == "selected_fp32" and args.loss_normalization != "effective_batch_tokens":
++        raise ValueError("selected_fp32 requires effective_batch_tokens")
++    if args.p2_consumption_plan:
++        if (args.loss_normalization != "effective_batch_tokens" or args.ce_precision != "selected_fp32"
++                or not args.init_from_pretrain or not args.preserve_messages or args.resume):
++            raise ValueError("P2 requires fresh Base, preserve_messages, effective tokens and selected_fp32")
++        if args.micro_bsz != 2 or args.grad_accum != 16 or args.seq_len != 2048 or args.optimizer != "adamw":
++            raise ValueError("P2 fixed geometry is micro2, accum16, context2048, AdamW")
++        if args.max_steps > 1000:
++            raise ValueError("P2 may not exceed 1000 updates")
+     if args.seq_len <= 1:
+         raise ValueError("--seq_len must be greater than 1")
+     if args.resume and args.sample_only_ckpt:
+@@ -435,6 +604,23 @@
+     run_args = {**vars(args), "stage_kind": stage_kind}
+     os.makedirs(args.out_dir, exist_ok=True)
+     device = "cuda" if torch.cuda.is_available() else "cpu"
++    effective_tokens = args.loss_normalization == "effective_batch_tokens"
++    p2_plan = None
++    ce_sum_fn = assistant_nll_sum
++    validation_fn = evaluate_token_mean
++    if args.ce_precision == "selected_fp32":
++        from sft.p2_loss import assistant_nll_sum_fp32
++        from sft.p2_evaluation import evaluate_position_nll
++        ce_sum_fn = assistant_nll_sum_fp32
++        validation_fn = evaluate_position_nll
++    if effective_tokens:
++        distributed = torch.distributed.is_available() and torch.distributed.is_initialized()
++        if (stage_kind != "sft" or device != "cuda" or torch.cuda.device_count() != 1
++                or int(os.environ.get("WORLD_SIZE", "1")) != 1
++                or (distributed and torch.distributed.get_world_size() != 1)):
++            raise ValueError("effective_batch_tokens pilot requires one CUDA GPU and a single process")
++        if not torch.cuda.is_bf16_supported():
++            raise ValueError("effective_batch_tokens pilot requires native bf16 support")
+ 
+     random.seed(args.seed)
+     np.random.seed(args.seed)
+@@ -477,6 +663,22 @@
+         rejected=report["total_rejected"],
+     )
+     require_preflight_passed(report)
++    if effective_tokens:
++        train_rows = int(report["splits"]["train"]["records"])
++        val_rows = int(report["splits"]["val"]["records"])
++        if args.p2_consumption_plan:
++            from sft.p2_plan import load_checked_plan
++            if not 8000 <= train_rows <= 16000 or not 300 <= val_rows <= 800:
++                raise ValueError("P2 selected supply is outside the authorized train/validation range")
++            p2_plan = load_checked_plan(args.p2_consumption_plan, train_path=args.train_jsonl,
++                dataset_rows=train_rows, seed=args.seed, micro_bsz=args.micro_bsz,
++                grad_accum=args.grad_accum, max_steps=args.max_steps)
++            if args.warmup_steps != p2_plan["warmup_steps"]:
++                raise ValueError("P2 warmup differs from the complete frozen plan")
++        elif args.max_steps * args.grad_accum > train_rows // args.micro_bsz:
++            raise ValueError("effective_batch_tokens pilot may not enter a second epoch")
++        if args.eval_batches < math.ceil(val_rows / args.micro_bsz):
++            raise ValueError("effective_batch_tokens requires complete validation coverage")
+ 
+     resume_checkpoint: Mapping[str, Any] | None = None
+     start_step = 0
+@@ -496,6 +698,8 @@
+         "train_jsonl": args.train_jsonl,
+         "val_jsonl": args.val_jsonl,
+     }
++    if args.p2_consumption_plan:
++        resume_inputs["p2_consumption_plan"] = args.p2_consumption_plan
+     if args.sample_eval_jsonl:
+         resume_inputs["sample_eval_jsonl"] = args.sample_eval_jsonl
+     if args.init_from_pretrain:
+@@ -509,6 +713,12 @@
+         batches_per_step=args.grad_accum,
+         seed=args.seed,
+     )
++    if p2_plan is not None:
++        resume_contract_base["data_order"].update({
++            "sampler": p2_plan["schema"], "drop_last": "terminal complete-update groups only",
++            "max_passes": 2, "planned_updates": p2_plan["max_steps"],
++            "consumed_row_ids_sha256": p2_plan["consumed_row_ids_sha256"],
++            "unused_tail_rows": p2_plan["unused_tail_rows"], "resume_authorized": False})
+     if resume_checkpoint is not None:
+         validate_resume_contract(
+             resume_checkpoint,
+@@ -528,6 +738,8 @@
+         if not isinstance(cfg_dict, dict):
+             raise RuntimeError("pretrain ckpt missing 'config' dict")
+         cfg_dict = dict(cfg_dict)
++        if p2_plan is not None and (cfg_dict["vocab_size"] != vocab_size or cfg_dict["max_seq_len"] != args.seq_len):
++            raise ValueError("P2 must retain the exact Base model configuration")
+         cfg_dict["vocab_size"] = vocab_size
+         cfg_dict["max_seq_len"] = args.seq_len
+         cfg = gpt_config_from_checkpoint_dict(cfg_dict)
+@@ -599,13 +811,14 @@
+         f"[*] refusal downweight: mode={args.refusal_mode} downweight={args.refusal_downweight} patterns={len(refusal_patterns)}"
+     )
+ 
+-    train_batch_sampler = DeterministicEpochBatchSampler(
+-        len(train_ds),
+-        args.micro_bsz,
+-        seed=args.seed,
+-        start_batch=start_step * args.grad_accum,
+-        drop_last=True,
+-    )
++    if p2_plan is not None:
++        from sft.p2_plan import MaterializedP2BatchSampler
++        train_batch_sampler = MaterializedP2BatchSampler(p2_plan)
++    else:
++        train_batch_sampler = DeterministicEpochBatchSampler(
++            len(train_ds), args.micro_bsz, seed=args.seed,
++            start_batch=start_step * args.grad_accum, drop_last=True,
++        )
+     train_loader = DataLoader(
+         train_ds,
+         batch_sampler=train_batch_sampler,
+@@ -841,7 +1054,7 @@
+ 
+                 prompt_messages = prepare_prompt_messages(msgs, args.default_system)
+                 prompt_ids = encode_prompt(
+-                    tok, prompt_messages, "", args.sample_in_domain_mode
++                    tok, prompt_messages, args.default_system, args.sample_in_domain_mode
+                 )
+                 ans = sample_from_ids(prompt_ids)
+ 
+@@ -940,113 +1153,238 @@
+         print(f"[ckpt] saved {ckpt_path}")
+ 
+     train_iter = iter(train_loader)
+-
+-    while step < args.max_steps:
+-        optimizer.zero_grad(set_to_none=True)
+-        micro_loss = 0.0
+-
+-        lr = get_lr(step)
+-        for pg in optimizer.param_groups:
+-            pg["lr"] = lr * pg.get("lr_ratio", 1.0)
+-
+-        for _ in range(args.grad_accum):
++    pilot_started = time.perf_counter()
++    stop_requested = {"signal": None}
++    previous_handlers = {}
++    buffered_batches = []
++    update_rng_state = None
++    phase = "before_first_update"
++    if effective_tokens:
++        def request_pilot_stop(signum, _frame):
++            stop_requested["signal"] = signum
++        for signum in (signal.SIGINT, signal.SIGTERM):
++            previous_handlers[signum] = signal.signal(signum, request_pilot_stop)
++        torch.cuda.reset_peak_memory_stats()
++        write_pilot_status(args.out_dir, {"status": "RUNNING", "last_completed_step": step,
++                           "pid": os.getpid(), "loss_normalization": args.loss_normalization})
++
++    try:
++        try:
++            while step < args.max_steps:
++                if effective_tokens and stop_requested["signal"] is not None:
++                    break
++                update_started = time.perf_counter()
++                optimizer.zero_grad(set_to_none=True)
++                micro_loss = 0.0
++
++                lr = get_lr(step)
++                for pg in optimizer.param_groups:
++                    pg["lr"] = lr * pg.get("lr_ratio", 1.0)
++
++                if effective_tokens:
++                    phase = "buffering_before_optimizer"
++                    buffered_batches = []
++                    for _ in range(args.grad_accum):
++                        try:
++                            buffered_batches.append(next(train_iter))
++                        except StopIteration as error:
++                            raise RuntimeError("finite pilot stream exhausted; refusing unplanned exposure") from error
++                    if p2_plan is not None:
++                        planned = p2_plan["updates"][step]
++                        actual_ids = [rid for batch in buffered_batches for rid in batch["row_ids"]]
++                        actual_targets = sum(supervised_target_count(batch["labels"]) for batch in buffered_batches)
++                        if actual_ids != planned["row_ids"] or actual_targets != planned["supervised_targets"]:
++                            raise RuntimeError("P2 buffered rows/targets differ from frozen update plan")
++                    update_rng_state = capture_rng_state()
++                    phase = "forward_backward_before_optimizer"
++                    update_metrics = effective_batch_backward(
++                        model, buffered_batches, device=device, autocast_dtype=autocast_dtype,
++                        nll_sum_fn=ce_sum_fn
++                    )
++                    micro_loss = update_metrics["loss"]
++                    phase = "finite_gate_before_optimizer"
++                    preclip_norm = checked_optimizer_step(
++                        model, optimizer, loss=micro_loss, grad_clip=args.grad_clip
++                    )
++                else:
++                    for _ in range(args.grad_accum):
++                        try:
++                            batch = next(train_iter)
++                        except StopIteration:
++                            train_iter = iter(train_loader)
++                            batch = next(train_iter)
++
++                        input_ids = batch["input_ids"].to(device, non_blocking=True)
++                        labels = batch["labels"].to(device, non_blocking=True)
++                        weights = batch["weights"].to(device, non_blocking=True)
++
++                        with torch.autocast(
++                            device_type="cuda",
++                            dtype=autocast_dtype,
++                            enabled=(autocast_dtype is not None),
++                        ):
++                            logits = model(input_ids)
++                            loss = (
++                                masked_ce_loss(
++                                    logits, labels, weights=weights, reduction=args.loss_reduction
++                                )
++                                / args.grad_accum
++                            )
++
++                        if use_fp16:
++                            scaler.scale(loss).backward()
++                        else:
++                            loss.backward()
++
++                        micro_loss += float(loss.item())
++
++                    if args.grad_clip > 0:
++                        if use_fp16:
++                            scaler.unscale_(optimizer)
++                        torch.nn.utils.clip_grad_norm_(model.parameters(), args.grad_clip)
++
++                    if use_fp16:
++                        scaler.step(optimizer)
++                        scaler.update()
++                    else:
++                        optimizer.step()
++
++                step += 1
++                running_loss += micro_loss
++                if effective_tokens:
++                    phase = "completed_update"
++                    torch.cuda.synchronize()
++                    elapsed = time.perf_counter() - update_started
++                    total_elapsed = time.perf_counter() - pilot_started
++                    event = {"event": "optimizer_update", "step": step, **update_metrics,
++                             "lr": lr, "preclip_gradient_norm": preclip_norm,
++                             "elapsed_seconds": elapsed, "training_elapsed_seconds": total_elapsed,
++                             "peak_cuda_allocated_bytes": torch.cuda.max_memory_allocated(),
++                             "peak_cuda_reserved_bytes": torch.cuda.max_memory_reserved(),
++                             "loss_normalization": args.loss_normalization}
++                    with open(os.path.join(args.out_dir, "UPDATE_METRICS.jsonl"), "a") as stream:
++                        stream.write(json.dumps(event, allow_nan=False) + "\n")
++                        stream.flush()
++                        os.fsync(stream.fileno())
++                    tracker.log("train", step, loss=micro_loss, lr=lr,
++                                supervised_targets=update_metrics["supervised_targets"],
++                                preclip_gradient_norm=preclip_norm, elapsed_seconds=elapsed,
++                                peak_cuda_allocated_bytes=event["peak_cuda_allocated_bytes"])
++                    write_pilot_status(args.out_dir, {"status": "RUNNING", "last_completed_step": step,
++                                       "last_update": event, "pid": os.getpid()})
++                    print(f"[train] step={step} loss={micro_loss:.6f} targets={update_metrics['supervised_targets']} "
++                          f"lr={lr:.8g} grad_norm={preclip_norm:.6f} elapsed={elapsed:.3f}s", flush=True)
++                    buffered_batches = []
++                    if stop_requested["signal"] is not None:
++                        break
++
++                if not effective_tokens and step % 50 == 0:
++                    dt = time.time() - t0
++                    tokens_per_step = args.micro_bsz * args.grad_accum * args.seq_len
++                    train_loss_avg = running_loss / 50
++                    tok_s = tokens_per_step * 50.0 / max(dt, 1e-9)
++                    print(
++                        f"[train] step={step} loss={train_loss_avg:.4f} lr={get_lr(step):.2e} tok/s≈{tok_s:.0f} dt={dt:.1f}s"
++                    )
++                    tracker.log("train", step, loss=train_loss_avg, lr=get_lr(step), tok_s=tok_s)
++                    running_loss = 0.0
++                    t0 = time.time()
++
++                evaluate_due = (step in p2_plan["evaluation_steps"] if p2_plan is not None
++                                else args.eval_every > 0 and step % args.eval_every == 0)
++                if evaluate_due:
++                    if effective_tokens:
++                        phase = "validation"
++                        validation = validation_fn(
++                            model, val_loader, device=device, autocast_dtype=autocast_dtype,
++                            expected_rows=len(val_ds), should_stop=lambda: stop_requested["signal"] is not None,
++                        )
++                        with open(os.path.join(args.out_dir, "VALIDATION_METRICS.jsonl"), "a") as stream:
++                            stream.write(json.dumps({"step": step, **validation}, allow_nan=False) + "\n")
++                            stream.flush()
++                            os.fsync(stream.fileno())
++                        tracker.log("val", step, **validation, loss_normalization="corpus_token_mean")
++                        print(f"[eval] step={step} val_loss={validation['val_loss']:.6f} "
++                              f"rows={validation['rows']} targets={validation['supervised_targets']}", flush=True)
++                    else:
++                        model.eval()
++                        losses = []
++                        with torch.no_grad():
++                            for j, vb in enumerate(val_loader):
++                                if j >= args.eval_batches:
++                                    break
++                                vi = vb["input_ids"].to(device)
++                                vl = vb["labels"].to(device)
++                                with torch.autocast(
++                                    device_type="cuda",
++                                    dtype=autocast_dtype,
++                                    enabled=(autocast_dtype is not None),
++                                ):
++                                    v_logits = model(vi)
++                                    # Unweighted token-mean: val loss stays a clean metric,
++                                    # comparable across runs and refusal/weight settings.
++                                    v_loss = masked_ce_loss(
++                                        v_logits, vl, weights=None, reduction="token_mean"
++                                    )
++                                losses.append(float(v_loss.item()))
++                        val_loss_avg = sum(losses) / max(1, len(losses))
++                        print(
++                            f"[eval] step={step} val_loss={val_loss_avg:.4f}"
++                        )
++                        tracker.log("val", step, val_loss=val_loss_avg)
++                        tracker.render()
++                        model.train()
++
++                # ---- Sampling (fixed + in-domain) ----
++                if (
++                    args.sample_every
++                    and args.sample_every > 0
++                    and step % args.sample_every == 0
++                ):
++                    emit_samples(f"step_{step:06d}")
++
++                save_due = (step in p2_plan["checkpoint_steps"] if p2_plan is not None
++                            else args.save_every > 0 and step % args.save_every == 0)
++                if save_due:
++                    save_training_checkpoint(step)
++
++        except InterruptedError:
++            if not effective_tokens or stop_requested["signal"] is None:
++                raise
++        save_training_checkpoint(step)
++    except Exception as error:
++        if effective_tokens:
++            failure = {"status": "FAILED", "last_completed_step": step,
++                       "attempted_step": step + 1 if phase.endswith("optimizer") else step,
++                       "phase": phase, "exception_type": type(error).__name__, "error": str(error),
++                       "pid": os.getpid(), "optimizer_step_retried": False, "exit_reason": "exception",
++                       "buffered_row_ids": [rid for batch in buffered_batches for rid in batch.get("row_ids", [])]}
+             try:
+-                batch = next(train_iter)
+-            except StopIteration:
+-                train_iter = iter(train_loader)
+-                batch = next(train_iter)
+-
+-            input_ids = batch["input_ids"].to(device, non_blocking=True)
+-            labels = batch["labels"].to(device, non_blocking=True)
+-            weights = batch["weights"].to(device, non_blocking=True)
+-
+-            with torch.autocast(
+-                device_type="cuda",
+-                dtype=autocast_dtype,
+-                enabled=(autocast_dtype is not None),
+-            ):
+-                logits = model(input_ids)
+-                loss = (
+-                    masked_ce_loss(
+-                        logits, labels, weights=weights, reduction=args.loss_reduction
+-                    )
+-                    / args.grad_accum
+-                )
+-
+-            if use_fp16:
+-                scaler.scale(loss).backward()
+-            else:
+-                loss.backward()
+-
+-            micro_loss += float(loss.item())
+-
+-        if args.grad_clip > 0:
+-            if use_fp16:
+-                scaler.unscale_(optimizer)
+-            torch.nn.utils.clip_grad_norm_(model.parameters(), args.grad_clip)
+-
+-        if use_fp16:
+-            scaler.step(optimizer)
+-            scaler.update()
+-        else:
+-            optimizer.step()
+-
+-        step += 1
+-        running_loss += micro_loss
+-
+-        if step % 50 == 0:
+-            dt = time.time() - t0
+-            tokens_per_step = args.micro_bsz * args.grad_accum * args.seq_len
+-            train_loss_avg = running_loss / 50
+-            tok_s = tokens_per_step * 50.0 / max(dt, 1e-9)
+-            print(
+-                f"[train] step={step} loss={train_loss_avg:.4f} lr={get_lr(step):.2e} tok/s≈{tok_s:.0f} dt={dt:.1f}s"
+-            )
+-            tracker.log("train", step, loss=train_loss_avg, lr=get_lr(step), tok_s=tok_s)
+-            running_loss = 0.0
+-            t0 = time.time()
+-
+-        if args.eval_every > 0 and step % args.eval_every == 0:
+-            model.eval()
+-            losses = []
+-            with torch.no_grad():
+-                for j, vb in enumerate(val_loader):
+-                    if j >= args.eval_batches:
+-                        break
+-                    vi = vb["input_ids"].to(device)
+-                    vl = vb["labels"].to(device)
+-                    with torch.autocast(
+-                        device_type="cuda",
+-                        dtype=autocast_dtype,
+-                        enabled=(autocast_dtype is not None),
+-                    ):
+-                        v_logits = model(vi)
+-                        # Unweighted token-mean: val loss stays a clean metric,
+-                        # comparable across runs and refusal/weight settings.
+-                        v_loss = masked_ce_loss(
+-                            v_logits, vl, weights=None, reduction="token_mean"
+-                        )
+-                    losses.append(float(v_loss.item()))
+-            val_loss_avg = sum(losses) / max(1, len(losses))
+-            print(
+-                f"[eval] step={step} val_loss={val_loss_avg:.4f}"
+-            )
+-            tracker.log("val", step, val_loss=val_loss_avg)
+-            tracker.render()
+-            model.train()
+-
+-        # ---- Sampling (fixed + in-domain) ----
+-        if (
+-            args.sample_every
+-            and args.sample_every > 0
+-            and step % args.sample_every == 0
+-        ):
+-            emit_samples(f"step_{step:06d}")
+-
+-        if args.save_every > 0 and step % args.save_every == 0:
+-            save_training_checkpoint(step)
+-
+-    save_training_checkpoint(step)
++                evidence_path = os.path.join(args.out_dir, f"FAILED_STEP_{step:06d}.pt")
++                save_checkpoint_atomic(evidence_path, {
++                    "last_completed_step": step, "model": model.state_dict(),
++                    "optimizer": optimizer.state_dict(), "buffered_batches": buffered_batches,
++                    "update_start_rng_state": update_rng_state, "failure": failure,
++                    "gradients": {name: param.grad for name, param in model.named_parameters() if param.grad is not None},
++                })
++                failure["evidence_path"] = evidence_path
++            except Exception as evidence_error:
++                failure["evidence_write_error"] = type(evidence_error).__name__ + ": " + str(evidence_error)
++            write_pilot_status(args.out_dir, failure)
++            print(json.dumps(failure), flush=True)
++        raise
++    finally:
++        for signum, handler in previous_handlers.items():
++            signal.signal(signum, handler)
++    if effective_tokens:
++        interrupted = stop_requested["signal"] is not None and step < args.max_steps
++        write_pilot_status(args.out_dir, {"status": "INTERRUPTED" if interrupted else "COMPLETED",
++                           "last_completed_step": step, "signal": stop_requested["signal"],
++                           "exit_reason": "operator_signal" if interrupted else "max_steps_reached",
++                           "pid": os.getpid(), "training_elapsed_seconds": time.perf_counter() - pilot_started,
++                           "loss_normalization": args.loss_normalization})
++        if interrupted:
++            raise SystemExit(128 + stop_requested["signal"])
+     tracker.render()
+     print("[done]")
+ 
+
+--- available_public_157ef969/src/chat_template.py
++++ sources/benchmark/src/chat_template.py
+@@ -85,14 +85,15 @@
+ 
+ def _normalized_messages(
+     messages: list[dict[str, str]],
+-    default_system: str,
++    default_system: str | None,
+     *,
+     expected_end: str | None,
+ ) -> list[dict[str, str]]:
+     """Clean and validate the canonical chat state machine.
+ 
+-    A chat has exactly one initial system turn, followed by non-empty user and
+-    assistant turns in strict alternation. ``expected_end`` is ``"user"`` for
++    Normally a chat has an initial system turn, followed by alternating user
++    and assistant turns. Explicit default_system=None preserves source content
++    verbatim and permits a missing system turn without injecting one. ``expected_end`` is ``"user"`` for
+     a generation prompt and ``"assistant"`` for a complete training sample.
+     No malformed turn is silently skipped.
+     """
+@@ -107,9 +108,11 @@
+         raw = message.get("content")
+         if not isinstance(raw, str):
+             raise ValueError(f"message {index} content must be a string")
+-        text = clean_text_assistant(raw) if role == "assistant" else clean_text(raw)
++        text = raw if default_system is None else (
++            clean_text_assistant(raw) if role == "assistant" else clean_text(raw)
++        )
+         if not text.strip():
+-            if index == 0 and role == "system":
++            if index == 0 and role == "system" and default_system is not None:
+                 fallback = clean_text(default_system)
+                 if not fallback:
+                     raise ValueError(
+@@ -120,7 +123,7 @@
+                 raise ValueError(f"message {index} ({role}) content must be non-empty")
+         out.append({"role": role, "content": text})
+ 
+-    if not out or out[0]["role"] != "system":
++    if (not out or out[0]["role"] != "system") and default_system is not None:
+         fallback = clean_text(default_system)
+         if not fallback:
+             raise ValueError(
+@@ -128,16 +131,20 @@
+             )
+         out.insert(0, {"role": "system", "content": fallback})
+ 
++    has_system = bool(out) and out[0]["role"] == "system"
++    if not out or (has_system and len(out) == 1):
++        raise ValueError("chat requires at least one non-empty user turn")
+     for index, message in enumerate(out):
+-        expected = "system" if index == 0 else ("user" if index % 2 else "assistant")
++        turn_index = index - int(has_system)
++        expected = "system" if has_system and index == 0 else (
++            "user" if turn_index % 2 == 0 else "assistant"
++        )
+         if message["role"] != expected:
+             raise ValueError(
+                 "invalid chat role order: initial system must be followed by "
+                 f"alternating user/assistant turns (index {index}: expected "
+                 f"{expected!r}, got {message['role']!r})"
+             )
+-    if len(out) == 1:
+-        raise ValueError("chat requires at least one non-empty user turn")
+     if expected_end is not None and out[-1]["role"] != expected_end:
+         raise ValueError(
+             f"chat must end with a non-empty {expected_end} turn; got {out[-1]['role']!r}"
+@@ -147,7 +154,7 @@
+ 
+ def prepare_prompt_messages(
+     messages: list[dict[str, str]],
+-    default_system: str = DEFAULT_SYSTEM,
++    default_system: str | None = DEFAULT_SYSTEM,
+ ) -> list[dict[str, str]]:
+     """Explicitly turn a valid conversation/example into a USER-ending prompt.
+ 
+@@ -194,7 +201,7 @@
+ def encode_chat(
+     tok: Tokenizer,
+     messages: list[dict[str, str]],
+-    default_system: str = DEFAULT_SYSTEM,
++    default_system: str | None = DEFAULT_SYSTEM,
+ ) -> tuple[list[int], list[int]]:
+     """Encode a full conversation for training.
+ 
+@@ -209,7 +216,7 @@
+ def encode_prompt(
+     tok: Tokenizer,
+     messages: list[dict[str, str]],
+-    default_system: str = DEFAULT_SYSTEM,
++    default_system: str | None = DEFAULT_SYSTEM,
+     mode: str = "full_context",
+ ) -> list[int]:
+     """Encode a generation prompt: context ending in the ``<|assistant|>`` cue.
+@@ -225,7 +232,7 @@
+     msgs = _normalized_messages(messages, default_system, expected_end="user")
+ 
+     if mode == "last_user":
+-        msgs = [msgs[0], msgs[-1]]
++        msgs = [msgs[0], msgs[-1]] if msgs[0]["role"] == "system" else [msgs[-1]]
+     elif mode != "full_context":
+         raise ValueError(f"unknown prompt mode: {mode}")
+ 
+@@ -238,7 +245,7 @@
+     tok: Tokenizer,
+     messages: list[dict[str, str]],
+     completion: str,
+-    default_system: str = DEFAULT_SYSTEM,
++    default_system: str | None = DEFAULT_SYSTEM,
+ ) -> tuple[list[int], list[int]]:
+     """Encode (prompt context + one assistant completion) for DPO-style scoring.
+ 
+@@ -251,7 +258,7 @@
+     labels = [IGNORE_INDEX] * len(ids)
+     if not isinstance(completion, str) or not completion.strip():
+         raise ValueError("DPO completion must be a non-empty, non-whitespace string")
+-    comp_ids = tok.encode(clean_text_assistant(completion)).ids
++    comp_ids = tok.encode(completion if default_system is None else clean_text_assistant(completion)).ids
+     if not comp_ids:
+         raise ValueError("DPO completion must encode to at least one token")
+     ids.extend(comp_ids)
+@@ -268,8 +275,8 @@
+ ) -> tuple[list[int], list[int] | None]:
+     """Validate and truncate only at complete user-turn boundaries.
+ 
+-    The mandatory prefix ``BOS + SYSTEM + non-empty system content`` is always
+-    retained. The remainder is the largest recent suffix that begins at a real
++    The prefix is BOS, plus the initial SYSTEM turn when present. It is always
++    retained; source-preserving conversations may begin BOS + USER. The remainder is the largest recent suffix that begins at a real
+     ``USER_ID`` marker and runs through the original sequence end. A training
+     sequence must end with an assistant EOS; a prompt must end with the final
+     assistant cue. Literal special-token text cannot create these boundaries
+@@ -283,18 +290,20 @@
+         raise ValueError("max_len must be positive")
+     if labels is not None and len(labels) != len(ids):
+         raise ValueError("ids and labels must have identical lengths")
+-    if len(ids) < 3 or ids[0] != BOS_ID or ids[1] != SYSTEM_ID:
+-        raise ValueError("chat sequence must start with BOS_ID, SYSTEM_ID, and system content")
++    if len(ids) < 3 or ids[0] != BOS_ID or ids[1] not in {SYSTEM_ID, USER_ID}:
++        raise ValueError("chat sequence must start with BOS_ID and a SYSTEM or USER turn")
+ 
+     forbidden_content_ids = {PAD_ID, BOS_ID, EOS_ID, SYSTEM_ID, USER_ID, ASSISTANT_ID}
+     role_ids = {SYSTEM_ID, USER_ID, ASSISTANT_ID}
+-    first_role = next((index for index in range(2, len(ids)) if ids[index] in role_ids), len(ids))
+-    if first_role == 2:
+-        raise ValueError("initial system content must contain at least one token")
+-    if any(token_id in forbidden_content_ids for token_id in ids[2:first_role]):
+-        raise ValueError("system content contains a structural special-token ID")
+-    if first_role == len(ids) or ids[first_role] != USER_ID:
+-        raise ValueError("chat sequence must contain a user turn after the initial system turn")
++    first_role = 1
++    if ids[1] == SYSTEM_ID:
++        first_role = next((index for index in range(2, len(ids)) if ids[index] in role_ids), len(ids))
++        if first_role == 2:
++            raise ValueError("initial system content must contain at least one token")
++        if any(token_id in forbidden_content_ids for token_id in ids[2:first_role]):
++            raise ValueError("system content contains a structural special-token ID")
++        if first_role == len(ids) or ids[first_role] != USER_ID:
++            raise ValueError("chat sequence must contain a user turn after the initial system turn")
+ 
+     user_starts: list[int] = []
+     cursor = first_role
+@@ -385,7 +394,7 @@
+ def count_chat_tokens(
+     tok: Tokenizer,
+     messages: list[dict[str, str]],
+-    default_system: str = DEFAULT_SYSTEM,
++    default_system: str | None = DEFAULT_SYSTEM,
+ ) -> int:
+     """Exact token count of the training encoding (for mix/token budgeting)."""
+     ids, _ = encode_chat(tok, messages, default_system)
+@@ -455,7 +464,7 @@
+     ex: dict[str, Any],
+     tok: Tokenizer,
+     seq_len: int,
+-    default_system: str,
++    default_system: str | None,
+     refusal_downweight: float,
+     refusal_patterns: list[str],
+     refusal_mode: str,
+@@ -486,6 +495,8 @@
+         ex_weight *= float(w0)
+ 
+     ids, labels = encode_chat(tok, messages, default_system)
++    if default_system is None and len(ids) > seq_len:
++        raise ValueError("source-preserving SFT rejects overlength conversations")
+     ids, labels = pad_or_truncate(ids, labels, seq_len, pad_id)
+     if all(label == IGNORE_INDEX for label in labels):
+         raise ValueError("SFT example requires a retained non-empty assistant turn")
+
+--- available_public_157ef969/src/chat_template.py
++++ sources/native_inference/src/chat_template.py
+@@ -85,14 +85,15 @@
+ 
+ def _normalized_messages(
+     messages: list[dict[str, str]],
+-    default_system: str,
++    default_system: str | None,
+     *,
+     expected_end: str | None,
+ ) -> list[dict[str, str]]:
+     """Clean and validate the canonical chat state machine.
+ 
+-    A chat has exactly one initial system turn, followed by non-empty user and
+-    assistant turns in strict alternation. ``expected_end`` is ``"user"`` for
++    Normally a chat has an initial system turn, followed by alternating user
++    and assistant turns. Explicit default_system=None preserves source content
++    verbatim and permits a missing system turn without injecting one. ``expected_end`` is ``"user"`` for
+     a generation prompt and ``"assistant"`` for a complete training sample.
+     No malformed turn is silently skipped.
+     """
+@@ -107,9 +108,11 @@
+         raw = message.get("content")
+         if not isinstance(raw, str):
+             raise ValueError(f"message {index} content must be a string")
+-        text = clean_text_assistant(raw) if role == "assistant" else clean_text(raw)
++        text = raw if default_system is None else (
++            clean_text_assistant(raw) if role == "assistant" else clean_text(raw)
++        )
+         if not text.strip():
+-            if index == 0 and role == "system":
++            if index == 0 and role == "system" and default_system is not None:
+                 fallback = clean_text(default_system)
+                 if not fallback:
+                     raise ValueError(
+@@ -120,7 +123,7 @@
+                 raise ValueError(f"message {index} ({role}) content must be non-empty")
+         out.append({"role": role, "content": text})
+ 
+-    if not out or out[0]["role"] != "system":
++    if (not out or out[0]["role"] != "system") and default_system is not None:
+         fallback = clean_text(default_system)
+         if not fallback:
+             raise ValueError(
+@@ -128,16 +131,20 @@
+             )
+         out.insert(0, {"role": "system", "content": fallback})
+ 
++    has_system = bool(out) and out[0]["role"] == "system"
++    if not out or (has_system and len(out) == 1):
++        raise ValueError("chat requires at least one non-empty user turn")
+     for index, message in enumerate(out):
+-        expected = "system" if index == 0 else ("user" if index % 2 else "assistant")
++        turn_index = index - int(has_system)
++        expected = "system" if has_system and index == 0 else (
++            "user" if turn_index % 2 == 0 else "assistant"
++        )
+         if message["role"] != expected:
+             raise ValueError(
+                 "invalid chat role order: initial system must be followed by "
+                 f"alternating user/assistant turns (index {index}: expected "
+                 f"{expected!r}, got {message['role']!r})"
+             )
+-    if len(out) == 1:
+-        raise ValueError("chat requires at least one non-empty user turn")
+     if expected_end is not None and out[-1]["role"] != expected_end:
+         raise ValueError(
+             f"chat must end with a non-empty {expected_end} turn; got {out[-1]['role']!r}"
+@@ -147,7 +154,7 @@
+ 
+ def prepare_prompt_messages(
+     messages: list[dict[str, str]],
+-    default_system: str = DEFAULT_SYSTEM,
++    default_system: str | None = DEFAULT_SYSTEM,
+ ) -> list[dict[str, str]]:
+     """Explicitly turn a valid conversation/example into a USER-ending prompt.
+ 
+@@ -194,7 +201,7 @@
+ def encode_chat(
+     tok: Tokenizer,
+     messages: list[dict[str, str]],
+-    default_system: str = DEFAULT_SYSTEM,
++    default_system: str | None = DEFAULT_SYSTEM,
+ ) -> tuple[list[int], list[int]]:
+     """Encode a full conversation for training.
+ 
+@@ -209,7 +216,7 @@
+ def encode_prompt(
+     tok: Tokenizer,
+     messages: list[dict[str, str]],
+-    default_system: str = DEFAULT_SYSTEM,
++    default_system: str | None = DEFAULT_SYSTEM,
+     mode: str = "full_context",
+ ) -> list[int]:
+     """Encode a generation prompt: context ending in the ``<|assistant|>`` cue.
+@@ -225,7 +232,7 @@
+     msgs = _normalized_messages(messages, default_system, expected_end="user")
+ 
+     if mode == "last_user":
+-        msgs = [msgs[0], msgs[-1]]
++        msgs = [msgs[0], msgs[-1]] if msgs[0]["role"] == "system" else [msgs[-1]]
+     elif mode != "full_context":
+         raise ValueError(f"unknown prompt mode: {mode}")
+ 
+@@ -238,7 +245,7 @@
+     tok: Tokenizer,
+     messages: list[dict[str, str]],
+     completion: str,
+-    default_system: str = DEFAULT_SYSTEM,
++    default_system: str | None = DEFAULT_SYSTEM,
+ ) -> tuple[list[int], list[int]]:
+     """Encode (prompt context + one assistant completion) for DPO-style scoring.
+ 
+@@ -251,7 +258,7 @@
+     labels = [IGNORE_INDEX] * len(ids)
+     if not isinstance(completion, str) or not completion.strip():
+         raise ValueError("DPO completion must be a non-empty, non-whitespace string")
+-    comp_ids = tok.encode(clean_text_assistant(completion)).ids
++    comp_ids = tok.encode(completion if default_system is None else clean_text_assistant(completion)).ids
+     if not comp_ids:
+         raise ValueError("DPO completion must encode to at least one token")
+     ids.extend(comp_ids)
+@@ -268,8 +275,8 @@
+ ) -> tuple[list[int], list[int] | None]:
+     """Validate and truncate only at complete user-turn boundaries.
+ 
+-    The mandatory prefix ``BOS + SYSTEM + non-empty system content`` is always
+-    retained. The remainder is the largest recent suffix that begins at a real
++    The prefix is BOS, plus the initial SYSTEM turn when present. It is always
++    retained; source-preserving conversations may begin BOS + USER. The remainder is the largest recent suffix that begins at a real
+     ``USER_ID`` marker and runs through the original sequence end. A training
+     sequence must end with an assistant EOS; a prompt must end with the final
+     assistant cue. Literal special-token text cannot create these boundaries
+@@ -283,18 +290,20 @@
+         raise ValueError("max_len must be positive")
+     if labels is not None and len(labels) != len(ids):
+         raise ValueError("ids and labels must have identical lengths")
+-    if len(ids) < 3 or ids[0] != BOS_ID or ids[1] != SYSTEM_ID:
+-        raise ValueError("chat sequence must start with BOS_ID, SYSTEM_ID, and system content")
++    if len(ids) < 3 or ids[0] != BOS_ID or ids[1] not in {SYSTEM_ID, USER_ID}:
++        raise ValueError("chat sequence must start with BOS_ID and a SYSTEM or USER turn")
+ 
+     forbidden_content_ids = {PAD_ID, BOS_ID, EOS_ID, SYSTEM_ID, USER_ID, ASSISTANT_ID}
+     role_ids = {SYSTEM_ID, USER_ID, ASSISTANT_ID}
+-    first_role = next((index for index in range(2, len(ids)) if ids[index] in role_ids), len(ids))
+-    if first_role == 2:
+-        raise ValueError("initial system content must contain at least one token")
+-    if any(token_id in forbidden_content_ids for token_id in ids[2:first_role]):
+-        raise ValueError("system content contains a structural special-token ID")
+-    if first_role == len(ids) or ids[first_role] != USER_ID:
+-        raise ValueError("chat sequence must contain a user turn after the initial system turn")
++    first_role = 1
++    if ids[1] == SYSTEM_ID:
++        first_role = next((index for index in range(2, len(ids)) if ids[index] in role_ids), len(ids))
++        if first_role == 2:
++            raise ValueError("initial system content must contain at least one token")
++        if any(token_id in forbidden_content_ids for token_id in ids[2:first_role]):
++            raise ValueError("system content contains a structural special-token ID")
++        if first_role == len(ids) or ids[first_role] != USER_ID:
++            raise ValueError("chat sequence must contain a user turn after the initial system turn")
+ 
+     user_starts: list[int] = []
+     cursor = first_role
+@@ -385,7 +394,7 @@
+ def count_chat_tokens(
+     tok: Tokenizer,
+     messages: list[dict[str, str]],
+-    default_system: str = DEFAULT_SYSTEM,
++    default_system: str | None = DEFAULT_SYSTEM,
+ ) -> int:
+     """Exact token count of the training encoding (for mix/token budgeting)."""
+     ids, _ = encode_chat(tok, messages, default_system)
+@@ -455,7 +464,7 @@
+     ex: dict[str, Any],
+     tok: Tokenizer,
+     seq_len: int,
+-    default_system: str,
++    default_system: str | None,
+     refusal_downweight: float,
+     refusal_patterns: list[str],
+     refusal_mode: str,
+@@ -486,6 +495,8 @@
+         ex_weight *= float(w0)
+ 
+     ids, labels = encode_chat(tok, messages, default_system)
++    if default_system is None and len(ids) > seq_len:
++        raise ValueError("source-preserving SFT rejects overlength conversations")
+     ids, labels = pad_or_truncate(ids, labels, seq_len, pad_id)
+     if all(label == IGNORE_INDEX for label in labels):
+         raise ValueError("SFT example requires a retained non-empty assistant turn")

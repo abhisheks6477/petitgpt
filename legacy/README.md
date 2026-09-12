@@ -1,15 +1,33 @@
-# Historical result snapshots
+# Historical implementations and artifacts
 
-This directory groups nine already-public, passive SFT roundA evaluation JSON files under one historical namespace. See the [repository guide](../docs/REPOSITORY_GUIDE.md) for the current release and other directory roles.
+Superseded public artifacts live under this single root. Start with the
+[current repository guide](../docs/REPOSITORY_GUIDE.md) and
+[release recipe](../TRAINING_AND_REPRODUCIBILITY.md).
 
-## Scope and provenance
+| Location | Evidence and interpretation |
+|---|---|
+| [tokenizers/](tokenizers/README.md) | Two old four-special-token BPE versions and their former root metadata. |
+| [configs/](configs/) | v1–v6 SFT mixtures, including the old 137M token-budget specification and local code mixtures; none is the frozen P2 12,000/500-row selection. |
+| [outputs/](outputs/) | Earlier `pretrain_140m_*` 12-layer/768-width runs and named SFT/distillation run records. Configs, metrics and evaluation records remain byte-identical. |
+| [samples/](samples/) | Step-based text outputs paired with those historical pretraining run names. These are existing public evidence, not newly published data. |
+| [evaluation-results/](evaluation-results/) | Earlier nine-row generated-answer benchmark and shard sanity snapshots, including the nine previously moved roundA files. Not the research-v1 likelihood protocol. |
+| [tools/](tools/) | Fixed old bracket-role/MHA diagnostics and the superseded `eval_bench` v1–v5 family. Some execute model work at import; they are historical source, not supported CLIs. |
 
-The files in [evaluation-results/](evaluation-results/) each identify an `outputs/sft_roundA.../latest.pt` checkpoint, `pretrain/bench_v1.jsonl`, and nine scored result rows. These are early experiment records, not the current release's public benchmark table. Their bytes, scores, generated text, and embedded paths are unchanged.
+[MIGRATIONS.csv](MIGRATIONS.csv) records each original/new path, original Git blob,
+SHA256 and classification evidence. The new migration baseline is
+`318bc90a2b3afa4ef39c9f2c1a3d3da458271de3`; the first nine rows retain their earlier
+baseline. GRPO's moves to `experiments/` are recorded in the same map.
 
-[MIGRATIONS.csv](MIGRATIONS.csv) maps every original repository-root-relative path to its new path, with the original Git blob identity, SHA256, reason, and known-consumer scope. Embedded checkpoint and benchmark paths still refer to the original repository/run context; do not resolve them relative to this archive directory or rewrite them to imply that missing weights are included.
+Classification used the handoff lineage, run configs/checkpoint names, tokenizer
+structure and Git history, evaluator subprocess behavior, caller-selected output
+paths, imports, tests and CI. Generic training/sample/plot utilities write or read
+caller-selected paths; they do not require the checked-in old output files to stay
+in their original directories. The migration is not proof about external notebooks.
 
-At the migration baseline, `ece1ab7333710e148725e8c219105e1281b94c5a`, a bounded search of tracked Python, shell, configuration, JSON, Markdown, and other text found no literal old-path, basename, or stem references to these nine files. The evaluator family writes a caller-selected result path; the plotting helper reads explicit training-metrics inputs. Frozen documentation only describes the `eval/` directory generally, which remains present. No test, executable, or frozen document was changed to accommodate the move.
-
-This is a local dependency review, not proof about external notebooks, private runs, or all dynamically constructed paths. Use the migration map if an external reference needs the new location. The snapshots do not identify an exact evaluator source revision; schema similarity alone does not establish one. Relocation does not make an experiment newly executed or fully reproducible.
-
-Other configs, evaluation outputs, and samples remain in their original locations because their use or path relationships were not sufficiently resolved for relocation in this pass.
+Embedded historical paths, scores and text were deliberately preserved. To replay
+an old snapshot, use its original commit and original missing inputs; simply running
+a relocated script against today's shared model is not an exact replay. The old
+benchmark family refers to historical sampling interfaces. No compatibility shims
+or archived test exclusions were introduced. Active GRPO tests were updated and
+remain in the test suite. The frozen versioned reports and source/legal notices
+remain at their established locations.

@@ -1,0 +1,328 @@
+{
+  "accepted_h": {
+    "candidate_plan_sha256": "ee88fb77cec8ded91cafbaf7a08d2cf6bae0a6885c4ee48c42ce2375136d61ef",
+    "census_sha256": "badbf54d1e6798250af0491179f58e262cad2cfe6dd786c963b633e46d8c0b56",
+    "complete_sha256": "b4d340afde8db55830115d4e7ba21757215122518567be4dad352c5adb28881f",
+    "evidence_entry_count": 16,
+    "evidence_manifest_identity": "7780b99f37bad8b98dc6f9d9031a47806258d688715b47582a6c3bc6896207b0",
+    "evidence_manifest_schema": "petitgpt-stage-i-h-evidence-manifest-v1",
+    "evidence_manifest_sha256": "9e62ae260514b3a8baf3d9dab8374374b7e4dd47801473786d8867a6938cc361",
+    "implementation_bundle_sha256": "d8d8b048fec1b0488c844024a8a3693ade56dab54a79e513856d6f3a9ae72df5",
+    "predictions_sha256": "fff205494b1379eaf0e77a5d58591c085af2764712a024ed25c3767c10382f87",
+    "run_dir": "runs/h_production_v2_2026-08-23",
+    "run_identity": "63f5ef84ab56c6da7f76ecfb9e9196a3e98a791d607224c83a9c183c32be111a"
+  },
+  "authorities": {
+    "d2_d3_eligibility_manifest": {
+      "path": "runs/l1_production_2026-08-20/eligibility/eligibility_manifest.json",
+      "sha256": "e3e5e8bfc0cc18524254ed00196f03ad7af3ae72617489e83713ff883b765dce"
+    },
+    "g2_release_manifest": {
+      "path": "runs/g2_production_2026-08-21/release/manifest.json",
+      "sha256": "dccc456dcc7761b482d1c71b5ab7c7918e331d638476b9503e5d6fff13a77d8b"
+    },
+    "g_release_manifest": {
+      "path": "runs/g_production_2026-08-21/release/manifest.json",
+      "sha256": "aafecbdd0014e84448d10102ece8ef796c795e1b2d6fa27cd8d2c2a8644a2fb3"
+    },
+    "hq_policy": {
+      "path": "runs/h_production_2026-08-21/policy/stage_b_hq_policy_v1.json",
+      "sha256": "c30a869059c7f0327c44198d91af219a0857668529406d5dff0a238dab2f5fd2"
+    },
+    "reference_exclusion": {
+      "path": "runs/g2_production_2026-08-21/release/exclusion_hash_manifest.json",
+      "sha256": "06c10f0acb5c18c2bfde09925738ee3a87d2a2c56053e6763be194781dce87dd"
+    },
+    "selector_v1": {
+      "path": "pretrain/select_pretrain_documents.py",
+      "sha256": "fd87767e04114afee343982924fa4954fdd2acf2442c5f7fc5dafaa093e280cc"
+    },
+    "stage_e_allocation": {
+      "path": "runs/stage_e_2026-08-20/allocation_contract.json",
+      "sha256": "b9fbfd7484c5f21a2b68e1e4913b6ea8c0c5ab10cc28014c60b8bd32a22da05b"
+    },
+    "tokenizer": {
+      "path": "runs/g_production_2026-08-21/release/tokenizer.json",
+      "sha256": "d8f84df58928023edebd809e152b3b38a0dac53b9f887bd2455f427661e9b9ce"
+    }
+  },
+  "authorization_note": "This plan carries no owner authorization and cannot create one. Stage-I production must be invoked with --expected-plan-sha256 supplied externally by the owner, and that authorization applies only to these exact plan bytes, this graph, these authorities, this accepted Stage-H result and this implementation bundle.",
+  "authorization_status": "NOT_AUTHORIZED",
+  "bound_authorities": {
+    "d2_d3_eligibility_manifest_sha256": "e3e5e8bfc0cc18524254ed00196f03ad7af3ae72617489e83713ff883b765dce",
+    "g2_exclusion_manifest_sha256": "06c10f0acb5c18c2bfde09925738ee3a87d2a2c56053e6763be194781dce87dd",
+    "g2_manifest_sha256": "dccc456dcc7761b482d1c71b5ab7c7918e331d638476b9503e5d6fff13a77d8b",
+    "g_manifest_sha256": "aafecbdd0014e84448d10102ece8ef796c795e1b2d6fa27cd8d2c2a8644a2fb3",
+    "hq_policy_sha256": "c30a869059c7f0327c44198d91af219a0857668529406d5dff0a238dab2f5fd2",
+    "selector_v1_sha256_preserved": "fd87767e04114afee343982924fa4954fdd2acf2442c5f7fc5dafaa093e280cc",
+    "stage_e_allocation_sha256": "b9fbfd7484c5f21a2b68e1e4913b6ea8c0c5ab10cc28014c60b8bd32a22da05b",
+    "tokenizer_sha256": "d8f84df58928023edebd809e152b3b38a0dac53b9f887bd2455f427661e9b9ce"
+  },
+  "environment_contract": {
+    "observed_at_generation": {
+      "python_version": "3.10.12",
+      "tokenizers_version": "0.22.2"
+    },
+    "python_version": "3.10.12",
+    "tokenizers_version": "0.22.2"
+  },
+  "graph_path": "runs/h_tooling_repair_v2_2026-08-21/policy/stage_i_source_graph_v1.json",
+  "graph_sha256": "e7cf8eafd117521660e898576d70e5873088129e0378afd34a6d8f56ea983986",
+  "implementation_bundle_sha256": "37b5bdfa388cca113dcf0cd1bfede80558179ffcce69808be875070e628e8746",
+  "implementation_commit": "3e6994a81824753864d770764ec14c215266b7d5",
+  "implementation_files": {
+    "pretrain/build_pretrain_shards.py": "710cf55a8dc4eec05470f43b2ff2c4fd966dda619ff333e45368b6f6e660d56d",
+    "pretrain/h_census_v2.py": "4d1949011fe37211fe0ac70cdd7af9e6c35849b8eb3fed313ebf43cc67375ba5",
+    "pretrain/stage_i_audit_v1.py": "4de9a76f3d2de2d4aebaf16f7911db35ede94f022468e2cbad59b7c05aef7e0d",
+    "pretrain/stage_i_graph_v2.py": "63ffa55de21c6d08beac354dee46868f75465f317eca661d430ac1e9b112c1b3",
+    "pretrain/stage_i_output_v1.py": "20daf005b9df98eda5a85609089902d7348f75697e1a402c88854df22a9dd3a0",
+    "pretrain/stage_i_realize_v1.py": "22569cf438820e60c819bdee71b07bd454f61ce3835714621f55a18ae178ed13",
+    "pretrain/stage_i_replay_v2.py": "4731c72ad67040580c4e43d36705f8774b2ecc210fddb8d5361c9f411fe6f010",
+    "pretrain/stage_i_select_v1.py": "de06121d5a58edca3bf3ef0f4d00dc87f0a2a8bfa777628651de5133843b038f",
+    "src/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/special_tokens.py": "f767b864d7c8e0cb5e2c166c4f019f3f14666dcbf2b944c7909db050e4cf1e96"
+  },
+  "input_bindings": {
+    "ib_cosmopedia_v2": {
+      "documents_sha256": "fbb5b7aed9289b6d5de541ede7beb766e4a829d01e3fdf013dd94d5eb079e960",
+      "documents_size_bytes": 16895732499,
+      "eligibility_index_sha256": "1641401d54275c9a64eff57c1bccd9d12cca5d6fa96ffe2dc973036f87ae0cee",
+      "expected_eligible_rows": 3541290,
+      "release_manifest_sha256": "d4355dde603b31e7d97d203574635e806ea3add8130583ec880e2812093aaf8c",
+      "total_physical_rows": 3545224
+    },
+    "ib_dclm_edu": {
+      "documents_sha256": "80b491f927d93ca2176563a654c926bc12f8457a8d6ee4cbb2b5716c8125662b",
+      "documents_size_bytes": 22492715741,
+      "eligibility_index_sha256": "6a1932deaffb7808880cf23520fe014b90fc961c7a068df10a085f4499af094e",
+      "expected_eligible_rows": 3187368,
+      "release_manifest_sha256": "2c20d30328367d18e1f5cdb359c2bb3964871be07df480085e4d9de1245b7f9e",
+      "total_physical_rows": 3291114
+    },
+    "ib_finephrase_tutorial": {
+      "documents_sha256": "49b22f305aab1398ad9969171f5a7c0ae6bbae02ac543a59cacb9693961f4cac",
+      "documents_size_bytes": 5355647008,
+      "eligibility_index_sha256": "18c4edd331ee78b031939f556d6b5b4b79b0f91f342f3499d5461936a60687c2",
+      "expected_eligible_rows": 1589945,
+      "release_manifest_sha256": "23d27ba2d4e0c1a5f178d197d9a013918af80fb308fbeeb8f5f826e5dac5e1bb",
+      "total_physical_rows": 1589946
+    },
+    "ib_fineweb_edu_dedup": {
+      "documents_sha256": "c5bc4f688e7e1170452deda83a1f91e577d0b49c3d2074877d63d810100c630f",
+      "documents_size_bytes": 64410467081,
+      "eligibility_index_sha256": "eb2827b42d88d2d33f290f0490780a13abae8ab90a0ecf3a427e6d95865aecd7",
+      "expected_eligible_rows": 11078026,
+      "release_manifest_sha256": "857099ba628b63de5c110cd6ba330cfda527814c60332707ee1b4154bed5f163",
+      "total_physical_rows": 11310174
+    },
+    "ib_finewiki_en": {
+      "documents_sha256": "743e6eeade3f594097a312ecec2cf0778b9fc64cced421f8da2843f51699a134",
+      "documents_size_bytes": 12927403994,
+      "eligibility_index_sha256": "a8507a921db3bd9bc77b4a0fc8be9195e5a909bdf12997e906a3f9a6e60cec36",
+      "expected_eligible_rows": 2631467,
+      "release_manifest_sha256": "315a5df7f114b7457a94280df11a8e5ea2a0084a573c2a12ee6122d042a4c232",
+      "total_physical_rows": 2631702
+    },
+    "ib_pes2o": {
+      "documents_sha256": "f1db21e6968b8380028721baea95614b7bd41b18e3ff6607139c747ca97263b8",
+      "documents_size_bytes": 2533302235,
+      "eligibility_index_sha256": "de66248b6e66685c339bb6d745000aba0516f723083c3b97f767207b10db4bd2",
+      "expected_eligible_rows": 988827,
+      "release_manifest_sha256": "76a435e6eccae0863d480ec7bdcc50484588df71b76fd9200e47716ed99b2724",
+      "total_physical_rows": 988882
+    },
+    "ib_python_gate_c_full": {
+      "documents_sha256": "8fffeee998bb1f0e5e7b85cf609c612e614cba0de05f1bf60fba87ff2c71d997",
+      "documents_size_bytes": 21698689238,
+      "eligibility_index_sha256": "3acb6afba702618e45db678685aa988ddfa5e8d335a386cfcf3bb39d1e9360fa",
+      "expected_eligible_rows": 5469783,
+      "release_manifest_sha256": "365053b12704e2cf94ca7540ee9cfaa7e200a7456a924b170e615d876ac088b6",
+      "total_physical_rows": 5470037
+    },
+    "ib_stackexchange": {
+      "documents_sha256": "2863e36e4a069d7d7756ee4e4f77dd85acd0ba8f92ccdf59a9623ad6d104b66c",
+      "documents_size_bytes": 5254152077,
+      "eligibility_index_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expected_eligible_rows": 1652610,
+      "release_manifest_sha256": "9cc8617cda2c3dd39381800535e8b8a9517bd7fe45d0c7dcb9c58cf57bd22bd3",
+      "total_physical_rows": 1652610
+    }
+  },
+  "manifest_schema_version": "petitgpt-stage-i-manifest-v1",
+  "node_binding_projection": {
+    "a_dclm_edu": [
+      "ib_dclm_edu"
+    ],
+    "a_fineweb_edu_dedup": [
+      "ib_fineweb_edu_dedup"
+    ],
+    "a_finewiki_en": [
+      "ib_finewiki_en"
+    ],
+    "a_python_gate_c_full": [
+      "ib_python_gate_c_full"
+    ],
+    "b_dclm_edu": [
+      "ib_dclm_edu"
+    ],
+    "b_fineweb_edu_dedup": [
+      "ib_fineweb_edu_dedup"
+    ],
+    "b_finewiki_en": [
+      "ib_finewiki_en"
+    ],
+    "b_pes2o": [
+      "ib_pes2o"
+    ],
+    "b_python_gate_c_full": [
+      "ib_python_gate_c_full"
+    ],
+    "b_stackexchange": [
+      "ib_stackexchange"
+    ],
+    "b_structured_tutorial": [
+      "ib_cosmopedia_v2",
+      "ib_finephrase_tutorial"
+    ]
+  },
+  "node_order": [
+    "b_dclm_edu",
+    "b_fineweb_edu_dedup",
+    "b_finewiki_en",
+    "b_pes2o",
+    "b_python_gate_c_full",
+    "b_stackexchange",
+    "b_structured_tutorial",
+    "a_dclm_edu",
+    "a_fineweb_edu_dedup",
+    "a_finewiki_en",
+    "a_python_gate_c_full"
+  ],
+  "nodes": [
+    {
+      "input_binding_ids": [
+        "ib_dclm_edu"
+      ],
+      "selection_mode": "BRANCH_DEPENDENT",
+      "source_id": "b_dclm_edu",
+      "stage": "stage_b",
+      "stage_priority": 0,
+      "target_serialized_tokens": 687500000
+    },
+    {
+      "input_binding_ids": [
+        "ib_fineweb_edu_dedup"
+      ],
+      "selection_mode": "BRANCH_DEPENDENT",
+      "source_id": "b_fineweb_edu_dedup",
+      "stage": "stage_b",
+      "stage_priority": 0,
+      "target_serialized_tokens": 1203125000
+    },
+    {
+      "input_binding_ids": [
+        "ib_finewiki_en"
+      ],
+      "selection_mode": "SEEDED_HASH",
+      "source_id": "b_finewiki_en",
+      "stage": "stage_b",
+      "stage_priority": 0,
+      "target_serialized_tokens": 171875000
+    },
+    {
+      "input_binding_ids": [
+        "ib_pes2o"
+      ],
+      "selection_mode": "SEEDED_HASH",
+      "source_id": "b_pes2o",
+      "stage": "stage_b",
+      "stage_priority": 0,
+      "target_serialized_tokens": 171875000
+    },
+    {
+      "input_binding_ids": [
+        "ib_python_gate_c_full"
+      ],
+      "selection_mode": "SEEDED_HASH",
+      "source_id": "b_python_gate_c_full",
+      "stage": "stage_b",
+      "stage_priority": 0,
+      "target_serialized_tokens": 250000000
+    },
+    {
+      "input_binding_ids": [
+        "ib_stackexchange"
+      ],
+      "selection_mode": "SEEDED_HASH",
+      "source_id": "b_stackexchange",
+      "stage": "stage_b",
+      "stage_priority": 0,
+      "target_serialized_tokens": 171875000
+    },
+    {
+      "input_binding_ids": [
+        "ib_cosmopedia_v2",
+        "ib_finephrase_tutorial"
+      ],
+      "selection_mode": "SEEDED_HASH",
+      "source_id": "b_structured_tutorial",
+      "stage": "stage_b",
+      "stage_priority": 0,
+      "target_serialized_tokens": 343750000
+    },
+    {
+      "input_binding_ids": [
+        "ib_dclm_edu"
+      ],
+      "selection_mode": "SEEDED_HASH",
+      "source_id": "a_dclm_edu",
+      "stage": "stage_a",
+      "stage_priority": 1,
+      "target_serialized_tokens": 2031578947
+    },
+    {
+      "input_binding_ids": [
+        "ib_fineweb_edu_dedup"
+      ],
+      "selection_mode": "SEEDED_HASH",
+      "source_id": "a_fineweb_edu_dedup",
+      "stage": "stage_a",
+      "stage_priority": 1,
+      "target_serialized_tokens": 7110526316
+    },
+    {
+      "input_binding_ids": [
+        "ib_finewiki_en"
+      ],
+      "selection_mode": "SEEDED_HASH",
+      "source_id": "a_finewiki_en",
+      "stage": "stage_a",
+      "stage_priority": 1,
+      "target_serialized_tokens": 507894737
+    },
+    {
+      "input_binding_ids": [
+        "ib_python_gate_c_full"
+      ],
+      "selection_mode": "SEEDED_HASH",
+      "source_id": "a_python_gate_c_full",
+      "stage": "stage_a",
+      "stage_priority": 1,
+      "target_serialized_tokens": 350000000
+    }
+  ],
+  "output_schema_version": "petitgpt-stage-i-document-v1",
+  "realization_label": "AUTHORITATIVE_STAGE_I_REALIZATION",
+  "resume_supported": false,
+  "schema_version": "petitgpt-i-candidate-plan-v4",
+  "seed": 5088999448999271579,
+  "selection_rules": {
+    "physical_locator_rule": "min(input_binding_id, stable_input_record_ordinal) among winning-tuple occurrences",
+    "representative_rule": "selector-v1 min(raw_sha256, input_record_sha256)"
+  },
+  "shard_policy": {
+    "records_per_shard": 50000,
+    "rule": "whole records only; fixed record count per shard over the canonical physical order (stage_priority, source_id, input_binding_id, stable_input_record_ordinal)",
+    "version": "petitgpt-stage-i-shard-policy-v1"
+  }
+}

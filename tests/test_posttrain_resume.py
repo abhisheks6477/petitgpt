@@ -17,7 +17,7 @@ from dpo.dpo import (
     build_model_from_ckpt as build_dpo_model_from_ckpt,
     validate_dpo_args,
 )
-from grpo.grpo import build_model_from_ckpt as build_grpo_model_from_ckpt
+from experiments.grpo.grpo import build_model_from_ckpt as build_grpo_model_from_ckpt
 from sft.train_sft import validate_sft_args
 from src.model import GPT
 from src.posttrain_resume import (
@@ -421,7 +421,7 @@ def test_posttrain_initialization_accepts_pre_gqa_checkpoint_config(builder, tin
 
 def test_posttrain_entrypoints_have_no_legacy_resume_fallback():
     root = Path(__file__).resolve().parents[1]
-    for relative in ("sft/train_sft.py", "dpo/dpo.py", "grpo/grpo.py"):
+    for relative in ("sft/train_sft.py", "dpo/dpo.py", "experiments/grpo/grpo.py"):
         source = (root / relative).read_text(encoding="utf-8")
         assert "starting with fresh optimizer" not in source
         assert "if args.resume and os.path.exists" not in source

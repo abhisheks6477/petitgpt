@@ -6,16 +6,16 @@ Count the distribution of the *first token id* per document after tokenization.
 
 Usage examples:
 
-python pretrain/first_token_stats.py \
-  --tokenizer tokenizer/tokenizer_pretrain_nospecial.json \
+python pretrain/data_preparation_tools/first_token_stats.py \
+  --tokenizer tokenizer/releases/tokenizer_v1/tokenizer.json \
   --jsonl datasets/tokenization/fineweb_5m.jsonl \
   --text_field text \
   --max_docs 500000 \
   --topk 50
 
 # Multi-file
-python pretrain/first_token_stats.py \
-  --tokenizer tokenizer/tokenizer_pretrain_nospecial.json \
+python pretrain/data_preparation_tools/first_token_stats.py \
+  --tokenizer tokenizer/releases/tokenizer_v1/tokenizer.json \
   --jsonl datasets/tokenization/fineweb_5m.jsonl datasets/tokenization/wiki.clean.jsonl \
   --max_docs 200000 \
   --topk 80

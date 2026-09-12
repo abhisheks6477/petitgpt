@@ -1,14 +1,6 @@
-"""Tests for the checked-in tokenizer artifact against the project's hardcoded
-special-token layout (src/special_tokens.py). These IDs are hardcoded across
-every training script; if a retrained tokenizer ever changes them, these tests
-fail instead of the training loop silently mis-masking loss.
+"""Checks for the canonical released tokenizer bytes and seven-special-token contract."""
 
-If the checked-in artifact predates the role-token contract
-(<|system|>/<|user|>/<|assistant|>), the whole module SKIPS with a pointer to
-retrain — the chat-format contract itself is covered by test_chat_template.py
-via an in-process tokenizer, independent of this artifact.
-"""
-
+import hashlib
 from pathlib import Path
 
 import pytest
@@ -16,20 +8,22 @@ from tokenizers import Tokenizer
 
 from src.special_tokens import SPECIAL_TOKEN_IDS, assert_special_token_ids
 
-TOKENIZER_PATH = Path(__file__).resolve().parent.parent / "tokenizer" / "tokenizer.json"
+TOKENIZER_PATH = (
+    Path(__file__).resolve().parent.parent
+    / "tokenizer"
+    / "releases"
+    / "tokenizer_v1"
+    / "tokenizer.json"
+)
 
 
 @pytest.fixture(scope="module")
 def tok() -> Tokenizer:
-    if not TOKENIZER_PATH.exists():
-        pytest.skip(f"tokenizer not found at {TOKENIZER_PATH}")
-    try:
-        assert_special_token_ids(str(TOKENIZER_PATH))
-    except ValueError as e:
-        pytest.skip(
-            f"checked-in tokenizer predates the current special-token contract "
-            f"({e}); retrain with tokenizer/tokenizer_training/train_tokenizer.py"
-        )
+    assert TOKENIZER_PATH.is_file(), f"canonical tokenizer missing: {TOKENIZER_PATH}"
+    assert hashlib.sha256(TOKENIZER_PATH.read_bytes()).hexdigest() == (
+        "d8f84df58928023edebd809e152b3b38a0dac53b9f887bd2455f427661e9b9ce"
+    )
+    assert_special_token_ids(str(TOKENIZER_PATH))
     return Tokenizer.from_file(str(TOKENIZER_PATH))
 
 
@@ -51,11 +45,10 @@ def test_special_token_ids_are_stable(tok):
         "Numbers: 3.14159 and 42 — and unicode: café, naïve.",
     ],
 )
-def test_roundtrip_preserves_non_whitespace(tok, text):
+def test_roundtrip_preserves_exact_text(tok, text):
     ids = tok.encode(text).ids
     decoded = tok.decode(ids)
-    # BPE decode can normalize whitespace; compare on non-whitespace content.
-    assert "".join(decoded.split()) == "".join(text.split())
+    assert decoded == text
 
 
 def test_encode_is_deterministic(tok):

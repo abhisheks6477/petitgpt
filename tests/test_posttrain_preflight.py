@@ -5,7 +5,7 @@ import json
 import pytest
 
 from dpo.dpo import preflight_dpo_record
-from grpo.grpo import preflight_grpo_record
+from experiments.grpo.grpo import preflight_grpo_record
 from sft.train_sft import preflight_sft_record
 from src.posttrain_preflight import (
     require_preflight_passed,

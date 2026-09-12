@@ -1,0 +1,610 @@
+{
+  "contract": {
+    "bucket_order": [
+      "FineWeb",
+      "DCLM",
+      "Wikipedia",
+      "Python",
+      "structured/tutorial"
+    ],
+    "filter_order": [
+      "physical frozen occurrence",
+      "D2/D3 logical eligibility",
+      "L1 exclusion identity membership",
+      "lossless F text and cleaned_text_sha256",
+      "rank"
+    ],
+    "l1_exclusion_identity_view": {
+      "algorithm": "sha256-cleaned-text-utf8-v1",
+      "optional_flags": {
+        "min_ascii_ratio": 0.0,
+        "min_chars": 0,
+        "normalize_quotes": false,
+        "strip_leading_noise": false,
+        "underscores_policy": "keep"
+      },
+      "purpose": "membership only; not F payload/rank/accounting text",
+      "transform": "strip leading/trailing U+000A and U+000D only"
+    },
+    "occurrence_semantics": "preserve eligible logical occurrences; no new deduplication",
+    "output_jsonl": {
+      "compact_separators": [
+        ",",
+        ":"
+      ],
+      "encoding": "UTF-8",
+      "ensure_ascii": false,
+      "field_order": [
+        "text",
+        "canonical_source",
+        "canonical_release_id",
+        "physical_row_index",
+        "cleaned_text_sha256"
+      ],
+      "framing": "one JSON object plus LF; framing LF is not text",
+      "row_order": "full frozen rank tuple ascending"
+    },
+    "rank": {
+      "algorithm": "BLAKE2b-128",
+      "digest_bytes": 16,
+      "direction": "ascending independently inside each bucket",
+      "message": "ASCII decimal seed \"20250814\" || NUL || canonical bucket name UTF-8 || NUL || raw 32-byte cleaned_text_sha256 digest",
+      "ordering_tuple": [
+        "rank128",
+        "cleaned_text_sha256",
+        "canonical_release_id",
+        "physical_row_index"
+      ],
+      "person_ascii": "PetitGPT-F-v1",
+      "seed_ascii_decimal": "20250814"
+    },
+    "selection": "whole-document ascending prefix first reaching/exceeding target; no truncation, underfill, or cross-bucket refill",
+    "text_contract": {
+      "bos_added": false,
+      "byte_accounting": "len(text.encode('utf-8'))",
+      "cleaned_text_sha256": "SHA-256 of exact tokenizer-visible source text UTF-8 bytes",
+      "encoding": "UTF-8",
+      "eos_added": false,
+      "nfkc": false,
+      "quote_normalization": false,
+      "separator_added": false,
+      "source_field": "text",
+      "strip": false,
+      "transform": "identity",
+      "whitespace_collapse": false
+    },
+    "total_target_cleaned_utf8_bytes": 10000000000
+  },
+  "implementation": {
+    "algorithm": "two-pass 8-bit rank radix boundary with exact full-key bin sort",
+    "builder_path": "tokenizer/data_preparation/build_tokenizer_training_corpus.py",
+    "builder_sha256": "81fc2a63798382f082068d168de19303239c94c1145512f603f7fbddf524d78e",
+    "git_head_at_build": "90e14a34c882d75b67e10b5d2b0623c99cfee14e",
+    "publication": "sibling staging, self-verification, manifest-last, atomic rename",
+    "resume_implemented": false,
+    "workers": 6
+  },
+  "input_bindings": {
+    "authoritative_global_post_l1_occurrences": 29966831,
+    "f_pool_post_l1_occurrences": 27409026,
+    "f_pool_post_l1_tokenizer_visible_utf8_bytes": 106809050037,
+    "frozen_stage_e_release_documents_sha256": {
+      "cosmopedia_v2": "fbb5b7aed9289b6d5de541ede7beb766e4a829d01e3fdf013dd94d5eb079e960",
+      "dclm_edu": "80b491f927d93ca2176563a654c926bc12f8457a8d6ee4cbb2b5716c8125662b",
+      "finephrase_tutorial": "49b22f305aab1398ad9969171f5a7c0ae6bbae02ac543a59cacb9693961f4cac",
+      "fineweb_edu_dedup": "c5bc4f688e7e1170452deda83a1f91e577d0b49c3d2074877d63d810100c630f",
+      "finewiki_en": "743e6eeade3f594097a312ecec2cf0778b9fc64cced421f8da2843f51699a134",
+      "pes2o": "f1db21e6968b8380028721baea95614b7bd41b18e3ff6607139c747ca97263b8",
+      "python_gate_c_full": "8fffeee998bb1f0e5e7b85cf609c612e614cba0de05f1bf60fba87ff2c71d997",
+      "stackexchange": "2863e36e4a069d7d7756ee4e4f77dd85acd0ba8f92ccdf59a9623ad6d104b66c"
+    },
+    "l1_checkpoint_commit": "90e14a34c882d75b67e10b5d2b0623c99cfee14e",
+    "l1_exclusion": {
+      "path": "./runs/l1_production_2026-08-20/reference_reserve_v1/exclusion_hash_manifest.json",
+      "sha256": "7e768eb992456cca9b7ba64dd6fda0410f87843faff72d573027139a917e1dd4",
+      "unique_identities": 172483
+    },
+    "releases": [
+      {
+        "bucket_name": "structured/tutorial",
+        "canonical_release_id": "cosmopedia_v2",
+        "d2_aux_acceleration": {
+          "path": "./runs/d2_production_2026-08-19/d2_1_signatures/aux.cosmopedia_v2.npy",
+          "sha256": "7239750f1b9d85a776618bd64dab85ebd8a3692871ab543271bda1bc248b6839",
+          "size_bytes": 141809088
+        },
+        "d2_d3_eligible_rows": 3541290,
+        "d2_d3_excluded_rows": 3934,
+        "excluded_row_index": {
+          "path": "./runs/l1_production_2026-08-20/eligibility/excluded_rows_cosmopedia_v2.u32.raw",
+          "sha256": "1641401d54275c9a64eff57c1bccd9d12cca5d6fa96ffe2dc973036f87ae0cee",
+          "size_bytes": 15736
+        },
+        "measured": {
+          "boundary_reparsed_rows": 54914,
+          "d2_d3_eligible_rows": 3541290,
+          "l1_match_occurrences": 13538,
+          "l1_match_tokenizer_visible_utf8_bytes": 51388963,
+          "physical_rows": 3545224,
+          "post_l1_occurrences": 3527752,
+          "post_l1_tokenizer_visible_utf8_bytes": 13332243908
+        },
+        "release_manifest": {
+          "path": "./runs/nonpython_gate_c_production_2026-08-17/cosmopedia_v2_11files/release/manifest.json",
+          "sha256": "d4355dde603b31e7d97d203574635e806ea3add8130583ec880e2812093aaf8c",
+          "size_bytes": 11459
+        },
+        "source": {
+          "path": "./runs/nonpython_gate_c_production_2026-08-17/cosmopedia_v2_11files/release/documents.jsonl",
+          "sha256": "fbb5b7aed9289b6d5de541ede7beb766e4a829d01e3fdf013dd94d5eb079e960",
+          "size_bytes": 16895732499
+        }
+      },
+      {
+        "bucket_name": "DCLM",
+        "canonical_release_id": "dclm_edu",
+        "d2_aux_acceleration": {
+          "path": "./runs/d2_production_2026-08-19/d2_1_signatures/aux.dclm_edu.npy",
+          "sha256": "4e42ffeeface8d00a9195978ce098d0cc196f1ffb4643dfe26bef4cfc99a7d77",
+          "size_bytes": 131644688
+        },
+        "d2_d3_eligible_rows": 3187368,
+        "d2_d3_excluded_rows": 103746,
+        "excluded_row_index": {
+          "path": "./runs/l1_production_2026-08-20/eligibility/excluded_rows_dclm_edu.u32.raw",
+          "sha256": "6a1932deaffb7808880cf23520fe014b90fc961c7a068df10a085f4499af094e",
+          "size_bytes": 414984
+        },
+        "measured": {
+          "boundary_reparsed_rows": 539350,
+          "d2_d3_eligible_rows": 3187368,
+          "l1_match_occurrences": 11514,
+          "l1_match_tokenizer_visible_utf8_bytes": 64005140,
+          "physical_rows": 3291114,
+          "post_l1_occurrences": 3175854,
+          "post_l1_tokenizer_visible_utf8_bytes": 17882807219
+        },
+        "release_manifest": {
+          "path": "./runs/nonpython_gate_c_production_2026-08-17/dclm_edu_14files/release/manifest.json",
+          "sha256": "2c20d30328367d18e1f5cdb359c2bb3964871be07df480085e4d9de1245b7f9e",
+          "size_bytes": 11988
+        },
+        "source": {
+          "path": "./runs/nonpython_gate_c_production_2026-08-17/dclm_edu_14files/release/documents.jsonl",
+          "sha256": "80b491f927d93ca2176563a654c926bc12f8457a8d6ee4cbb2b5716c8125662b",
+          "size_bytes": 22492715741
+        }
+      },
+      {
+        "bucket_name": "structured/tutorial",
+        "canonical_release_id": "finephrase_tutorial",
+        "d2_aux_acceleration": {
+          "path": "./runs/d2_production_2026-08-19/d2_1_signatures/aux.finephrase_tutorial.npy",
+          "sha256": "c38001693d056f1dd7ed84c3f2e6331b26c24b862dc2d31f1bbc0be6d28f8243",
+          "size_bytes": 63597968
+        },
+        "d2_d3_eligible_rows": 1589945,
+        "d2_d3_excluded_rows": 1,
+        "excluded_row_index": {
+          "path": "./runs/l1_production_2026-08-20/eligibility/excluded_rows_finephrase_tutorial.u32.raw",
+          "sha256": "18c4edd331ee78b031939f556d6b5b4b79b0f91f342f3499d5461936a60687c2",
+          "size_bytes": 4
+        },
+        "measured": {
+          "boundary_reparsed_rows": 4939,
+          "d2_d3_eligible_rows": 1589945,
+          "l1_match_occurrences": 6124,
+          "l1_match_tokenizer_visible_utf8_bytes": 12611699,
+          "physical_rows": 1589946,
+          "post_l1_occurrences": 1583821,
+          "post_l1_tokenizer_visible_utf8_bytes": 3251869104
+        },
+        "release_manifest": {
+          "path": "./runs/nonpython_gate_c_production_2026-08-17/finephrase_tutorial_28files/release/manifest.json",
+          "sha256": "23d27ba2d4e0c1a5f178d197d9a013918af80fb308fbeeb8f5f826e5dac5e1bb",
+          "size_bytes": 17654
+        },
+        "source": {
+          "path": "./runs/nonpython_gate_c_production_2026-08-17/finephrase_tutorial_28files/release/documents.jsonl",
+          "sha256": "49b22f305aab1398ad9969171f5a7c0ae6bbae02ac543a59cacb9693961f4cac",
+          "size_bytes": 5355647008
+        }
+      },
+      {
+        "bucket_name": "FineWeb",
+        "canonical_release_id": "fineweb_edu_dedup",
+        "d2_aux_acceleration": {
+          "path": "./runs/d2_production_2026-08-19/d2_1_signatures/aux.fineweb_edu_dedup.npy",
+          "sha256": "4aea143de2dc4a1a2ae4933cde3ca3f7a055074a1e7d15c12705a3e8fef3357d",
+          "size_bytes": 452407088
+        },
+        "d2_d3_eligible_rows": 11078026,
+        "d2_d3_excluded_rows": 232148,
+        "excluded_row_index": {
+          "path": "./runs/l1_production_2026-08-20/eligibility/excluded_rows_fineweb_edu_dedup.u32.raw",
+          "sha256": "eb2827b42d88d2d33f290f0490780a13abae8ab90a0ecf3a427e6d95865aecd7",
+          "size_bytes": 928592
+        },
+        "measured": {
+          "boundary_reparsed_rows": 40,
+          "d2_d3_eligible_rows": 11078026,
+          "l1_match_occurrences": 14524,
+          "l1_match_tokenizer_visible_utf8_bytes": 64002287,
+          "physical_rows": 11310174,
+          "post_l1_occurrences": 11063502,
+          "post_l1_tokenizer_visible_utf8_bytes": 49051634551
+        },
+        "release_manifest": {
+          "path": "./runs/nonpython_gate_c_production_2026-08-17/fineweb_edu_dedup_14files/release/manifest.json",
+          "sha256": "857099ba628b63de5c110cd6ba330cfda527814c60332707ee1b4154bed5f163",
+          "size_bytes": 12868
+        },
+        "source": {
+          "path": "./runs/nonpython_gate_c_production_2026-08-17/fineweb_edu_dedup_14files/release/documents.jsonl",
+          "sha256": "c5bc4f688e7e1170452deda83a1f91e577d0b49c3d2074877d63d810100c630f",
+          "size_bytes": 64410467081
+        }
+      },
+      {
+        "bucket_name": "Wikipedia",
+        "canonical_release_id": "finewiki_en",
+        "d2_aux_acceleration": {
+          "path": "./runs/d2_production_2026-08-19/d2_1_signatures/aux.finewiki_en.npy",
+          "sha256": "55322f8723efcb0d10bb725fd87dc461be89ddec143bfe8f0ccb8886ecdfb473",
+          "size_bytes": 105268208
+        },
+        "d2_d3_eligible_rows": 2631467,
+        "d2_d3_excluded_rows": 235,
+        "excluded_row_index": {
+          "path": "./runs/l1_production_2026-08-20/eligibility/excluded_rows_finewiki_en.u32.raw",
+          "sha256": "a8507a921db3bd9bc77b4a0fc8be9195e5a909bdf12997e906a3f9a6e60cec36",
+          "size_bytes": 940
+        },
+        "measured": {
+          "boundary_reparsed_rows": 2356722,
+          "d2_d3_eligible_rows": 2631467,
+          "l1_match_occurrences": 16910,
+          "l1_match_tokenizer_visible_utf8_bytes": 64023916,
+          "physical_rows": 2631702,
+          "post_l1_occurrences": 2614557,
+          "post_l1_tokenizer_visible_utf8_bytes": 9986627334
+        },
+        "release_manifest": {
+          "path": "./runs/nonpython_gate_c_production_2026-08-17/finewiki_en_7files/release/manifest.json",
+          "sha256": "315a5df7f114b7457a94280df11a8e5ea2a0084a573c2a12ee6122d042a4c232",
+          "size_bytes": 9837
+        },
+        "source": {
+          "path": "./runs/nonpython_gate_c_production_2026-08-17/finewiki_en_7files/release/documents.jsonl",
+          "sha256": "743e6eeade3f594097a312ecec2cf0778b9fc64cced421f8da2843f51699a134",
+          "size_bytes": 12927403994
+        }
+      },
+      {
+        "bucket_name": "Python",
+        "canonical_release_id": "python_gate_c_full",
+        "d2_d3_eligible_rows": 5469783,
+        "d2_d3_excluded_rows": 254,
+        "excluded_row_index": {
+          "path": "./runs/l1_production_2026-08-20/eligibility/excluded_rows_python_gate_c_full.u32.raw",
+          "sha256": "3acb6afba702618e45db678685aa988ddfa5e8d335a386cfcf3bb39d1e9360fa",
+          "size_bytes": 1016
+        },
+        "measured": {
+          "boundary_reparsed_rows": 0,
+          "d2_d3_eligible_rows": 5469783,
+          "l1_match_occurrences": 26243,
+          "l1_match_tokenizer_visible_utf8_bytes": 64028111,
+          "physical_rows": 5470037,
+          "post_l1_occurrences": 5443540,
+          "post_l1_tokenizer_visible_utf8_bytes": 13303867921
+        },
+        "release_manifest": {
+          "path": "./runs/python_gate_c_full_2026-08-17/release/manifest.json",
+          "sha256": "365053b12704e2cf94ca7540ee9cfaa7e200a7456a924b170e615d876ac088b6",
+          "size_bytes": 19640
+        },
+        "source": {
+          "path": "./runs/python_gate_c_full_2026-08-17/release/documents.jsonl",
+          "sha256": "8fffeee998bb1f0e5e7b85cf609c612e614cba0de05f1bf60fba87ff2c71d997",
+          "size_bytes": 21698689238
+        }
+      }
+    ],
+    "static_files": {
+      "d2_d3_eligibility_manifest": {
+        "path": "./runs/l1_production_2026-08-20/eligibility/eligibility_manifest.json",
+        "sha256": "e3e5e8bfc0cc18524254ed00196f03ad7af3ae72617489e83713ff883b765dce",
+        "size_bytes": 6515
+      },
+      "f_preflight_capacity_reproduction": {
+        "path": "./runs/f_preflight_2026-08-21/evidence/capacity_reproduction.json",
+        "sha256": "390662914278ebf4e6c4aa688588a07d3e84101b7bcc2d713e9d8e42dbfa4eb6",
+        "size_bytes": 9020
+      },
+      "l1_identity_cleaner_implementation": {
+        "path": "./pretrain/build_pretrain_shards.py",
+        "sha256": "710cf55a8dc4eec05470f43b2ff2c4fd966dda619ff333e45368b6f6e660d56d",
+        "size_bytes": 53110
+      },
+      "stage_e_allocation_contract": {
+        "path": "./runs/stage_e_2026-08-20/allocation_contract.json",
+        "sha256": "b9fbfd7484c5f21a2b68e1e4913b6ea8c0c5ab10cc28014c60b8bd32a22da05b",
+        "size_bytes": 11002
+      }
+    }
+  },
+  "selection": {
+    "buckets": [
+      {
+        "boundary_bin": 26,
+        "candidate_capacity_cleaned_utf8_bytes": 49051634551,
+        "candidate_capacity_documents": 11063502,
+        "canonical_name": "FineWeb",
+        "canonical_name_utf8_hex": "46696e65576562",
+        "first_unselected": {
+          "canonical_release_id": "fineweb_edu_dedup",
+          "cleaned_text_sha256": "fa12f40dccdf7deaaa4243e5ee9f5772b8228ee856a2452384632cb1300e96a5",
+          "cleaned_utf8_bytes": 3712,
+          "physical_row_index": 6398521,
+          "rank128": "1a144c438d58b4365d33f2f73fa0fdcb"
+        },
+        "last_document_cleaned_utf8_bytes": 41188,
+        "last_selected": {
+          "canonical_release_id": "fineweb_edu_dedup",
+          "cleaned_text_sha256": "cbce207d156f923300c9f62a1036e070afb96f804c6fe621392d1ca3400df0d4",
+          "cleaned_utf8_bytes": 41188,
+          "physical_row_index": 9268827,
+          "rank128": "1a144c3b32361aae6356f8320ef97ae7"
+        },
+        "member_release_ids": [
+          "fineweb_edu_dedup"
+        ],
+        "output": {
+          "path": "fineweb.jsonl",
+          "rows": 1127813,
+          "sha256": "e2f4e003042226b5b032a94239bcbf90d0e31b0aca1804abc8813a4bffe51be9",
+          "size_bytes": 5251938927
+        },
+        "overshoot_bytes": 37482,
+        "realized_cleaned_utf8_bytes": 5000037482,
+        "selected_documents": 1127813,
+        "selected_occurrence_sequence_sha256": "d2d6afa3dc15031eb7f4b210867c835417008a46b9ffda7cbeb00e850fcdd394",
+        "selected_occurrence_set_sha256": "c08a7060268a115154e36ea64efe6d77ac80d4174c6e8f0bd832a703f3215a43",
+        "selection_index": {
+          "path": "indices/fineweb.selection.idx",
+          "record_bytes": 65,
+          "record_schema": "rank128[16] || cleaned_text_sha256[32] || release_ordinal[u8] || physical_row_index[u64be] || cleaned_utf8_bytes[u64be]",
+          "records": 1127813,
+          "release_ordinal": {
+            "fineweb_edu_dedup": 0
+          },
+          "sha256": "6d5cd2df588ccaa4560b64fd06330080021af22d9b51b57815dddfc123779a50",
+          "size_bytes": 73307845
+        },
+        "slug": "fineweb",
+        "target_cleaned_utf8_bytes": 5000000000
+      },
+      {
+        "boundary_bin": 28,
+        "candidate_capacity_cleaned_utf8_bytes": 17882807219,
+        "candidate_capacity_documents": 3175854,
+        "canonical_name": "DCLM",
+        "canonical_name_utf8_hex": "44434c4d",
+        "first_unselected": {
+          "canonical_release_id": "dclm_edu",
+          "cleaned_text_sha256": "7b446a0d9a22a143954e7ffa5aedbf0f793fbe5820fdc31cc6a12cea36b6875b",
+          "cleaned_utf8_bytes": 3329,
+          "physical_row_index": 2331575,
+          "rank128": "1ca5a3572c6c64aeb285b9feb977a546"
+        },
+        "last_document_cleaned_utf8_bytes": 1956,
+        "last_selected": {
+          "canonical_release_id": "dclm_edu",
+          "cleaned_text_sha256": "0ee1882f62e1a5257f3e2d92de6fade5a7cb8c847a8f8f05f8b140d0b7122ab5",
+          "cleaned_utf8_bytes": 1956,
+          "physical_row_index": 2547914,
+          "rank128": "1ca5a04323efd5e6f87c1b2058ca0de1"
+        },
+        "member_release_ids": [
+          "dclm_edu"
+        ],
+        "output": {
+          "path": "dclm.jsonl",
+          "rows": 355030,
+          "sha256": "0294fc8ea663a5b486a47de1a350b3d25166154665e647847a086c53ee4c4b26",
+          "size_bytes": 2088098606
+        },
+        "overshoot_bytes": 1793,
+        "realized_cleaned_utf8_bytes": 2000001793,
+        "selected_documents": 355030,
+        "selected_occurrence_sequence_sha256": "f2c0275a6e1cf911022d2de2b582e8bda4707f4e2110050f169e410f71f12ec8",
+        "selected_occurrence_set_sha256": "6bdfb59d15d1fdf1a86a589c748471e7c8b7ff2de1b71e22003165c18a620fac",
+        "selection_index": {
+          "path": "indices/dclm.selection.idx",
+          "record_bytes": 65,
+          "record_schema": "rank128[16] || cleaned_text_sha256[32] || release_ordinal[u8] || physical_row_index[u64be] || cleaned_utf8_bytes[u64be]",
+          "records": 355030,
+          "release_ordinal": {
+            "dclm_edu": 0
+          },
+          "sha256": "9f746e3fa133414579385ce0accb83cdee777f95eee5f230975cc09691f02bb3",
+          "size_bytes": 23076950
+        },
+        "slug": "dclm",
+        "target_cleaned_utf8_bytes": 2000000000
+      },
+      {
+        "boundary_bin": 25,
+        "candidate_capacity_cleaned_utf8_bytes": 9986627334,
+        "candidate_capacity_documents": 2614557,
+        "canonical_name": "Wikipedia",
+        "canonical_name_utf8_hex": "57696b697065646961",
+        "first_unselected": {
+          "canonical_release_id": "finewiki_en",
+          "cleaned_text_sha256": "e9e46d409777976b60734bd86029c5a7555635e8b6f13f72414fbec881ba1353",
+          "cleaned_utf8_bytes": 1969,
+          "physical_row_index": 1271291,
+          "rank128": "19aeebaee4f32ac2da20882776fa78b0"
+        },
+        "last_document_cleaned_utf8_bytes": 1426,
+        "last_selected": {
+          "canonical_release_id": "finewiki_en",
+          "cleaned_text_sha256": "fa4449009798bd46217a8196b934e1af1c08c2d1a45cd5408c98d89f6e3c0305",
+          "cleaned_utf8_bytes": 1426,
+          "physical_row_index": 1053981,
+          "rank128": "19aee28567efd3322a776a617d261da1"
+        },
+        "member_release_ids": [
+          "finewiki_en"
+        ],
+        "output": {
+          "path": "wikipedia.jsonl",
+          "rows": 261828,
+          "sha256": "f2843a330a970bfc390b6471be4aeb6d948e5330cc42b92b342c8764fbacefe2",
+          "size_bytes": 1061130319
+        },
+        "overshoot_bytes": 9,
+        "realized_cleaned_utf8_bytes": 1000000009,
+        "selected_documents": 261828,
+        "selected_occurrence_sequence_sha256": "12c21e8feb853443911dfe5961e478d880cb6867475af2cd051c370d4aeb6afb",
+        "selected_occurrence_set_sha256": "96da626058861f16e6892a24a57253b474c21185bd689ad63fff6959d1aebb02",
+        "selection_index": {
+          "path": "indices/wikipedia.selection.idx",
+          "record_bytes": 65,
+          "record_schema": "rank128[16] || cleaned_text_sha256[32] || release_ordinal[u8] || physical_row_index[u64be] || cleaned_utf8_bytes[u64be]",
+          "records": 261828,
+          "release_ordinal": {
+            "finewiki_en": 0
+          },
+          "sha256": "b56a5abcdfaf1ca2a4ed6f03cab9b113f6b9ab7c080dd8b1fa451c9bd8eda067",
+          "size_bytes": 17018820
+        },
+        "slug": "wikipedia",
+        "target_cleaned_utf8_bytes": 1000000000
+      },
+      {
+        "boundary_bin": 28,
+        "candidate_capacity_cleaned_utf8_bytes": 13303867921,
+        "candidate_capacity_documents": 5443540,
+        "canonical_name": "Python",
+        "canonical_name_utf8_hex": "507974686f6e",
+        "first_unselected": {
+          "canonical_release_id": "python_gate_c_full",
+          "cleaned_text_sha256": "27c84ee8662cf2c62717bd95f6d40a92395b89fb5a678dd276f287874a7f8dd3",
+          "cleaned_utf8_bytes": 5924,
+          "physical_row_index": 394349,
+          "rank128": "1cdbbeea3e426fd5d876e7f788fa3d0e"
+        },
+        "last_document_cleaned_utf8_bytes": 5140,
+        "last_selected": {
+          "canonical_release_id": "python_gate_c_full",
+          "cleaned_text_sha256": "0fc303306356e6d005cf0f5e6cc6d100ed73487b3cafeb746423e90ce55fb78a",
+          "cleaned_utf8_bytes": 5140,
+          "physical_row_index": 35525,
+          "rank128": "1cdbbe8c2d58fbd38f975e3459031187"
+        },
+        "member_release_ids": [
+          "python_gate_c_full"
+        ],
+        "output": {
+          "path": "python.jsonl",
+          "rows": 613172,
+          "sha256": "f147981c899396aba92787bdec0cf53017ffdf3ca4d243b99cfed6e29db62637",
+          "size_bytes": 1687621643
+        },
+        "overshoot_bytes": 962,
+        "realized_cleaned_utf8_bytes": 1500000962,
+        "selected_documents": 613172,
+        "selected_occurrence_sequence_sha256": "c19057a06cfc67dafd537f7b9a6e93ef26bb33e84bdfcf75e3eea7707c783a8d",
+        "selected_occurrence_set_sha256": "78fadfadefe244750460fac4af3df53796087fe08ef45c5cdc2a87bcc5387c2b",
+        "selection_index": {
+          "path": "indices/python.selection.idx",
+          "record_bytes": 65,
+          "record_schema": "rank128[16] || cleaned_text_sha256[32] || release_ordinal[u8] || physical_row_index[u64be] || cleaned_utf8_bytes[u64be]",
+          "records": 613172,
+          "release_ordinal": {
+            "python_gate_c_full": 0
+          },
+          "sha256": "f83730bd8f086656646149bb6d21d895a3eada72c50d0a087b85be903d0d377a",
+          "size_bytes": 39856180
+        },
+        "slug": "python",
+        "target_cleaned_utf8_bytes": 1500000000
+      },
+      {
+        "boundary_bin": 7,
+        "candidate_capacity_cleaned_utf8_bytes": 16584113012,
+        "candidate_capacity_documents": 5111573,
+        "canonical_name": "structured/tutorial",
+        "canonical_name_utf8_hex": "737472756374757265642f7475746f7269616c",
+        "first_unselected": {
+          "canonical_release_id": "finephrase_tutorial",
+          "cleaned_text_sha256": "0bccae3574be6fa398b751323484faa9df185bacac3092b035033de6a3605f63",
+          "cleaned_utf8_bytes": 3198,
+          "physical_row_index": 664763,
+          "rank128": "07b4e53595d9f315198aa5d508c46cf3"
+        },
+        "last_document_cleaned_utf8_bytes": 3877,
+        "last_selected": {
+          "canonical_release_id": "cosmopedia_v2",
+          "cleaned_text_sha256": "1ca0baa21dbe0618db9d55f348149c33d1ebfa4dc2a8af91e72cc2e7eb9fe187",
+          "cleaned_utf8_bytes": 3877,
+          "physical_row_index": 1867515,
+          "rank128": "07b4e3cdf1e76a53b3c395eef31cb985"
+        },
+        "member_release_ids": [
+          "cosmopedia_v2",
+          "finephrase_tutorial"
+        ],
+        "output": {
+          "path": "structured_tutorial.jsonl",
+          "rows": 153726,
+          "sha256": "99d0679fb0a909f58b625eb4d83f97e93bd79df9764ab283a954a0272ff8e9c6",
+          "size_bytes": 536676479
+        },
+        "overshoot_bytes": 3412,
+        "realized_cleaned_utf8_bytes": 500003412,
+        "selected_documents": 153726,
+        "selected_occurrence_sequence_sha256": "706658f6c2a8010c44170b96f8425c58a03010273c8865e1a76413119ea33807",
+        "selected_occurrence_set_sha256": "8b5f9c847f9ae183eb242ea11304632d25c3eae99b46ad86f8f7ff0e4be72e61",
+        "selection_index": {
+          "path": "indices/structured_tutorial.selection.idx",
+          "record_bytes": 65,
+          "record_schema": "rank128[16] || cleaned_text_sha256[32] || release_ordinal[u8] || physical_row_index[u64be] || cleaned_utf8_bytes[u64be]",
+          "records": 153726,
+          "release_ordinal": {
+            "cosmopedia_v2": 0,
+            "finephrase_tutorial": 1
+          },
+          "sha256": "308fb92116fa99104cf1b18731e351fd02be57f9badfe735db69b231c9db6453",
+          "size_bytes": 9992190
+        },
+        "slug": "structured_tutorial",
+        "target_cleaned_utf8_bytes": 500000000
+      }
+    ],
+    "l1_exclusion_intersection": 0,
+    "selected_occurrence_set_fingerprint_contract": "SHA256 domain-separated fixed bucket sequence; each bucket uses selection records sorted by release_ordinal and physical_row_index",
+    "selected_occurrence_set_sha256": "fc4fdcfb610edaffc07e9a6f4900baa68705e1555b6b3f7bf2e3a79fde1e2ec7",
+    "total_overshoot_bytes": 43658,
+    "total_realized_cleaned_utf8_bytes": 10000043658,
+    "total_selected_documents": 2511569,
+    "total_target_cleaned_utf8_bytes": 10000000000
+  },
+  "verification": {
+    "cleaned_utf8_bytes": 10000043658,
+    "l1_exclusion_intersection": 0,
+    "output_rank_order": "strict ascending full frozen tuple",
+    "output_schema_and_field_order": [
+      "text",
+      "canonical_source",
+      "canonical_release_id",
+      "physical_row_index",
+      "cleaned_text_sha256"
+    ],
+    "selected_documents": 2511569,
+    "staging_verified_before_publication": true,
+    "status": "PASS"
+  }
+}

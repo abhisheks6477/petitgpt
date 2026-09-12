@@ -1,8 +1,8 @@
-"""Tests for grpo/prepare_grpo_data.py record conversion and assembly."""
+"""Tests for experiments/grpo/prepare_grpo_data.py record conversion and assembly."""
 
 import pytest
 
-from grpo.prepare_grpo_data import (
+from experiments.grpo.prepare_grpo_data import (
     code_bank_record_to_prompt,
     dedup_by_prompt,
     filter_by_prompt_tokens,
@@ -148,7 +148,7 @@ def test_split_is_deterministic():
 
 def test_prepared_prompts_are_valid_grpo_input(chat_tok):
     """A converted record should be consumable by the GRPO trainer's encoder."""
-    grpo = pytest.importorskip("grpo.grpo")
+    grpo = pytest.importorskip("experiments.grpo.grpo")
     from src.special_tokens import ASSISTANT_ID, BOS_ID, USER_ID
 
     rec = code_bank_record_to_prompt({

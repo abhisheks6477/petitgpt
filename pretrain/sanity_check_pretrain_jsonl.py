@@ -30,7 +30,7 @@ python sanity_check_pretrain_jsonl.py \
 Optional tokenizer check:
 python sanity_check_pretrain_jsonl.py \
   --jsonl ... \
-  --tokenizer petitgpt/tokenizer/tokenizer.json \
+  --tokenizer petitgpt/tokenizer/releases/tokenizer_v1/tokenizer.json \
   --roundtrip_samples 200
 """
 

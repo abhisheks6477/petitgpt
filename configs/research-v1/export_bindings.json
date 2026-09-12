@@ -1,0 +1,45 @@
+{
+  "source_checkpoint": {
+    "path": "./runs/p3_retention_two_point_interpolation_20260907/weights/alpha075.pt",
+    "sha256": "1da85cc329d55e92dacf51c36623779558c4c6c9a39d78a34a064f61fcddbe97",
+    "policy": "only source weights; no parent loading or new interpolation"
+  },
+  "source_files": [
+    {
+      "path": "./runs/g_production_2026-08-21/release/tokenizer.json",
+      "sha256": "d8f84df58928023edebd809e152b3b38a0dac53b9f887bd2455f427661e9b9ce"
+    },
+    {
+      "path": "./src/chat_template.py",
+      "sha256": "c25068dcb7d3a907dba7b7405d53a2962d91886abcaa25b0d5832a82e8bc821b"
+    },
+    {
+      "path": "./src/model.py",
+      "sha256": "2bc9fa8ae16636837c4a2937301a2419d0ac92faa2cc27560dacbd29a5144dc2"
+    },
+    {
+      "path": "./src/special_tokens.py",
+      "sha256": "f767b864d7c8e0cb5e2c166c4f019f3f14666dcbf2b944c7909db050e4cf1e96"
+    },
+    {
+      "path": "./sft/train_sft.py",
+      "sha256": "997201f1c280ece1d54b796f3b2a05fd3bda38b4cd14f7eeaa08a3c3b13b31e4",
+      "role": "source-side accepted checkpoint loader only; do not ship the training driver as an inference dependency"
+    },
+    {
+      "path": "./runs/r1_behavior_onepass_mix_v1/runtime/accepted_generate.py",
+      "sha256": "f8c9612fc3a8bb5538c126c4ba2a778736101acd9018fef9e7217a0722827e41"
+    }
+  ],
+  "config_required": {
+    "n_layers": 30,
+    "d_model": 576,
+    "n_heads": 9,
+    "n_kv_heads": 3,
+    "d_ff": 1536,
+    "vocab_size": 32000,
+    "max_seq_len": 2048,
+    "tie_embeddings": true
+  },
+  "unique_parameters": 124635456
+}

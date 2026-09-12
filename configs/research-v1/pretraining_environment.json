@@ -1,0 +1,12 @@
+{
+  "python_version": "3.10.12",
+  "torch_version": "2.11.0+cu126",
+  "numpy_version": "2.2.6",
+  "cuda_runtime_version": "12.6",
+  "driver_version": "580.126.20",
+  "gpu_name": "NVIDIA GeForce RTX 4090",
+  "compute_capability": "8.9",
+  "num_workers": 2,
+  "trainer_head": "7686fd811642dd6246ca3a3c21a4bf43bc28cd3b",
+  "trainer_execution_bundle_sha256": "1086af0b6821b2fdc4b2850371845c992f831dfcd84a6d504d2938fad003e75d"
+}

@@ -28,7 +28,7 @@ ending with a supervised EOS (so DPO logps include the stop decision).
 Example:
     python dpo/dpo.py \\
       --train_jsonl datasets/dpo/train.jsonl --val_jsonl datasets/dpo/val.jsonl \\
-      --out_dir outputs/dpo_run --tokenizer_path tokenizer/tokenizer.json \\
+      --out_dir outputs/dpo_run --tokenizer_path tokenizer/releases/tokenizer_v1/tokenizer.json \\
       --init_ckpt outputs/sft_v6_general_code/step_003500.pt \\
       --seq_len 1024 --micro_bsz 2 --grad_accum 8 --lr 5e-6 --beta 0.1
 """

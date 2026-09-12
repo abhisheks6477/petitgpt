@@ -33,7 +33,7 @@ to distill/, not a plain data-prep script.
 Example:
     python dpo/prepare_dpo_data.py \\
       --sources ultrafeedback,orca_dpo,hh_rlhf_helpful,hh_rlhf_harmless \\
-      --tokenizer_path tokenizer/tokenizer.json --out_dir datasets/dpo \\
+      --tokenizer_path tokenizer/releases/tokenizer_v1/tokenizer.json --out_dir datasets/dpo \\
       --seq_len 1024 --max_per_source 6000
 """
 

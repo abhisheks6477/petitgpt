@@ -4,7 +4,7 @@
 
 **Author:** Yang Qi
 
-[Model and tokenizer](https://huggingface.co/yqi0/petitgpt) · [Technical report](docs/petitgpt-v1/TECHNICAL_REPORT.md) · [Run guide](docs/petitgpt-v1/RUN_GUIDE.md) · [Model card](docs/petitgpt-v1/MODEL_CARD.md)
+[Model and tokenizer](https://huggingface.co/yqi0/petitgpt) · [Tokenizer files](tokenizer/README.md) · [Training and reproducibility](TRAINING_AND_REPRODUCIBILITY.md) · [Technical report](docs/petitgpt-v1/TECHNICAL_REPORT.md) · [Run guide](docs/petitgpt-v1/RUN_GUIDE.md) · [Model card](docs/petitgpt-v1/MODEL_CARD.md)
 
 petitgpt explores what can be learned by building and evaluating a small language model under a single-GPU training budget. The project includes a custom byte-level BPE tokenizer, approximately 13 billion pretraining positions, controlled post-training experiments, and evaluations that distinguish reference-answer fit from complete generated-answer correctness.
 
@@ -34,7 +34,7 @@ The experiments cover supervised fine-tuning, preference optimization, response 
 **Released weights and experimental coverage are different things.** The released model follows:
 
 ```text
-Pretrained Base → P2 instruction SFT → P3 step320
+Base step_049590 → P2 step750 → P3 step320
                                       ↓
 alpha075 = P2 + 0.75 × (P3_step320 − P2)
 ```
@@ -90,8 +90,11 @@ See the [repository guide](docs/REPOSITORY_GUIDE.md) for reading entry points, d
 | [`inference_native/`](inference_native/) | Released native inference code, without model weights |
 | [`src/`](src/) | Shared model and training components |
 | [`pretrain/`](pretrain/), [`tokenizer/`](tokenizer/) | Pretraining and tokenizer tooling |
-| [`sft/`](sft/), [`distill/`](distill/), [`dpo/`](dpo/), [`grpo/`](grpo/) | Post-training code and historical experiments; directory presence does not imply inclusion in research-v1 |
-| [`configs/`](configs/), [`scripts/`](scripts/) | Experiment configurations and helper entry points; check the associated run/version before use |
+| [`sft/`](sft/), [`distill/`](distill/), [`dpo/`](dpo/) | Reusable post-training implementations; exact P2 uses the recovered recipe |
+| [`experiments/`](experiments/README.md) | Measured research index and implementation-only GRPO |
+| [`recipes/research-v1/`](recipes/research-v1/README.md), [`configs/research-v1/`](configs/research-v1/README.md) | Recovered release sources, effective settings, public P2 path adapter and explicit reproduction gaps |
+| [`legacy/`](legacy/README.md) | Superseded tokenizers, configs, output/sample records and diagnostic tools |
+| [`scripts/`](scripts/) | Reusable helpers |
 | [`tests/`](tests/) | Repository checks |
 | [`docs/petitgpt-v1/`](docs/petitgpt-v1/) | Current report, versioned results, model card, and run guide |
 | [`HISTORICAL_README.md`](docs/petitgpt-v1/HISTORICAL_README.md) | Earlier project narrative; not the released model's specification |

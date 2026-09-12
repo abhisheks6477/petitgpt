@@ -1,0 +1,132 @@
+{
+  "models": [
+    {
+      "id": "PetitGPT-alpha075",
+      "path": "./runs/p3_retention_two_point_interpolation_20260907/weights/alpha075.pt",
+      "sha256": "1da85cc329d55e92dacf51c36623779558c4c6c9a39d78a34a064f61fcddbe97",
+      "tokenizer": "./runs/g_production_2026-08-21/release/tokenizer.json",
+      "expected_unique_parameters": 124635456,
+      "expected_config": {
+        "n_layers": 30,
+        "d_model": 576,
+        "n_heads": 9,
+        "n_kv_heads": 3,
+        "d_ff": 1536,
+        "vocab_size": 32000,
+        "max_seq_len": 2048,
+        "tie_embeddings": true
+      }
+    },
+    {
+      "id": "SmolLM-135M-Instruct",
+      "repo_id": "HuggingFaceTB/SmolLM-135M-Instruct",
+      "revision": "fcc320f490e08fdb4b99d935b2c58d40bf35b0d0",
+      "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM-135M-Instruct/snapshots/fcc320f490e08fdb4b99d935b2c58d40bf35b0d0",
+      "expected_unique_parameters": 134515008,
+      "files": [
+        {
+          "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM-135M-Instruct/snapshots/fcc320f490e08fdb4b99d935b2c58d40bf35b0d0/README.md",
+          "sha256": "d8b24f2d845a8a2544d8bc9b29dbf71ae11e918439fc568ab54667f81e9eea16",
+          "bytes": 5623
+        },
+        {
+          "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM-135M-Instruct/snapshots/fcc320f490e08fdb4b99d935b2c58d40bf35b0d0/config.json",
+          "sha256": "d89dd5a56c63ac3d2f6cea098ad8aebd94e5fc4e4060fb61cd7e0e8bd0b678bb",
+          "bytes": 723
+        },
+        {
+          "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM-135M-Instruct/snapshots/fcc320f490e08fdb4b99d935b2c58d40bf35b0d0/generation_config.json",
+          "sha256": "42d3ca95148e3caf72ca9765f96319a92ee080596274d4d14a313e443cd69fcc",
+          "bytes": 156
+        },
+        {
+          "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM-135M-Instruct/snapshots/fcc320f490e08fdb4b99d935b2c58d40bf35b0d0/merges.txt",
+          "sha256": "0b54e8aa4e53d5383e2e4bc635a56b43f9647f7b13832d5d9ecd8f82dac4f510",
+          "bytes": 466391
+        },
+        {
+          "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM-135M-Instruct/snapshots/fcc320f490e08fdb4b99d935b2c58d40bf35b0d0/model.safetensors",
+          "sha256": "c1464c9ebccc6fb497aa4ccc8d74d29b33f9a9eddc4638a4575719357f532f2d",
+          "bytes": 269060552
+        },
+        {
+          "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM-135M-Instruct/snapshots/fcc320f490e08fdb4b99d935b2c58d40bf35b0d0/special_tokens_map.json",
+          "sha256": "33725cb94317e674e9dad3007c35cedecf5928a4d3c9533598d9d3add76838a8",
+          "bytes": 565
+        },
+        {
+          "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM-135M-Instruct/snapshots/fcc320f490e08fdb4b99d935b2c58d40bf35b0d0/tokenizer.json",
+          "sha256": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
+          "bytes": 2104556
+        },
+        {
+          "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM-135M-Instruct/snapshots/fcc320f490e08fdb4b99d935b2c58d40bf35b0d0/tokenizer_config.json",
+          "sha256": "75668bda11eb0d5ece137b4eb3fb2ad679f847fd19846b726369a26d92f9f28e",
+          "bytes": 3590
+        },
+        {
+          "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM-135M-Instruct/snapshots/fcc320f490e08fdb4b99d935b2c58d40bf35b0d0/vocab.json",
+          "sha256": "82b84012e3add4d01d12ba14442026e49b8cbbaead1f79ecf3d919784f82dc79",
+          "bytes": 800662
+        }
+      ],
+      "license": "apache-2.0"
+    },
+    {
+      "id": "SmolLM2-135M-Instruct",
+      "repo_id": "HuggingFaceTB/SmolLM2-135M-Instruct",
+      "revision": "12fd25f77366fa6b3b4b768ec3050bf629380bac",
+      "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM2-135M-Instruct/snapshots/12fd25f77366fa6b3b4b768ec3050bf629380bac",
+      "expected_unique_parameters": 134515008,
+      "files": [
+        {
+          "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM2-135M-Instruct/snapshots/12fd25f77366fa6b3b4b768ec3050bf629380bac/README.md",
+          "sha256": "4f97533ad95b1b2fea15fbc075c01b94578ebdd7c8138888fa43fa3abd530dc4",
+          "bytes": 6772
+        },
+        {
+          "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM2-135M-Instruct/snapshots/12fd25f77366fa6b3b4b768ec3050bf629380bac/config.json",
+          "sha256": "8eb740e8bbe4cff95ea7b4588d17a2432deb16e8075bc5828ff7ba9be94d982a",
+          "bytes": 861
+        },
+        {
+          "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM2-135M-Instruct/snapshots/12fd25f77366fa6b3b4b768ec3050bf629380bac/generation_config.json",
+          "sha256": "87b916edaaab66b3899b9d0dd0752727dff6666686da0504d89ae0a6e055a013",
+          "bytes": 132
+        },
+        {
+          "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM2-135M-Instruct/snapshots/12fd25f77366fa6b3b4b768ec3050bf629380bac/merges.txt",
+          "sha256": "0b54e8aa4e53d5383e2e4bc635a56b43f9647f7b13832d5d9ecd8f82dac4f510",
+          "bytes": 466391
+        },
+        {
+          "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM2-135M-Instruct/snapshots/12fd25f77366fa6b3b4b768ec3050bf629380bac/model.safetensors",
+          "sha256": "5af571cbf074e6d21a03528d2330792e532ca608f24ac70a143f6b369968ab8c",
+          "bytes": 269060552
+        },
+        {
+          "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM2-135M-Instruct/snapshots/12fd25f77366fa6b3b4b768ec3050bf629380bac/special_tokens_map.json",
+          "sha256": "2b7379f3ae813529281a5c602bc5a11c1d4e0a99107aaa597fe936c1e813ca52",
+          "bytes": 655
+        },
+        {
+          "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM2-135M-Instruct/snapshots/12fd25f77366fa6b3b4b768ec3050bf629380bac/tokenizer.json",
+          "sha256": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
+          "bytes": 2104556
+        },
+        {
+          "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM2-135M-Instruct/snapshots/12fd25f77366fa6b3b4b768ec3050bf629380bac/tokenizer_config.json",
+          "sha256": "4ec77d44f62efeb38d7e044a1db318f6a939438425312dfa333b8382dbad98df",
+          "bytes": 3764
+        },
+        {
+          "path": "./runs/smollm_two_model_baseline_v1/model_cache/models--HuggingFaceTB--SmolLM2-135M-Instruct/snapshots/12fd25f77366fa6b3b4b768ec3050bf629380bac/vocab.json",
+          "sha256": "82b84012e3add4d01d12ba14442026e49b8cbbaead1f79ecf3d919784f82dc79",
+          "bytes": 800662
+        }
+      ],
+      "license": "apache-2.0"
+    }
+  ],
+  "selection": "alpha075 fixed independent of scores; declared five-point search closed, not mathematically exhausted"
+}

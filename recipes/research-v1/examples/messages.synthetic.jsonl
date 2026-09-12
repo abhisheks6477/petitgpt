@@ -1,0 +1,2 @@
+{"messages":[{"role":"user","content":"Say hello."},{"role":"assistant","content":"Hello."}]}
+{"messages":[{"role":"system","content":"Answer briefly."},{"role":"user","content":"Name a color."},{"role":"assistant","content":"Blue."},{"role":"user","content":"Name another."},{"role":"assistant","content":"Green."}]}

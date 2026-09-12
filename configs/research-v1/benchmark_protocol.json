@@ -1,0 +1,97 @@
+{
+  "harness_commit": "b954108c9baaaa934b4ad842033b31a97ee30816",
+  "tasks": [
+    {
+      "task": "arc_easy",
+      "dataset": "allenai/ai2_arc",
+      "revision": "210d026faf9955653af8916fad021475a3f00453",
+      "config": "ARC-Easy",
+      "split": "test",
+      "rows": 2376,
+      "choice_count_distribution": {
+        "4": 2365,
+        "3": 7,
+        "5": 4
+      },
+      "canonical_rows_sha256": "76c0b01b3280b968e3f0718b7dd04ddb07f4eb18dbee11c8ebe3f5af7c431065",
+      "parquet": {
+        "file": "ARC-Easy/test-00000-of-00001.parquet",
+        "sha256": "4160597d618ae851c7eb04e281574f3f654776216ac6b6641588d64527b47177",
+        "bytes": 346257,
+        "local_path": "./runs/petitgpt_frozen_reference_public_benchmark_v1/local_data/allenai__ai2_arc.parquet"
+      },
+      "ordering": "official parquet physical row order; PIQA derived row ID because no upstream ID column"
+    },
+    {
+      "task": "piqa",
+      "dataset": "baber/piqa",
+      "revision": "142f6d7367fd9877f0fb3b5734ea6a545f54cdd1",
+      "config": null,
+      "split": "validation",
+      "rows": 1838,
+      "choice_count_distribution": {
+        "2": 1838
+      },
+      "canonical_rows_sha256": "9a7f72f9637da4ee27bcd4d90f783116a9cc9a4a37c9792d463313d7e5c7bc9e",
+      "parquet": {
+        "file": "piqa_validation.parquet",
+        "sha256": "2b17ee1215b1ceb2ddabf4c90a05c5a8b833bef9d207960f57d111c43a2080f3",
+        "bytes": 299694,
+        "local_path": "./runs/petitgpt_frozen_reference_public_benchmark_v1/local_data/baber__piqa.parquet"
+      },
+      "ordering": "official parquet physical row order; PIQA derived row ID because no upstream ID column"
+    }
+  ],
+  "prompt_template": "Question: {{question_or_goal}}\nAnswer:",
+  "target_delimiter": " ",
+  "choice_text": "exact official candidate answer text; no labels or cleanup",
+  "fewshot": 0,
+  "chat_template": false,
+  "token_boundary": "AST-extracted unchanged TemplateLM._encode_pair: move trailing context whitespace to continuation; tokenize context+continuation and context; split by context length; no independently tokenized continuation",
+  "special_tokens": false,
+  "BOS": false,
+  "EOS": false,
+  "max_total_tokens": 2048,
+  "batch_size": 1,
+  "acc": "first np.argmax of sum of all continuation token log probabilities",
+  "acc_norm": "first np.argmax of likelihood / Python len(original choice text); Unicode character count excluding target delimiter",
+  "tie": "first index via numpy.argmax",
+  "log_softmax_dtype": "FP32",
+  "parameter_dtype": "FP32",
+  "forward": "FP32; CUDA autocast disabled",
+  "numeric_policy": {
+    "parameters": "FP32",
+    "forward": "FP32",
+    "autocast": false,
+    "cuda_matmul_allow_tf32": false,
+    "cudnn_allow_tf32": false,
+    "cudnn_benchmark": false,
+    "float32_matmul_precision": "highest",
+    "SDPA": "MATH",
+    "HF_attention_implementation": "sdpa",
+    "batch_size": 1,
+    "primary_padding": false,
+    "use_cache": false,
+    "compile": false,
+    "log_softmax": "FP32",
+    "sum": "FP32",
+    "logits_dtype_assertion": "torch.float32 before any cast"
+  },
+  "parity_tolerances": {
+    "same_logits": {
+      "atol": 1e-05,
+      "rtol": 1e-06
+    },
+    "cross_forward_per_token": {
+      "atol": 0.0005,
+      "rtol": 1e-05,
+      "scale": "symmetric max absolute"
+    },
+    "sequence_sum": "sum of per-token allowances",
+    "reference_scalar": {
+      "atol": "K*5e-4",
+      "rtol": 1e-05,
+      "scale": "symmetric max absolute"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "package_initializers_added": [
+    "recipes/research-v1/sources/packing/src/__init__.py",
+    "recipes/research-v1/sources/packing/pretrain/__init__.py",
+    "recipes/research-v1/sources/pretrain_stage_a/pretrain/__init__.py",
+    "recipes/research-v1/sources/pretrain_stage_b/pretrain/__init__.py",
+    "recipes/research-v1/sources/posttraining/src/__init__.py",
+    "recipes/research-v1/sources/posttraining/sft/__init__.py",
+    "recipes/research-v1/sources/tokenizer/src/__init__.py",
+    "recipes/research-v1/sources/tokenizer/pretrain/__init__.py",
+    "recipes/research-v1/sources/tokenizer/tokenizer/__init__.py",
+    "recipes/research-v1/sources/data_selection/src/__init__.py",
+    "recipes/research-v1/sources/data_selection/pretrain/__init__.py",
+    "recipes/research-v1/sources/benchmark/src/__init__.py",
+    "recipes/research-v1/sources/benchmark/sft/__init__.py",
+    "recipes/research-v1/sources/native_inference/src/__init__.py"
+  ],
+  "p2_adapter": "../../p2.py",
+  "p2_changes": [
+    "Explicit local input/output paths; fixed canonical tokenizer path.",
+    "Original consumption plan hash verified, only train_path rebound; full deterministic derivation still checked.",
+    "Fresh output directory and data identity checks before trainer invocation.",
+    "No change to recovered model, optimizer, schedule, loss, data ordering or checkpoint selection."
+  ],
+  "other_stages": "Recovered evidence only where missing immutable contracts prevent a supported portable execution. No contract bypass."
+}

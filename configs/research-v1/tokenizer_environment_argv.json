@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "petitgpt_tokenizer_environment",
+  "python_version": "3.10.12",
+  "python_implementation": "CPython",
+  "tokenizers_version": "0.22.2",
+  "platform": "Linux-6.8.0-106-generic-x86_64-with-glibc2.35",
+  "machine": "x86_64",
+  "processor": "x86_64",
+  "trainer_path": "tokenizer/tokenizer_training/train_tokenizer.py",
+  "trainer_sha256": "7bd6b759b20196c8743b3092e7e8195826ab7a8eaf6d97b7c80ce18b364bae71",
+  "git_head": "e0408a3487c0d6244ffab7ce579a278ca1a0cd8e",
+  "argv": [
+    "tokenizer/tokenizer_training/train_tokenizer.py",
+    "--data",
+    "runs/f_production_2026-08-21/release/dclm.jsonl",
+    "runs/f_production_2026-08-21/release/fineweb.jsonl",
+    "runs/f_production_2026-08-21/release/python.jsonl",
+    "runs/f_production_2026-08-21/release/structured_tutorial.jsonl",
+    "runs/f_production_2026-08-21/release/wikipedia.jsonl",
+    "--fields",
+    "text",
+    "--no_messages",
+    "--vocab_size",
+    "32000",
+    "--min_freq",
+    "2",
+    "--exclude_hash_manifest",
+    "runs/l1_production_2026-08-20/reference_reserve_v1/exclusion_hash_manifest.json",
+    "--corpus_release_manifest",
+    "runs/f_production_2026-08-21/release/manifest.json",
+    "--corpus_release_manifest_sha256",
+    "c5d6d39ab1ba12fc3421dc936755e62efca77a8edcf2abf876208e54bed5cd04",
+    "--full_corpus_validation",
+    "--out_dir",
+    "runs/g_production_2026-08-21/release"
+  ],
+  "input_file_order": [
+    "runs/f_production_2026-08-21/release/dclm.jsonl",
+    "runs/f_production_2026-08-21/release/fineweb.jsonl",
+    "runs/f_production_2026-08-21/release/python.jsonl",
+    "runs/f_production_2026-08-21/release/structured_tutorial.jsonl",
+    "runs/f_production_2026-08-21/release/wikipedia.jsonl"
+  ],
+  "parallelism_environment": {
+    "RAYON_NUM_THREADS": null,
+    "TOKENIZERS_PARALLELISM": null,
+    "OMP_NUM_THREADS": null
+  }
+}

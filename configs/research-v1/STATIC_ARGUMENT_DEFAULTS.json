@@ -1,0 +1,5736 @@
+[
+  {
+    "source": "sources/tokenizer/tokenizer/tokenizer_training/train_tokenizer.py",
+    "line": 657,
+    "flags": [
+      "--data"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/tokenizer/tokenizer_training/train_tokenizer.py",
+    "line": 658,
+    "flags": [
+      "--fields"
+    ],
+    "settings_expression": {
+      "default": "['text']"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/tokenizer/tokenizer_training/train_tokenizer.py",
+    "line": 664,
+    "flags": [
+      "--messages_key"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "'messages'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/tokenizer/tokenizer_training/train_tokenizer.py",
+    "line": 665,
+    "flags": [
+      "--no_messages"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/tokenizer/tokenizer_training/train_tokenizer.py",
+    "line": 666,
+    "flags": [
+      "--vocab_size"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "32000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/tokenizer/tokenizer_training/train_tokenizer.py",
+    "line": 667,
+    "flags": [
+      "--min_freq"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "2"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/tokenizer/tokenizer_training/train_tokenizer.py",
+    "line": 668,
+    "flags": [
+      "--out_dir"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/tokenizer/tokenizer_training/train_tokenizer.py",
+    "line": 669,
+    "flags": [
+      "--add_prefix_space"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/tokenizer/tokenizer_training/train_tokenizer.py",
+    "line": 674,
+    "flags": [
+      "--add_bos_eos_post_processor"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/tokenizer/tokenizer_training/train_tokenizer.py",
+    "line": 679,
+    "flags": [
+      "--strict_special_ids"
+    ],
+    "settings_expression": {
+      "action": "argparse.BooleanOptionalAction",
+      "default": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/tokenizer/tokenizer_training/train_tokenizer.py",
+    "line": 686,
+    "flags": [
+      "--model_max_length"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "2048"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/tokenizer/tokenizer_training/train_tokenizer.py",
+    "line": 692,
+    "flags": [
+      "--legacy_allow_noncanonical_contract"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/tokenizer/tokenizer_training/train_tokenizer.py",
+    "line": 701,
+    "flags": [
+      "--exclude_hash_manifest"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "action": "'append'",
+      "default": "[]"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/tokenizer/tokenizer_training/train_tokenizer.py",
+    "line": 711,
+    "flags": [
+      "--corpus_release_manifest"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/tokenizer/tokenizer_training/train_tokenizer.py",
+    "line": 721,
+    "flags": [
+      "--corpus_release_manifest_sha256"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/tokenizer/tokenizer_training/train_tokenizer.py",
+    "line": 727,
+    "flags": [
+      "--full_corpus_validation"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1325,
+    "flags": [
+      "--source"
+    ],
+    "settings_expression": {
+      "action": "'append'",
+      "default": "[]"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1326,
+    "flags": [
+      "--target_train_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1332,
+    "flags": [
+      "--out_dir"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1333,
+    "flags": [
+      "--tokenizer_path"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1335,
+    "flags": [
+      "--shard_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "10000000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1336,
+    "flags": [
+      "--val_shard_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "2000000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1337,
+    "flags": [
+      "--val_ratio"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.002"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1338,
+    "flags": [
+      "--min_val_tokens_per_source"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "200000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1339,
+    "flags": [
+      "--seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1340,
+    "flags": [
+      "--validation_hash_seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1347,
+    "flags": [
+      "--add_bos"
+    ],
+    "settings_expression": {
+      "action": "argparse.BooleanOptionalAction",
+      "default": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1353,
+    "flags": [
+      "--add_eos"
+    ],
+    "settings_expression": {
+      "action": "argparse.BooleanOptionalAction",
+      "default": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1359,
+    "flags": [
+      "--bos_id"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "BOS_ID"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1360,
+    "flags": [
+      "--eos_id"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "EOS_ID"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1361,
+    "flags": [
+      "--doc_sep"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1367,
+    "flags": [
+      "--legacy_allow_noncanonical_contract"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1372,
+    "flags": [
+      "--legacy_replay_on_exhaustion"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1377,
+    "flags": [
+      "--exclude_hash_manifest"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "action": "'append'",
+      "default": "[]"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1388,
+    "flags": [
+      "--first_token_topk"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "50"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1389,
+    "flags": [
+      "--precheck_max_lines"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "300000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1391,
+    "flags": [
+      "--strip_leading_noise"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1392,
+    "flags": [
+      "--normalize_quotes"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1393,
+    "flags": [
+      "--underscores_policy"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "'keep'",
+      "choices": "['keep', 'space', 'remove']"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1399,
+    "flags": [
+      "--min_chars"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/pretrain/build_pretrain_shards.py",
+    "line": 1400,
+    "flags": [
+      "--min_ascii_ratio"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer_validation/runs/g_production_2026-08-21/tools/verify_g_release.py",
+    "line": 42,
+    "flags": [
+      "--release"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer_validation/runs/g_production_2026-08-21/tools/verify_g_release.py",
+    "line": 43,
+    "flags": [
+      "--corpus_manifest"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer_validation/runs/g_production_2026-08-21/tools/verify_g_release.py",
+    "line": 44,
+    "flags": [
+      "--corpus_manifest_sha256"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer_validation/runs/g_production_2026-08-21/tools/verify_g_release.py",
+    "line": 45,
+    "flags": [
+      "--out_json"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/stage_i_realize_v1.py",
+    "line": 2895,
+    "flags": [
+      "--graph"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/stage_i_realize_v1.py",
+    "line": 2896,
+    "flags": [
+      "--h-run-dir"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "default": "Path(ACCEPTED_H_RUN_DIR)"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/stage_i_realize_v1.py",
+    "line": 2897,
+    "flags": [
+      "--out"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/stage_i_realize_v1.py",
+    "line": 2898,
+    "flags": [
+      "--repo-root"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "default": "Path(ROOT)"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/stage_i_realize_v1.py",
+    "line": 2899,
+    "flags": [
+      "--implementation-commit"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/stage_i_realize_v1.py",
+    "line": 2908,
+    "flags": [
+      "--plan"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/stage_i_realize_v1.py",
+    "line": 2909,
+    "flags": [
+      "--expected-plan-sha256"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/stage_i_realize_v1.py",
+    "line": 2910,
+    "flags": [
+      "--out-dir"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/stage_i_realize_v1.py",
+    "line": 2911,
+    "flags": [
+      "--repo-root"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "default": "Path(ROOT)"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/stage_i_realize_v1.py",
+    "line": 2912,
+    "flags": [
+      "--work-dir"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/stage_i_realize_v1.py",
+    "line": 2918,
+    "flags": [
+      "--pass1-result-out"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/stage_i_realize_v1.py",
+    "line": 2934,
+    "flags": [
+      "--realization"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/stage_i_realize_v1.py",
+    "line": 2935,
+    "flags": [
+      "--pass1-result"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/stage_i_realize_v1.py",
+    "line": 2936,
+    "flags": [
+      "--expected-pass1-result-sha256"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/stage_i_realize_v1.py",
+    "line": 2937,
+    "flags": [
+      "--work-dir"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1325,
+    "flags": [
+      "--source"
+    ],
+    "settings_expression": {
+      "action": "'append'",
+      "default": "[]"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1326,
+    "flags": [
+      "--target_train_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1332,
+    "flags": [
+      "--out_dir"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1333,
+    "flags": [
+      "--tokenizer_path"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1335,
+    "flags": [
+      "--shard_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "10000000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1336,
+    "flags": [
+      "--val_shard_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "2000000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1337,
+    "flags": [
+      "--val_ratio"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.002"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1338,
+    "flags": [
+      "--min_val_tokens_per_source"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "200000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1339,
+    "flags": [
+      "--seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1340,
+    "flags": [
+      "--validation_hash_seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1347,
+    "flags": [
+      "--add_bos"
+    ],
+    "settings_expression": {
+      "action": "argparse.BooleanOptionalAction",
+      "default": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1353,
+    "flags": [
+      "--add_eos"
+    ],
+    "settings_expression": {
+      "action": "argparse.BooleanOptionalAction",
+      "default": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1359,
+    "flags": [
+      "--bos_id"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "BOS_ID"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1360,
+    "flags": [
+      "--eos_id"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "EOS_ID"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1361,
+    "flags": [
+      "--doc_sep"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1367,
+    "flags": [
+      "--legacy_allow_noncanonical_contract"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1372,
+    "flags": [
+      "--legacy_replay_on_exhaustion"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1377,
+    "flags": [
+      "--exclude_hash_manifest"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "action": "'append'",
+      "default": "[]"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1388,
+    "flags": [
+      "--first_token_topk"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "50"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1389,
+    "flags": [
+      "--precheck_max_lines"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "300000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1391,
+    "flags": [
+      "--strip_leading_noise"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1392,
+    "flags": [
+      "--normalize_quotes"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1393,
+    "flags": [
+      "--underscores_policy"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "'keep'",
+      "choices": "['keep', 'space', 'remove']"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1399,
+    "flags": [
+      "--min_chars"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/build_pretrain_shards.py",
+    "line": 1400,
+    "flags": [
+      "--min_ascii_ratio"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/h_census_v2.py",
+    "line": 1728,
+    "flags": [
+      "--graph"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/h_census_v2.py",
+    "line": 1729,
+    "flags": [
+      "--out"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/h_census_v2.py",
+    "line": 1730,
+    "flags": [
+      "--repo-root"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "default": "Path(ROOT)"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/h_census_v2.py",
+    "line": 1731,
+    "flags": [
+      "--implementation-commit"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/h_census_v2.py",
+    "line": 1734,
+    "flags": [
+      "--plan"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/h_census_v2.py",
+    "line": 1735,
+    "flags": [
+      "--expected-plan-sha256"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/h_census_v2.py",
+    "line": 1736,
+    "flags": [
+      "--out-dir"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/h_census_v2.py",
+    "line": 1737,
+    "flags": [
+      "--repo-root"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "default": "Path(ROOT)"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/select_pretrain_documents.py",
+    "line": 1563,
+    "flags": [
+      "--spec"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/select_pretrain_documents.py",
+    "line": 1564,
+    "flags": [
+      "--tokenizer_path"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/select_pretrain_documents.py",
+    "line": 1570,
+    "flags": [
+      "--out_dir"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/select_pretrain_documents.py",
+    "line": 1571,
+    "flags": [
+      "--exclude_hash_manifest"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "action": "'append'",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/select_pretrain_documents.py",
+    "line": 1581,
+    "flags": [
+      "--sqlite_cache_mb"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "256"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/data_selection/pretrain/select_pretrain_documents.py",
+    "line": 1587,
+    "flags": [
+      "--commit_every"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/stage_m_realize_v1.py",
+    "line": 696,
+    "flags": [
+      "--accepted-stage-i-dir"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/stage_m_realize_v1.py",
+    "line": 697,
+    "flags": [
+      "--tokenizer"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/stage_m_realize_v1.py",
+    "line": 698,
+    "flags": [
+      "--out"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/stage_m_realize_v1.py",
+    "line": 699,
+    "flags": [
+      "--repo-root"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/stage_m_realize_v1.py",
+    "line": 700,
+    "flags": [
+      "--shard-tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "DEFAULT_SHARD_TOKENS"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/stage_m_realize_v1.py",
+    "line": 701,
+    "flags": [
+      "--implementation-commit"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/stage_m_realize_v1.py",
+    "line": 702,
+    "flags": [
+      "--commitments-out"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/stage_m_realize_v1.py",
+    "line": 707,
+    "flags": [
+      "--plan"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/stage_m_realize_v1.py",
+    "line": 708,
+    "flags": [
+      "--expected-plan-sha256"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/stage_m_realize_v1.py",
+    "line": 709,
+    "flags": [
+      "--out-dir"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/stage_m_realize_v1.py",
+    "line": 710,
+    "flags": [
+      "--repo-root"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/stage_m_realize_v1.py",
+    "line": 713,
+    "flags": [
+      "--release"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/stage_m_realize_v1.py",
+    "line": 714,
+    "flags": [
+      "--plan"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/stage_m_realize_v1.py",
+    "line": 715,
+    "flags": [
+      "--expected-plan-sha256"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/stage_m_realize_v1.py",
+    "line": 716,
+    "flags": [
+      "--stage"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "required": "True",
+      "choices": "list(STAGE_STREAMS)"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/stage_m_realize_v1.py",
+    "line": 717,
+    "flags": [
+      "--repo-root"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1325,
+    "flags": [
+      "--source"
+    ],
+    "settings_expression": {
+      "action": "'append'",
+      "default": "[]"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1326,
+    "flags": [
+      "--target_train_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1332,
+    "flags": [
+      "--out_dir"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1333,
+    "flags": [
+      "--tokenizer_path"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1335,
+    "flags": [
+      "--shard_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "10000000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1336,
+    "flags": [
+      "--val_shard_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "2000000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1337,
+    "flags": [
+      "--val_ratio"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.002"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1338,
+    "flags": [
+      "--min_val_tokens_per_source"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "200000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1339,
+    "flags": [
+      "--seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1340,
+    "flags": [
+      "--validation_hash_seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1347,
+    "flags": [
+      "--add_bos"
+    ],
+    "settings_expression": {
+      "action": "argparse.BooleanOptionalAction",
+      "default": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1353,
+    "flags": [
+      "--add_eos"
+    ],
+    "settings_expression": {
+      "action": "argparse.BooleanOptionalAction",
+      "default": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1359,
+    "flags": [
+      "--bos_id"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "BOS_ID"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1360,
+    "flags": [
+      "--eos_id"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "EOS_ID"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1361,
+    "flags": [
+      "--doc_sep"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1367,
+    "flags": [
+      "--legacy_allow_noncanonical_contract"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1372,
+    "flags": [
+      "--legacy_replay_on_exhaustion"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1377,
+    "flags": [
+      "--exclude_hash_manifest"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "action": "'append'",
+      "default": "[]"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1388,
+    "flags": [
+      "--first_token_topk"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "50"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1389,
+    "flags": [
+      "--precheck_max_lines"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "300000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1391,
+    "flags": [
+      "--strip_leading_noise"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1392,
+    "flags": [
+      "--normalize_quotes"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1393,
+    "flags": [
+      "--underscores_policy"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "'keep'",
+      "choices": "['keep', 'space', 'remove']"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1399,
+    "flags": [
+      "--min_chars"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/packing/pretrain/build_pretrain_shards.py",
+    "line": 1400,
+    "flags": [
+      "--min_ascii_ratio"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1588,
+    "flags": [
+      "--train_dir"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1589,
+    "flags": [
+      "--val_dir"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1592,
+    "flags": [
+      "--out_dir"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1593,
+    "flags": [
+      "--samples_dir"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1594,
+    "flags": [
+      "--tokenizer_path"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1597,
+    "flags": [
+      "--vocab_size"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "32000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1598,
+    "flags": [
+      "--seq_len"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "2048"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1599,
+    "flags": [
+      "--layers"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "30"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1600,
+    "flags": [
+      "--d_model"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "576"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1601,
+    "flags": [
+      "--n_heads"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "9"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1602,
+    "flags": [
+      "--n_kv_heads"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "3"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1603,
+    "flags": [
+      "--d_ff"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1536"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1604,
+    "flags": [
+      "--dropout"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1607,
+    "flags": [
+      "--bos_id"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "2"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1608,
+    "flags": [
+      "--eos_id"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "3"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1611,
+    "flags": [
+      "--no_mask_bos_in_loss"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1612,
+    "flags": [
+      "--mask_last_label_in_loss"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1617,
+    "flags": [
+      "--no_mask_last_label_in_loss"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1618,
+    "flags": [
+      "--eos_weight"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "1.0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1619,
+    "flags": [
+      "--eos_weight_warmup_steps"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1621,
+    "flags": [
+      "--precision"
+    ],
+    "settings_expression": {
+      "choices": "['bf16', 'fp16', 'fp32']",
+      "default": "'bf16'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1622,
+    "flags": [
+      "--micro_bsz"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "4"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1623,
+    "flags": [
+      "--grad_accum"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "8"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1624,
+    "flags": [
+      "--lr"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "5e-05"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1625,
+    "flags": [
+      "--weight_decay"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.1"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1626,
+    "flags": [
+      "--optimizer"
+    ],
+    "settings_expression": {
+      "choices": "['muon', 'adamw']",
+      "default": "'muon'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1632,
+    "flags": [
+      "--muon_lr"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1638,
+    "flags": [
+      "--muon_momentum"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.95"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1639,
+    "flags": [
+      "--warmup_steps"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1640,
+    "flags": [
+      "--lr_schedule"
+    ],
+    "settings_expression": {
+      "choices": "['cosine', 'constant', 'wsd']",
+      "default": "'cosine'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1646,
+    "flags": [
+      "--schedule_total_steps"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1652,
+    "flags": [
+      "--decay_start_step"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "-1"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1653,
+    "flags": [
+      "--decay_end_step"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "-1"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1654,
+    "flags": [
+      "--min_lr_ratio"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.1"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1655,
+    "flags": [
+      "--max_steps"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "100000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1661,
+    "flags": [
+      "--data_stage_start_step"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1667,
+    "flags": [
+      "--run_plan_json"
+    ],
+    "settings_expression": {
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1675,
+    "flags": [
+      "--run_plan_stage"
+    ],
+    "settings_expression": {
+      "choices": "['stage_a', 'stage_b']",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1681,
+    "flags": [
+      "--grad_clip"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "1.0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1682,
+    "flags": [
+      "--num_workers"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "2"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1683,
+    "flags": [
+      "--seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1689,
+    "flags": [
+      "--stage_a_sampler_seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "-1"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1698,
+    "flags": [
+      "--stage_b_sampler_seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "-1"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1707,
+    "flags": [
+      "--launch_contract_json"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1713,
+    "flags": [
+      "--stage_authorization_json"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1719,
+    "flags": [
+      "--sampler_seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1725,
+    "flags": [
+      "--val_seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1731,
+    "flags": [
+      "--val_samples"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "200"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1737,
+    "flags": [
+      "--val_samples_per_source"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "80"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1745,
+    "flags": [
+      "--log_every"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "20"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1746,
+    "flags": [
+      "--eval_every"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1752,
+    "flags": [
+      "--eval_steps"
+    ],
+    "settings_expression": {
+      "action": "'append'",
+      "default": "[]"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1763,
+    "flags": [
+      "--save_every"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1769,
+    "flags": [
+      "--save_steps"
+    ],
+    "settings_expression": {
+      "action": "'append'",
+      "default": "[]"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1781,
+    "flags": [
+      "--debug_every"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "500"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1784,
+    "flags": [
+      "--bench_eval_path"
+    ],
+    "settings_expression": {
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1789,
+    "flags": [
+      "--bench_eval_every"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1795,
+    "flags": [
+      "--bench_eval_script"
+    ],
+    "settings_expression": {
+      "default": "'pretrain/eval_bench_v5.py'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1800,
+    "flags": [
+      "--bench_eval_out_dir"
+    ],
+    "settings_expression": {
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1805,
+    "flags": [
+      "--bench_eval_max_seq_len"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1024"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1806,
+    "flags": [
+      "--bench_eval_max_new_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "192"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1807,
+    "flags": [
+      "--bench_eval_min_new_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1808,
+    "flags": [
+      "--bench_eval_ban_first_steps"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "4"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1811,
+    "flags": [
+      "--add_bos_to_prompts"
+    ],
+    "settings_expression": {
+      "action": "argparse.BooleanOptionalAction",
+      "default": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1817,
+    "flags": [
+      "--sample_temperature"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.7"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1818,
+    "flags": [
+      "--sample_top_p"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.9"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1819,
+    "flags": [
+      "--sample_top_k"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1820,
+    "flags": [
+      "--sample_max_new_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "256"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1821,
+    "flags": [
+      "--sample_min_new_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1824,
+    "flags": [
+      "--resume_path"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1825,
+    "flags": [
+      "--resume_full"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1826,
+    "flags": [
+      "--allow_weights_only_resume"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1831,
+    "flags": [
+      "--allow_data_branch"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1839,
+    "flags": [
+      "--allow_schedule_branch"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1844,
+    "flags": [
+      "--resume_step"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "-1"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1851,
+    "flags": [
+      "--strict_resume_contract"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1852,
+    "flags": [
+      "--no_strict_resume_contract",
+      "--no-strict_resume_contract"
+    ],
+    "settings_expression": {
+      "action": "'store_false'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py",
+    "line": 1860,
+    "flags": [
+      "--compile"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 759,
+    "flags": [
+      "--ckpt"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 760,
+    "flags": [
+      "--tokenizer_path"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 761,
+    "flags": [
+      "--device"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "'cuda'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 762,
+    "flags": [
+      "--max_seq_len"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1024"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 763,
+    "flags": [
+      "--precision"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "'bf16'",
+      "choices": "['fp32', 'fp16', 'bf16']"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 766,
+    "flags": [
+      "--temperature"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.7"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 767,
+    "flags": [
+      "--top_p"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.9"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 768,
+    "flags": [
+      "--top_k"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 769,
+    "flags": [
+      "--max_new_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "256"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 770,
+    "flags": [
+      "--min_new_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 773,
+    "flags": [
+      "--eos_id"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "EOS_ID"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 774,
+    "flags": [
+      "--add_bos"
+    ],
+    "settings_expression": {
+      "action": "argparse.BooleanOptionalAction",
+      "default": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 780,
+    "flags": [
+      "--bos_id"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "BOS_ID"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 783,
+    "flags": [
+      "--greedy"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 784,
+    "flags": [
+      "--seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 785,
+    "flags": [
+      "--repetition_penalty"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "1.15"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 786,
+    "flags": [
+      "--no_repeat_ngram_size"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "4"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 787,
+    "flags": [
+      "--max_repeat_token"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "3"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 790,
+    "flags": [
+      "--avoid_first_whitespace"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 791,
+    "flags": [
+      "--ban_first_steps"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 792,
+    "flags": [
+      "--first_whitespace_resample_tries"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "32"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 793,
+    "flags": [
+      "--extra_ban_token_ids"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 796,
+    "flags": [
+      "--stop_on_newline"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 797,
+    "flags": [
+      "--stop_string",
+      "--stop_strings"
+    ],
+    "settings_expression": {
+      "action": "'append'",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 799,
+    "flags": [
+      "--stop_regex"
+    ],
+    "settings_expression": {
+      "action": "'append'",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 801,
+    "flags": [
+      "--include_stop_in_output"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 802,
+    "flags": [
+      "--restrict"
+    ],
+    "settings_expression": {
+      "choices": "['none', 'digits', 'ynu']",
+      "default": "'none'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 805,
+    "flags": [
+      "--prompt"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 806,
+    "flags": [
+      "--out"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 807,
+    "flags": [
+      "--debug"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_a/pretrain/sample.py",
+    "line": 808,
+    "flags": [
+      "--quiet"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1588,
+    "flags": [
+      "--train_dir"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1589,
+    "flags": [
+      "--val_dir"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1592,
+    "flags": [
+      "--out_dir"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1593,
+    "flags": [
+      "--samples_dir"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1594,
+    "flags": [
+      "--tokenizer_path"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1597,
+    "flags": [
+      "--vocab_size"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "32000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1598,
+    "flags": [
+      "--seq_len"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "2048"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1599,
+    "flags": [
+      "--layers"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "30"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1600,
+    "flags": [
+      "--d_model"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "576"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1601,
+    "flags": [
+      "--n_heads"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "9"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1602,
+    "flags": [
+      "--n_kv_heads"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "3"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1603,
+    "flags": [
+      "--d_ff"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1536"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1604,
+    "flags": [
+      "--dropout"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1607,
+    "flags": [
+      "--bos_id"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "2"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1608,
+    "flags": [
+      "--eos_id"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "3"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1611,
+    "flags": [
+      "--no_mask_bos_in_loss"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1612,
+    "flags": [
+      "--mask_last_label_in_loss"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1617,
+    "flags": [
+      "--no_mask_last_label_in_loss"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1618,
+    "flags": [
+      "--eos_weight"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "1.0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1619,
+    "flags": [
+      "--eos_weight_warmup_steps"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1621,
+    "flags": [
+      "--precision"
+    ],
+    "settings_expression": {
+      "choices": "['bf16', 'fp16', 'fp32']",
+      "default": "'bf16'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1622,
+    "flags": [
+      "--micro_bsz"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "4"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1623,
+    "flags": [
+      "--grad_accum"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "8"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1624,
+    "flags": [
+      "--lr"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "5e-05"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1625,
+    "flags": [
+      "--weight_decay"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.1"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1626,
+    "flags": [
+      "--optimizer"
+    ],
+    "settings_expression": {
+      "choices": "['muon', 'adamw']",
+      "default": "'muon'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1632,
+    "flags": [
+      "--muon_lr"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1638,
+    "flags": [
+      "--muon_momentum"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.95"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1639,
+    "flags": [
+      "--warmup_steps"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1640,
+    "flags": [
+      "--lr_schedule"
+    ],
+    "settings_expression": {
+      "choices": "['cosine', 'constant', 'wsd']",
+      "default": "'cosine'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1646,
+    "flags": [
+      "--schedule_total_steps"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1652,
+    "flags": [
+      "--decay_start_step"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "-1"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1653,
+    "flags": [
+      "--decay_end_step"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "-1"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1654,
+    "flags": [
+      "--min_lr_ratio"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.1"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1655,
+    "flags": [
+      "--max_steps"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "100000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1661,
+    "flags": [
+      "--data_stage_start_step"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1667,
+    "flags": [
+      "--run_plan_json"
+    ],
+    "settings_expression": {
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1675,
+    "flags": [
+      "--run_plan_stage"
+    ],
+    "settings_expression": {
+      "choices": "['stage_a', 'stage_b']",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1681,
+    "flags": [
+      "--grad_clip"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "1.0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1682,
+    "flags": [
+      "--num_workers"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "2"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1683,
+    "flags": [
+      "--seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1689,
+    "flags": [
+      "--stage_a_sampler_seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "-1"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1698,
+    "flags": [
+      "--stage_b_sampler_seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "-1"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1707,
+    "flags": [
+      "--launch_contract_json"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1713,
+    "flags": [
+      "--stage_authorization_json"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1719,
+    "flags": [
+      "--sampler_seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1725,
+    "flags": [
+      "--val_seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1731,
+    "flags": [
+      "--val_samples"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "200"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1737,
+    "flags": [
+      "--val_samples_per_source"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "80"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1745,
+    "flags": [
+      "--log_every"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "20"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1746,
+    "flags": [
+      "--eval_every"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1752,
+    "flags": [
+      "--eval_steps"
+    ],
+    "settings_expression": {
+      "action": "'append'",
+      "default": "[]"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1763,
+    "flags": [
+      "--save_every"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1769,
+    "flags": [
+      "--save_steps"
+    ],
+    "settings_expression": {
+      "action": "'append'",
+      "default": "[]"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1781,
+    "flags": [
+      "--debug_every"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "500"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1784,
+    "flags": [
+      "--bench_eval_path"
+    ],
+    "settings_expression": {
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1789,
+    "flags": [
+      "--bench_eval_every"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1795,
+    "flags": [
+      "--bench_eval_script"
+    ],
+    "settings_expression": {
+      "default": "'pretrain/eval_bench_v5.py'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1800,
+    "flags": [
+      "--bench_eval_out_dir"
+    ],
+    "settings_expression": {
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1805,
+    "flags": [
+      "--bench_eval_max_seq_len"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1024"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1806,
+    "flags": [
+      "--bench_eval_max_new_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "192"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1807,
+    "flags": [
+      "--bench_eval_min_new_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1808,
+    "flags": [
+      "--bench_eval_ban_first_steps"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "4"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1811,
+    "flags": [
+      "--add_bos_to_prompts"
+    ],
+    "settings_expression": {
+      "action": "argparse.BooleanOptionalAction",
+      "default": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1817,
+    "flags": [
+      "--sample_temperature"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.7"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1818,
+    "flags": [
+      "--sample_top_p"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.9"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1819,
+    "flags": [
+      "--sample_top_k"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1820,
+    "flags": [
+      "--sample_max_new_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "256"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1821,
+    "flags": [
+      "--sample_min_new_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1824,
+    "flags": [
+      "--resume_path"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1825,
+    "flags": [
+      "--resume_full"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1826,
+    "flags": [
+      "--allow_weights_only_resume"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1831,
+    "flags": [
+      "--allow_data_branch"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1839,
+    "flags": [
+      "--allow_schedule_branch"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1844,
+    "flags": [
+      "--resume_step"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "-1"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1851,
+    "flags": [
+      "--strict_resume_contract"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1852,
+    "flags": [
+      "--no_strict_resume_contract",
+      "--no-strict_resume_contract"
+    ],
+    "settings_expression": {
+      "action": "'store_false'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py",
+    "line": 1860,
+    "flags": [
+      "--compile"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 759,
+    "flags": [
+      "--ckpt"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 760,
+    "flags": [
+      "--tokenizer_path"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 761,
+    "flags": [
+      "--device"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "'cuda'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 762,
+    "flags": [
+      "--max_seq_len"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1024"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 763,
+    "flags": [
+      "--precision"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "'bf16'",
+      "choices": "['fp32', 'fp16', 'bf16']"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 766,
+    "flags": [
+      "--temperature"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.7"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 767,
+    "flags": [
+      "--top_p"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.9"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 768,
+    "flags": [
+      "--top_k"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 769,
+    "flags": [
+      "--max_new_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "256"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 770,
+    "flags": [
+      "--min_new_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 773,
+    "flags": [
+      "--eos_id"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "EOS_ID"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 774,
+    "flags": [
+      "--add_bos"
+    ],
+    "settings_expression": {
+      "action": "argparse.BooleanOptionalAction",
+      "default": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 780,
+    "flags": [
+      "--bos_id"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "BOS_ID"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 783,
+    "flags": [
+      "--greedy"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 784,
+    "flags": [
+      "--seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 785,
+    "flags": [
+      "--repetition_penalty"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "1.15"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 786,
+    "flags": [
+      "--no_repeat_ngram_size"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "4"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 787,
+    "flags": [
+      "--max_repeat_token"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "3"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 790,
+    "flags": [
+      "--avoid_first_whitespace"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 791,
+    "flags": [
+      "--ban_first_steps"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 792,
+    "flags": [
+      "--first_whitespace_resample_tries"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "32"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 793,
+    "flags": [
+      "--extra_ban_token_ids"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 796,
+    "flags": [
+      "--stop_on_newline"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 797,
+    "flags": [
+      "--stop_string",
+      "--stop_strings"
+    ],
+    "settings_expression": {
+      "action": "'append'",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 799,
+    "flags": [
+      "--stop_regex"
+    ],
+    "settings_expression": {
+      "action": "'append'",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 801,
+    "flags": [
+      "--include_stop_in_output"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 802,
+    "flags": [
+      "--restrict"
+    ],
+    "settings_expression": {
+      "choices": "['none', 'digits', 'ynu']",
+      "default": "'none'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 805,
+    "flags": [
+      "--prompt"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 806,
+    "flags": [
+      "--out"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "None"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 807,
+    "flags": [
+      "--debug"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/sample.py",
+    "line": 808,
+    "flags": [
+      "--quiet"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 414,
+    "flags": [
+      "--train_jsonl"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 415,
+    "flags": [
+      "--val_jsonl"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 416,
+    "flags": [
+      "--out_dir"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 417,
+    "flags": [
+      "--tokenizer_path"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 419,
+    "flags": [
+      "--seq_len"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1024"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 420,
+    "flags": [
+      "--micro_bsz"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "2"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 421,
+    "flags": [
+      "--grad_accum"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "8"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 423,
+    "flags": [
+      "--lr"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "2e-05"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 424,
+    "flags": [
+      "--weight_decay"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.1"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 425,
+    "flags": [
+      "--optimizer"
+    ],
+    "settings_expression": {
+      "choices": "['muon', 'adamw']",
+      "default": "'muon'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 427,
+    "flags": [
+      "--muon_lr"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 429,
+    "flags": [
+      "--muon_momentum"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.95"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 430,
+    "flags": [
+      "--max_steps"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "15000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 431,
+    "flags": [
+      "--warmup_steps"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "300"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 432,
+    "flags": [
+      "--grad_clip"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "1.0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 434,
+    "flags": [
+      "--precision"
+    ],
+    "settings_expression": {
+      "choices": "['fp16', 'bf16', 'fp32']",
+      "default": "'bf16'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 435,
+    "flags": [
+      "--eval_every"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "500"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 436,
+    "flags": [
+      "--eval_batches"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "200"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 437,
+    "flags": [
+      "--save_every"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "2000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 439,
+    "flags": [
+      "--init_from_pretrain"
+    ],
+    "settings_expression": {
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 440,
+    "flags": [
+      "--resume"
+    ],
+    "settings_expression": {
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 447,
+    "flags": [
+      "--default_system"
+    ],
+    "settings_expression": {
+      "default": "'You are a helpful assistant.'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 448,
+    "flags": [
+      "--preserve_messages"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 451,
+    "flags": [
+      "--n_layers"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "30"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 452,
+    "flags": [
+      "--d_model"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "576"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 453,
+    "flags": [
+      "--n_heads"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "9"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 454,
+    "flags": [
+      "--n_kv_heads"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "3"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 455,
+    "flags": [
+      "--d_ff"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1536"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 456,
+    "flags": [
+      "--dropout"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 457,
+    "flags": [
+      "--tie_embeddings"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 459,
+    "flags": [
+      "--num_workers"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "2"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 460,
+    "flags": [
+      "--seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 461,
+    "flags": [
+      "--debug_first_batch"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 463,
+    "flags": [
+      "--loss_reduction"
+    ],
+    "settings_expression": {
+      "choices": "['token_mean', 'example_mean']",
+      "default": "'token_mean'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 471,
+    "flags": [
+      "--loss_normalization"
+    ],
+    "settings_expression": {
+      "choices": "['legacy', 'effective_batch_tokens']",
+      "default": "'legacy'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 476,
+    "flags": [
+      "--ce_precision"
+    ],
+    "settings_expression": {
+      "choices": "['legacy', 'selected_fp32']",
+      "default": "'legacy'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 478,
+    "flags": [
+      "--p2_consumption_plan"
+    ],
+    "settings_expression": {
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 482,
+    "flags": [
+      "--refusal_downweight"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.25"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 488,
+    "flags": [
+      "--refusal_mode"
+    ],
+    "settings_expression": {
+      "choices": "['contains_any']",
+      "default": "'contains_any'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 494,
+    "flags": [
+      "--refusal_patterns"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "\"i am not capable,i am not able,i do not have access,i can't,i cannot,as an ai,i'm unable,unable to,not allowed to,can't help with,do not have the capability\""
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 502,
+    "flags": [
+      "--sample_every"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 503,
+    "flags": [
+      "--samples_dir"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 504,
+    "flags": [
+      "--sample_max_new_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "192"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 505,
+    "flags": [
+      "--sample_temperature"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.7"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 506,
+    "flags": [
+      "--sample_top_p"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.9"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 507,
+    "flags": [
+      "--sample_top_k"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "50"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 508,
+    "flags": [
+      "--sample_seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 509,
+    "flags": [
+      "--sample_repetition_penalty"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "1.12"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 515,
+    "flags": [
+      "--sample_repetition_window"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "256"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 521,
+    "flags": [
+      "--sample_no_repeat_ngram"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "3"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 529,
+    "flags": [
+      "--sample_in_domain_n"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "10"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 530,
+    "flags": [
+      "--sample_in_domain_seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 531,
+    "flags": [
+      "--sample_in_domain_show_ref"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 532,
+    "flags": [
+      "--sample_in_domain_mode"
+    ],
+    "settings_expression": {
+      "choices": "['last_user', 'full_context']",
+      "default": "'full_context'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 537,
+    "flags": [
+      "--sample_in_domain_dump_prompt"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 542,
+    "flags": [
+      "--sample_eval_jsonl"
+    ],
+    "settings_expression": {
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/sft/train_sft.py",
+    "line": 547,
+    "flags": [
+      "--sample_only_ckpt"
+    ],
+    "settings_expression": {
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/runs/p3_basic_instruction_generalization_20260907/runtime/execute.py",
+    "line": 285,
+    "flags": [
+      "mode"
+    ],
+    "settings_expression": {
+      "choices": "['baseline', 'train', 'final']"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 414,
+    "flags": [
+      "--train_jsonl"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 415,
+    "flags": [
+      "--val_jsonl"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 416,
+    "flags": [
+      "--out_dir"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 417,
+    "flags": [
+      "--tokenizer_path"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 419,
+    "flags": [
+      "--seq_len"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1024"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 420,
+    "flags": [
+      "--micro_bsz"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "2"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 421,
+    "flags": [
+      "--grad_accum"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "8"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 423,
+    "flags": [
+      "--lr"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "2e-05"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 424,
+    "flags": [
+      "--weight_decay"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.1"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 425,
+    "flags": [
+      "--optimizer"
+    ],
+    "settings_expression": {
+      "choices": "['muon', 'adamw']",
+      "default": "'muon'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 427,
+    "flags": [
+      "--muon_lr"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 429,
+    "flags": [
+      "--muon_momentum"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.95"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 430,
+    "flags": [
+      "--max_steps"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "15000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 431,
+    "flags": [
+      "--warmup_steps"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "300"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 432,
+    "flags": [
+      "--grad_clip"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "1.0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 434,
+    "flags": [
+      "--precision"
+    ],
+    "settings_expression": {
+      "choices": "['fp16', 'bf16', 'fp32']",
+      "default": "'bf16'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 435,
+    "flags": [
+      "--eval_every"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "500"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 436,
+    "flags": [
+      "--eval_batches"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "200"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 437,
+    "flags": [
+      "--save_every"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "2000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 439,
+    "flags": [
+      "--init_from_pretrain"
+    ],
+    "settings_expression": {
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 440,
+    "flags": [
+      "--resume"
+    ],
+    "settings_expression": {
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 447,
+    "flags": [
+      "--default_system"
+    ],
+    "settings_expression": {
+      "default": "'You are a helpful assistant.'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 448,
+    "flags": [
+      "--preserve_messages"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 451,
+    "flags": [
+      "--n_layers"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "30"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 452,
+    "flags": [
+      "--d_model"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "576"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 453,
+    "flags": [
+      "--n_heads"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "9"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 454,
+    "flags": [
+      "--n_kv_heads"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "3"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 455,
+    "flags": [
+      "--d_ff"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1536"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 456,
+    "flags": [
+      "--dropout"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.0"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 457,
+    "flags": [
+      "--tie_embeddings"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 459,
+    "flags": [
+      "--num_workers"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "2"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 460,
+    "flags": [
+      "--seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 461,
+    "flags": [
+      "--debug_first_batch"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 463,
+    "flags": [
+      "--loss_reduction"
+    ],
+    "settings_expression": {
+      "choices": "['token_mean', 'example_mean']",
+      "default": "'token_mean'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 471,
+    "flags": [
+      "--loss_normalization"
+    ],
+    "settings_expression": {
+      "choices": "['legacy', 'effective_batch_tokens']",
+      "default": "'legacy'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 476,
+    "flags": [
+      "--ce_precision"
+    ],
+    "settings_expression": {
+      "choices": "['legacy', 'selected_fp32']",
+      "default": "'legacy'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 478,
+    "flags": [
+      "--p2_consumption_plan"
+    ],
+    "settings_expression": {
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 482,
+    "flags": [
+      "--refusal_downweight"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.25"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 488,
+    "flags": [
+      "--refusal_mode"
+    ],
+    "settings_expression": {
+      "choices": "['contains_any']",
+      "default": "'contains_any'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 494,
+    "flags": [
+      "--refusal_patterns"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "\"i am not capable,i am not able,i do not have access,i can't,i cannot,as an ai,i'm unable,unable to,not allowed to,can't help with,do not have the capability\""
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 502,
+    "flags": [
+      "--sample_every"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1000"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 503,
+    "flags": [
+      "--samples_dir"
+    ],
+    "settings_expression": {
+      "type": "str",
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 504,
+    "flags": [
+      "--sample_max_new_tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "192"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 505,
+    "flags": [
+      "--sample_temperature"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.7"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 506,
+    "flags": [
+      "--sample_top_p"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "0.9"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 507,
+    "flags": [
+      "--sample_top_k"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "50"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 508,
+    "flags": [
+      "--sample_seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 509,
+    "flags": [
+      "--sample_repetition_penalty"
+    ],
+    "settings_expression": {
+      "type": "float",
+      "default": "1.12"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 515,
+    "flags": [
+      "--sample_repetition_window"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "256"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 521,
+    "flags": [
+      "--sample_no_repeat_ngram"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "3"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 529,
+    "flags": [
+      "--sample_in_domain_n"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "10"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 530,
+    "flags": [
+      "--sample_in_domain_seed"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "1234"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 531,
+    "flags": [
+      "--sample_in_domain_show_ref"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 532,
+    "flags": [
+      "--sample_in_domain_mode"
+    ],
+    "settings_expression": {
+      "choices": "['last_user', 'full_context']",
+      "default": "'full_context'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 537,
+    "flags": [
+      "--sample_in_domain_dump_prompt"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 542,
+    "flags": [
+      "--sample_eval_jsonl"
+    ],
+    "settings_expression": {
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/sft/train_sft.py",
+    "line": 547,
+    "flags": [
+      "--sample_only_ckpt"
+    ],
+    "settings_expression": {
+      "default": "''"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/runs/petitgpt_frozen_reference_public_benchmark_fp32_v2/runtime/evaluate_v2.py",
+    "line": 107,
+    "flags": [
+      "phase"
+    ],
+    "settings_expression": {
+      "choices": "['checks', 'full']"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/benchmark/runs/petitgpt_frozen_reference_public_benchmark_fp32_v2/runtime/evaluate_v2.py",
+    "line": 107,
+    "flags": [
+      "model"
+    ],
+    "settings_expression": {},
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/native_inference/inference.py",
+    "line": 51,
+    "flags": [
+      "--model-directory"
+    ],
+    "settings_expression": {
+      "required": "True",
+      "type": "Path"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/native_inference/inference.py",
+    "line": 53,
+    "flags": [
+      "--messages-json"
+    ],
+    "settings_expression": {
+      "type": "Path"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/native_inference/inference.py",
+    "line": 53,
+    "flags": [
+      "--prompt"
+    ],
+    "settings_expression": {},
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/native_inference/inference.py",
+    "line": 54,
+    "flags": [
+      "--profile"
+    ],
+    "settings_expression": {
+      "choices": "['bf16_native', 'fp32_math']",
+      "default": "'bf16_native'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/native_inference/inference.py",
+    "line": 55,
+    "flags": [
+      "--max-new-tokens"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "384"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/tokenizer/data_preparation/build_tokenizer_training_corpus.py",
+    "line": 1543,
+    "flags": [
+      "--out-dir"
+    ],
+    "settings_expression": {
+      "type": "Path",
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/tokenizer/tokenizer/data_preparation/build_tokenizer_training_corpus.py",
+    "line": 1549,
+    "flags": [
+      "--workers"
+    ],
+    "settings_expression": {
+      "type": "int",
+      "default": "6"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/posttraining/runs/D4_completion_and_SFT_pilot_handoff/pilot_v2_preparation/selection/build_pilot_v2.py",
+    "line": 418,
+    "flags": [
+      "--scope-only"
+    ],
+    "settings_expression": {
+      "action": "'store_true'"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/stage_n_successor_head_compatibility_bridge_v1.py",
+    "line": 3863,
+    "flags": [
+      "--authorization-path"
+    ],
+    "settings_expression": {
+      "required": "True"
+    },
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/stage_n_successor_head_compatibility_bridge_v1.py",
+    "line": 3864,
+    "flags": [
+      "--semantic-comparison-manifest-path"
+    ],
+    "settings_expression": {},
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/stage_n_successor_head_compatibility_bridge_v1.py",
+    "line": 3865,
+    "flags": [
+      "--exact-plan-path"
+    ],
+    "settings_expression": {},
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  },
+  {
+    "source": "sources/pretrain_stage_b/pretrain/stage_n_successor_head_compatibility_bridge_v1.py",
+    "line": 3866,
+    "flags": [
+      "--existing-n2-evidence-path"
+    ],
+    "settings_expression": {},
+    "scope": "Exact copied implementation expression; recorded argv takes precedence; not executed"
+  }
+]

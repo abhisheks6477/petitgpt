@@ -10,8 +10,8 @@ from types import SimpleNamespace
 import pytest
 import torch
 
-from grpo import rewards
-from grpo.grpo import (
+from experiments.grpo import rewards
+from experiments.grpo.grpo import (
     EOS_ID,
     _sample_step,
     build_group_batch,

@@ -9,6 +9,8 @@ Use this map to distinguish the released inference implementation, shared resear
 | What was released, and what did the experiments establish? | [Technical report](petitgpt-v1/TECHNICAL_REPORT.md) |
 | How is the native bundle used? | [Run guide](petitgpt-v1/RUN_GUIDE.md) |
 | What are the model's intended use and limitations? | [GitHub model-card document](petitgpt-v1/MODEL_CARD.md) |
+| How were the released weights trained and evaluated? | [Training and reproducibility](../TRAINING_AND_REPRODUCIBILITY.md) |
+| Which tokenizer should I use? | [Canonical tokenizer](../tokenizer/README.md) |
 | Where are the recorded comparisons and experiment lineage? | [Versioned tables](petitgpt-v1/tables/) |
 | Where is the released implementation? | [Native inference](../inference_native/), beginning with [inference.py](../inference_native/inference.py) |
 
@@ -24,30 +26,38 @@ These are reading entry points, not an instruction to run every script or a clai
 |---|---|
 | [src/](../src/) | Shared model, chat/token contracts, optimization, tracking, and training utilities. Start with [model.py](../src/model.py) and [chat_template.py](../src/chat_template.py). Separate from the fixed inference source closure. |
 | [tokenizer/](../tokenizer/) | Tokenizer corpus preparation, training, validation, and versioned release files. See [tokenizer_training/](../tokenizer/tokenizer_training/) and [releases/tokenizer_v1/](../tokenizer/releases/tokenizer_v1/). |
-| [pretrain/](../pretrain/) | Data selection, shard/reference-validation contracts, training, and earlier diagnostics. Start with [train_pretrain.py](../pretrain/train_pretrain.py) and [run_plan_contract.py](../pretrain/run_plan_contract.py); input construction lives in [build_pretrain_shards.py](../pretrain/build_pretrain_shards.py). |
+| [pretrain/](../pretrain/) | Reusable data selection, shard/reference-validation contracts and training. Exact release source lives in the recipe roots. Start with [train_pretrain.py](../pretrain/train_pretrain.py) and [run_plan_contract.py](../pretrain/run_plan_contract.py); input construction lives in [build_pretrain_shards.py](../pretrain/build_pretrain_shards.py). |
 | [sft/](../sft/) | SFT data preparation and shared supervised training. Start with [train_sft.py](../sft/train_sft.py); [prepare_sft_mix_split_local.py](../sft/prepare_sft_mix_split_local.py) accepts an explicit mixture config. |
 | [distill/](../distill/) | Retained distillation/KD research tooling, including teacher-data preparation and verification. [train_distill.py](../distill/train_distill.py) delegates text-response training to the SFT engine; it does not by itself reproduce the separate soft-logit lab. Some data-preparation scripts call external teachers. |
 | [dpo/](../dpo/) | Retained preference-data preparation and DPO research implementation; see [dpo.py](../dpo/dpo.py). |
-| [grpo/](../grpo/) | Retained GRPO research implementation, prompt preparation, and reward functions; see [grpo.py](../grpo/grpo.py) and [rewards.py](../grpo/rewards.py). |
-| [configs/](../configs/) | Versioned SFT mixture specifications. Match each config to its data-preparation tool and historical run before use; the largest version number is not the release recipe. |
+| [experiments/](../experiments/README.md) | Measured research index; [GRPO](../experiments/grpo/README.md) is implementation-only with active tests, not an established research-v1 run. |
+| [recipes/research-v1/](../recipes/research-v1/README.md) | Separate recovered source roots, validation-only entry point and public P2 path adapter. |
+| [configs/research-v1/](../configs/research-v1/README.md) | Effective launch/parameter/input evidence; projected JSON is not an executable frozen contract. Old mixture YAMLs moved to legacy. |
 | [scripts/](../scripts/) | Supporting utilities. [plot_metrics.py](../scripts/plot_metrics.py) reads explicit run directories or metrics files; it is not the evaluator for every saved result JSON. |
 | [tests/](../tests/) | Repository contract and unit tests. Read [pytest.ini](../pytest.ini), the [shared fixtures](../tests/conftest.py), and the [CI workflow](../.github/workflows/ci.yml) before choosing checks; CPU-only does not mean model-free. |
-| [docs/](./) | This navigation guide and the unchanged [versioned release documents](petitgpt-v1/). The [historical README](petitgpt-v1/HISTORICAL_README.md) preserves an earlier narrative, not the current release specification. |
+| [docs/](./) | This navigation guide and the preserved [versioned release documents](petitgpt-v1/). The [historical README](petitgpt-v1/HISTORICAL_README.md) preserves an earlier narrative, not the current release specification. |
 
 DPO, KD/distillation, and GRPO code is retained research tooling. Its presence does not imply inclusion in alpha075 or completion of every possible method. Use the technical report and experiment lineage to identify what was actually measured and which updates belong to the released weights.
 
 ## Read historical artifacts in context
 
-| Location | What remains and how to interpret it |
-|---|---|
-| [eval/](../eval/) | Earlier benchmark and sanity-check snapshots that remain at their original paths. They are not interchangeable with the versioned public result tables. |
-| [legacy/evaluation-results/](../legacy/evaluation-results/) | Nine early SFT roundA result snapshots, each recording an old checkpoint and nine benchmark rows. The [legacy index](../legacy/README.md) and [migration map](../legacy/MIGRATIONS.csv) preserve original paths and identities. |
-| [outputs/](../outputs/) | Tracked historical run configs and evaluation/log records coexist with a path ignored for new local outputs. Embedded checkpoint paths do not mean those weights are distributed here. |
-| [samples/](../samples/) | Tracked historical generated-text samples. Training configs and sampling code use run/step-based paths, so these remain in place with their context. |
+[legacy/](../legacy/README.md) now groups earlier tokenizer versions and metadata,
+six superseded SFT mixture configs, historical output records and samples, early
+evaluation snapshots, and obsolete diagnostic/evaluator scripts. The
+[migration map](../legacy/MIGRATIONS.csv) preserves original/new paths, byte hashes,
+Git blobs and classification evidence. Historical embedded paths/scores are unchanged;
+replay may require the original commit and missing inputs. Generic output path options
+in supported tools do not require old checked-in records to remain in active directories.
 
-The mixture configs, remaining evaluation files, output records, and samples have not been declared unused. Moving the nine roundA JSON files preserves their bytes, scores, embedded checkpoint/benchmark paths, and recorded results; it neither reruns those experiments nor establishes the exact evaluator revision or full reproducibility. No executable modules, training configs, fixtures, or frozen release files were relocated.
+DPO/KD shared code remains in functional directories. GRPO moved to experiments
+with its imports, direct-script bootstrap, CI and active tests updated. No test was
+archived or disabled. `src/model_moe.py` remains a tested implementation with no
+released-weight or completed research-v1 experiment claim.
 
-Private `runs/` records are not distributed with GitHub. Complete training data, optimizer checkpoints, and some run-specific implementations and evaluation evidence also remain outside this public tree. A versioned report can describe evidence that is not itself shipped here. Public main and a private training workspace are different scopes; this checkout is not a full project backup.
+The full [training/evaluation guide](../TRAINING_AND_REPRODUCIBILITY.md) separates
+source recovery, syntax/config checks, data-path checks and model-work validation.
+Private source datasets, frozen plans, some run-specific helpers and exact evaluation
+rows are absent; public evidence does not imply one-command historical reproduction.
 
 ## A reading route for project discussion
 

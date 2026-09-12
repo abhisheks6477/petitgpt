@@ -1,5 +1,5 @@
 """Chat-template tests for src/chat_template.py — the single source of truth
-shared by sft/train_sft.py (and its distill wrapper), dpo/dpo.py, grpo/grpo.py,
+shared by sft/train_sft.py (and its distill wrapper), dpo/dpo.py, experiments/grpo/grpo.py,
 and the data-prep scripts.
 
 Contract under test:

@@ -1,0 +1,192 @@
+[
+  {
+    "id": "F_TOKENIZER_CORPUS",
+    "sources": [
+      "sources/tokenizer/tokenizer/data_preparation/build_tokenizer_training_corpus.py"
+    ],
+    "evidence": [
+      "configs/tokenizer_corpus_selection.json"
+    ],
+    "command": "Recorded F builder identity and frozen contract recovered; complete historical shell argv is UNKNOWN. See exact argparse default expressions and frozen contract; do not synthesize a command and call it recorded.",
+    "defaults": "Static expression table, plus builder source; workers=6 recorded in F implementation",
+    "inputs": "Frozen eligible source occurrences after D2/D3 and L1 exclusion; source release/file identities in tokenizer_corpus_selection input_bindings",
+    "outputs": "Five canonical JSONL buckets; logical output schema and recorded SHA/bytes in frozen F selection",
+    "semantics": "No new dedup; preserve eligible occurrences; L1 exclusion uses normalized identity view only while F text bytes remain lossless; rank BLAKE2b128 with frozen full rank tuple; two-pass radix cutoff/exact bin sort.",
+    "environment": "F build commit recorded 90e14a34, but builder file absent at that local commit; current file recovered by exact 81fc2a63 digest, not guessed Git membership."
+  },
+  {
+    "id": "G_TOKENIZER",
+    "sources": [
+      "sources/tokenizer/tokenizer/tokenizer_training/train_tokenizer.py",
+      "sources/tokenizer_validation/runs/g_production_2026-08-21/tools/verify_g_release.py"
+    ],
+    "evidence": [
+      "configs/tokenizer_environment_argv.json",
+      "configs/tokenizer_release.json"
+    ],
+    "command": "Exact ordered argv in tokenizer_environment_argv; --data five files in recorded order --fields text --no_messages --vocab_size 32000 --min_freq 2 --exclude_hash_manifest ... --corpus_release_manifest ... --corpus_release_manifest_sha256 ... --full_corpus_validation --out_dir ...",
+    "defaults": "No normalizer/postprocessor; ByteLevel add_prefix_space=false, seven special IDs. Exact copied trainer defaults, not a current alternative.",
+    "inputs": "F five JSONL files, 2,511,569 occurrences / 10,000,043,658 UTF8 text bytes; L1 exclusion manifest",
+    "outputs": "tokenizer.json SHA d8f84df58928023edebd809e152b3b38a0dac53b9f887bd2455f427661e9b9ce; shipped tokenizer files verified",
+    "semantics": "32000=7+256+31737; full-corpus roundtrip/UNK/special-ID validation historically zero failures. No fresh tokenizer execution.",
+    "environment": "Python3.10.12/tokenizers0.22.2; trainer hash7bd6b759 at e0408a34"
+  },
+  {
+    "id": "I_SELECTION",
+    "sources": [
+      "sources/data_selection/pretrain/stage_i_realize_v1.py"
+    ],
+    "evidence": [
+      "configs/data_selection_plan.json"
+    ],
+    "command": "python pretrain/stage_i_realize_v1.py run --plan <exact candidate_i_plan_v7> --expected-plan-sha256 3effe6300c3f383dd788d22b4146064b98f620bed85e5073a5229f5fb26d5e56 --out-dir <I realization> --repo-root <source root>",
+    "defaults": "Recorded work/pass1 defaults in original implementation; seed, node_order and selection_rules from exact plan.",
+    "inputs": "Frozen graph, source provenance bindings, accepted H token accounting, canonical tokenizer; no source exhaustion replay",
+    "outputs": "Native immutable selected plaintext realization, Stage A10,000,003,234 and B3,000,004,240 serialized tokens",
+    "semantics": "Original native stage-I module family and implementation_file hashes matched against local 3e6994a8 sources. Exact corpus cannot be reconstructed from tokenizer alone.",
+    "environment": "environment_contract in plan; no current environment substituted"
+  },
+  {
+    "id": "M_PACKING",
+    "sources": [
+      "sources/packing/pretrain/stage_m_realize_v1.py"
+    ],
+    "evidence": [
+      "configs/packing_plan.json"
+    ],
+    "command": "python pretrain/stage_m_realize_v1.py run --plan <exact candidate_m_plan_v6> --expected-plan-sha256 6c7af2bdaf00b12fd62e8af0f26960ed2c12317cd87ce290f9b1de055e7b1d21 --out-dir <packed release> --repo-root <source root>",
+    "defaults": "ordering_contract, packing_semantics, stage_streams and expected_totals recorded in plan; copied producer defaults separately indexed.",
+    "inputs": "Exact accepted I realization; text field and stream order fixed, source disjointness/replay rules preserved",
+    "outputs": "uint16 arrays: A10,000,003,073 tokens, B3,000,002,561; 6,347,659 sequences, one final lookahead per stage",
+    "semantics": "[BOS] content [EOS], empty text separator; no padding;1840 tail tokens removed; not equivalent to raw text bytes or optimizer input count",
+    "environment": "Bound implementation ea081327 and plan environment_contract"
+  },
+  {
+    "id": "PRETRAIN_A",
+    "sources": [
+      "sources/pretrain_stage_a/pretrain/train_pretrain_with_bench.py"
+    ],
+    "evidence": [
+      "configs/pretrain_stage_a_effective.json",
+      "configs/pretraining_exact_plan.json",
+      "configs/pretrain_contract_semantics.json",
+      "configs/pretrain_stage_a_initial_effective.json"
+    ],
+    "command": "Original training cmd/args in pretrain_stage_a_initial_effective: no resume, max_steps38146. The separately retained pretrain_stage_a_effective record resumes exactly at38146 with max_steps38146 for accepted endpoint recovery; it does not describe another38146 updates.",
+    "defaults": "Effective args override parser. 30/576/1536,9Q/3KV,2048,32000,tied=True; micro8*accum16; seed20260831; samplerA20260832, samplerB20260833, val20260834",
+    "inputs": "Stage-A packed arrays plus full G2 validation and original launch/plan bindings",
+    "outputs": "Transition step38146; final canonical Base is produced later outside runs scope",
+    "semantics": "Muon matrices + auxiliary AdamW embeddings/norms; lr6e-4,wd.1,clip1,500 warmup,WSD absolute49590,decay44631..49590,minratio.1,bf16,compile. BOS-loss masking/default boundary behavior remains exact trainer/dataset contract, see defaults and model-input masking code; no invented reset at stage boundary. Inputs are toks[:-1], targets toks[1:]. Effective mask_bos_in_loss=true; mask_repeated_eos_in_loss=true (mask the later target in consecutive EOS targets); mask_last_label_in_loss=false, so valid final labels remain. EOS weight=1.0. These are the recorded trainer/dataset settings, not a redesigned boundary policy.",
+    "environment": "Recorded original and endpoint-resume Git HEAD6d80423a, both dirty=true. Original governed contract and accepted endpoint fingerprint bind the same verified execution bundle.",
+    "source_identity_verification": "Original full AST execution closure matches historical bundle SHA256; see configs/TRAINER_EXECUTION_BINDINGS.json. Stage A git_dirty=true does not imply a changed load-bearing closure."
+  },
+  {
+    "id": "PRETRAIN_B",
+    "sources": [
+      "sources/pretrain_stage_b/pretrain/train_pretrain_with_bench.py"
+    ],
+    "evidence": [
+      "configs/pretrain_stage_b_effective.json",
+      "configs/pretrain_contract_semantics.json",
+      "configs/pretraining_environment.json"
+    ],
+    "command": "Recorded cmd/args with --resume_full, --resume_step38146, --strict_resume_contract; consumes compatibility-bridge checkpoint, not weights-only init",
+    "defaults": "micro8,accum16,absolute schedule retained; data_stage_start_step38146 and stop49590; replay disabled; fail on branch mismatch",
+    "inputs": "Exact Stage-A endpoint and recorded bridge state, Stage-B packed arrays; bridge validation needs original immutable contracts",
+    "outputs": "canonical Base step49590 SHA95ae1201a5ce8a6f838e8e131c59b8779d639f4ec4cf4dbc553928b9b754b86e",
+    "semantics": "No optimizer or schedule reset. Resume model/optimizer/scaler/RNG and stage sampler cursor under recorded compatibility bridge; 213 tensor equivalence is historical evidence. Across A/B optimizer processed12,999,720,960 positions. Inputs are toks[:-1], targets toks[1:]. Effective mask_bos_in_loss=true; mask_repeated_eos_in_loss=true (mask the later target in consecutive EOS targets); mask_last_label_in_loss=false, so valid final labels remain. EOS weight=1.0. These are the recorded trainer/dataset settings, not a redesigned boundary policy.",
+    "environment": "Successor trainer7686fd81; Python3.10.12,torch2.11.0+cu126,numpy2.2.6,RTX4090; isolated source copy distinct from Stage A",
+    "source_identity_verification": "Original full AST execution closure matches historical bundle SHA256; see configs/TRAINER_EXECUTION_BINDINGS.json. Stage A git_dirty=true does not imply a changed load-bearing closure."
+  },
+  {
+    "id": "P2",
+    "sources": [
+      "sources/posttraining/sft/train_sft.py",
+      "sources/posttraining/sft/p2_loss.py",
+      "sources/posttraining/sft/p2_plan.py",
+      "sources/posttraining/sft/p2_evaluation.py",
+      "sources/posttraining/runs/sft_p2_concise_instruction_20260906/data/prepare_p2_data.py",
+      "sources/posttraining/runs/sft_p2_concise_instruction_20260906/data/finalize_p2_data.py"
+    ],
+    "evidence": [
+      "configs/p2_effective_launch.json",
+      "configs/p2_input_identities.json"
+    ],
+    "command": "Exact argv retained: python -u -m sft.train_sft with --preserve_messages --loss_normalization effective_batch_tokens --ce_precision selected_fp32 --p2_consumption_plan ...; all other explicit arguments in p2_effective_launch",
+    "defaults": "Initial model config comes from accepted Base, NOT resolved_args tie_embeddings=false fallback. Fresh AdamW, betas.9/.95,eps1e-8,weight decay by ndim>=2,lr5e-5,wd.1,warmup38,clip1,micro2*accum16,seq2048,seed20260906,workers2,750updates.",
+    "inputs": "Frozen12k/500 rows from exact reviewed smol-smoltalk-derived pools; pinned collection f73fe857d519ff6ac5af2ea67c4d3834da7b8bcc, default/train. Frozen training SHA37bc8aa8765c2ec11521cec4797a9621cfc198f5f6557c4e19962686c41559a8 and validation9acca1a4f94cd15ce1e3c22dbc2de70f16eaf7405e068e078219a2ef52a94796",
+    "outputs": "step750 SHA20afc40096568343c59d8a55e9606667c279f5f1c976908c57de18a0107f4e4e; midpoint375, metrics retained",
+    "semantics": "Every assistant turn content+EOS supervised; user/system/roles/BOS masked. Preserve original messages; no truncation/injected system. Buffer effective batch, divide each CE sum by total shifted targets across all microbatches; backward then one clip/step. selected FP32 logits CE with BF16 forward.24k row exposures /1,994,854 target observations, no inference quality promotion.",
+    "environment": "Exact trainer997201f1 and p2_lossce269097 recovered, including untracked code; launch runtime environment retained through original records; no environment installation"
+  },
+  {
+    "id": "P3",
+    "sources": [
+      "sources/posttraining/runs/p3_basic_instruction_generalization_20260907/runtime/execute.py",
+      "sources/posttraining/runs/p3_basic_instruction_generalization_20260907/runtime/prepare.py"
+    ],
+    "evidence": [
+      "configs/p3_effective.json",
+      "configs/p3_frozen_bindings.json",
+      "configs/p3_launch.json"
+    ],
+    "command": "Recorded train argv in p3_launch; execute.py train uses frozen RUN_CONFIG and UPDATE_PLAN",
+    "defaults": "FreshAdamW(.9,.95),eps1e-8,wd0,lr5e-5,32 warmup,cosine640,minratio.1; micro2*accum16,seq512 within2048architecture; seed20260907,workers0,CPUthreads4;2passes;7200s cap,no automatic restart",
+    "inputs": "P2step750 weights only;7168 procedural +3072replay rows; full plan frozen; no private prompts shipped",
+    "outputs": "step320 SHA b11cb018d9f7382e46088f587dc62db9bc25c7d696d399e6b8a001f7ca9cb4e2 and adverse endpoint640; both deliberately retained",
+    "semantics": "7 procedural updates then3replay per block; effective-update target-token mean includingEOS; selectedFP32CE/BF16forward. Checkpoint function records model,optimizer,config,step,scheduler,RNG,plan/data hashes. Step320 is alpha blend parent; step640 documents later regression, not silently discarded.",
+    "environment": "Frozen accepted_source_files bound; private curriculum/checker data source withheld explicitly"
+  },
+  {
+    "id": "INTERPOLATION",
+    "sources": [
+      "sources/posttraining/runs/p3_retention_two_point_interpolation_20260907/runtime/blend.py"
+    ],
+    "evidence": [
+      "configs/interpolation_launch.json",
+      "configs/p3_frozen_bindings.json"
+    ],
+    "command": "Recorded argv calls runtime/blend.py; script constants bind two parents and exactly alpha.50/.75",
+    "defaults": "CPU FP32 tensor-by-tensor A+alpha*(B-A), no optimizer/backward; verify tied parameter aliasing, same config, finite values and fixed buffers",
+    "inputs": "P2step750 and P3step320, neverstep640; complete input SHA checks in original code",
+    "outputs": "alpha075 SHA1da85cc329d55e92dacf51c36623779558c4c6c9a39d78a34a064f61fcddbe97; alpha050 control retained",
+    "semantics": "Working reference selected on recorded transfer/retention tradeoff, not best-general-assistant claim; inference-only weight artifact, no fabricated resume optimizer",
+    "environment": "Existing recorded CPU FP32 materialization; original argv retained"
+  },
+  {
+    "id": "NATIVE_EXPORT",
+    "sources": [
+      "sources/posttraining/runs/alpha075_native_inference_export_v1/evidence/scripts/export_weights.py",
+      "sources/native_inference/inference.py",
+      "sources/native_inference/src/model.py"
+    ],
+    "evidence": [
+      "configs/export_bindings.json",
+      "configs/native/config.json",
+      "configs/native/requirements-inference-tested.txt"
+    ],
+    "command": "Original export_weights.py entrypoint; build_bundle excerpt documents only actual accepted-generation precision adaptation. Private publication/review-copy orchestration excluded.",
+    "defaults": "FP32 safetensors export with strict state/config validation and tied embeddings; nativeCLI CUDA only,greedy,bf16_native/fp32_math,1..384new tokens,total<=2048",
+    "inputs": "alpha075 and bound model/chat/special/generation implementations",
+    "outputs": "native weight SHA4396efb7a52b047e7fdf513e46d1b401dfc70582d3aca1f9cb5a07e97d426ef1; no tensor bytes included here",
+    "semantics": "213 named state entries preserved; historical8source/export parity pairs. Whole standalone on Pod protected; previously deleted staging weights are not restored.",
+    "environment": "Python3.10.12,torch2.11.0+cu126,numpy2.2.6,tokenizers.22.2,safetensors.8.0"
+  },
+  {
+    "id": "PUBLIC_BENCHMARK",
+    "sources": [
+      "sources/benchmark/runs/petitgpt_frozen_reference_public_benchmark_fp32_v2/runtime/evaluate_v2.py",
+      "sources/benchmark/runs/petitgpt_frozen_reference_public_benchmark_fp32_v2/runtime/aggregate_report.py"
+    ],
+    "evidence": [
+      "configs/benchmark_protocol.json",
+      "configs/benchmark_models.json"
+    ],
+    "command": "Actual evaluator/aggregator recovered; input requests, run manifests and original raw outcomes must be bound externally. Full recorded launch argv not claimed if absent.",
+    "defaults": "FP32params/forward/logsoftmax,autocast+TF32off,MATHSDPA,unpaddedbatch1; zero-shot raw completion; no chat/BOS/scoredEOS; firstmax ties;acc_norm Unicode-character normalization",
+    "inputs": "ARC-Easy2376test and PIQA1838validation; three frozen model/tokenizer identities; pinned harness methods loaded via AST from bundled licensed helper files",
+    "outputs": "Published versioned table: alpha075 ARC57.74/52.36,PIQA63.49/62.30; no new scores computed",
+    "semantics": "Native protocol-compatible evaluation, not full installed harness; request boundary/per-token checks and finite numerical validation; aggregation preserves incomplete status and does not merge score versions",
+    "environment": "Exact environment guards in runtime/common.py; see handoff dependency table"
+  }
+]
