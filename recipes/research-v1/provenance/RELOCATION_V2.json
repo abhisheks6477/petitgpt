@@ -1,0 +1,268 @@
+{
+  "schema": "POSTTRAINING_RELOCATION_V2",
+  "base_commit": "504449730852fc04c27068bdfdc90f53718ad6b4",
+  "support_archive_sha256": "192fdf1054c992f021d74497cf12d29af2002039fde8594ef739d6a446a1c960",
+  "original_identity_rule": "Original INTEGRATION/FROZEN/config/source records are unchanged. Support projections never replace original hashes.",
+  "source_identity_map": "runtime-support-v2/SOURCE_HASH_MAP.json",
+  "source_closure_identity_map": "INTEGRATION.json",
+  "self_excluded": "RELOCATION_V2.json; identity is recorded by the Git commit/review manifest",
+  "files": [
+    {
+      "repository_path": "recipes/research-v1/adapter_common.py",
+      "sha256": "96db591688f81a10a77bb5790fccf6033e622e1a347ba1383bbfc50f29b8edee",
+      "kind": "new adapter"
+    },
+    {
+      "repository_path": "recipes/research-v1/export_native.py",
+      "sha256": "033c3983746e2094e0dd58df76e63f3d53eb9cc5847fb586f8566e9e32e0db15",
+      "kind": "new adapter"
+    },
+    {
+      "repository_path": "recipes/research-v1/interpolate.py",
+      "sha256": "cdd49c8903e36313e2d3e9a1a8f9a7d6dccbaba7b9a02ce41f4c61e7415ccf2a",
+      "kind": "new adapter"
+    },
+    {
+      "repository_path": "recipes/research-v1/p2.py",
+      "sha256": "bbbb02e276cce9f0797ab68cab032181f939151cd31c728ff944e272007fe3db",
+      "original_adapter_sha256": "bbbb02e276cce9f0797ab68cab032181f939151cd31c728ff944e272007fe3db",
+      "differences": []
+    },
+    {
+      "repository_path": "recipes/research-v1/p3.py",
+      "sha256": "d12717df9024e62d82503f18f46c98330839b85117543207adcf7b73e5005feb",
+      "kind": "new adapter"
+    },
+    {
+      "repository_path": "recipes/research-v1/p3_execution.py",
+      "sha256": "13b5c5d70fe2eea68efe5fb2ca882876391f4ff7881f3448d843a0e1ec320bd4",
+      "kind": "new adapter"
+    },
+    {
+      "repository_path": "recipes/research-v1/provenance/notices/DOCUMENTATION_LICENSE.md",
+      "sha256": "74322f799773266d15acf47c40165d2c7e5bf9df8e5ca7a076dd98e51ee41656",
+      "kind": "unchanged public notice"
+    },
+    {
+      "repository_path": "recipes/research-v1/provenance/notices/LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "kind": "unchanged public notice"
+    },
+    {
+      "repository_path": "recipes/research-v1/provenance/notices/SOURCE_NOTICE.md",
+      "sha256": "529d3b8f8ec187a96b44e12029493770a374519e2dc74d0df47a0c2631a95008",
+      "kind": "unchanged public notice"
+    },
+    {
+      "repository_path": "recipes/research-v1/provenance/notices/THIRD_PARTY_NOTICES.md",
+      "sha256": "aeb343a8a11ef0bffa736b360e73273d5a05f48429ae8346a97517155b75c3ef",
+      "kind": "unchanged public notice"
+    },
+    {
+      "repository_path": "recipes/research-v1/provenance/runtime-support-v2/MANIFEST.json",
+      "sha256": "0236b7e13b792b860ee7be48f3cfc9f01a5299abcb4dab3d7ce4ca6e4f6fb3b3",
+      "support_member": "MANIFEST.json",
+      "support_sha256": "0236b7e13b792b860ee7be48f3cfc9f01a5299abcb4dab3d7ce4ca6e4f6fb3b3",
+      "differences": []
+    },
+    {
+      "repository_path": "recipes/research-v1/provenance/runtime-support-v2/P2_VALIDATION.json",
+      "sha256": "dfad0ca99b729856ba0a5285fcbe30045d7d1ffd866700ad1ab45f0fd2218e89",
+      "support_member": "P2_VALIDATION.json",
+      "support_sha256": "dfad0ca99b729856ba0a5285fcbe30045d7d1ffd866700ad1ab45f0fd2218e89",
+      "differences": []
+    },
+    {
+      "repository_path": "recipes/research-v1/provenance/runtime-support-v2/RUNTIME_SUPPORT.md",
+      "sha256": "80dda98dd61575c8d15b12c91fa7ce8c18ed5906bc57282368864d578ef95ac2",
+      "support_member": "RUNTIME_SUPPORT.md",
+      "support_sha256": "80dda98dd61575c8d15b12c91fa7ce8c18ed5906bc57282368864d578ef95ac2",
+      "differences": []
+    },
+    {
+      "repository_path": "recipes/research-v1/provenance/runtime-support-v2/SOURCE_HASH_MAP.json",
+      "sha256": "777d759a0003688b55b0be7ebc847e02d677503e4c087dd8f76b65d177601b60",
+      "support_member": "SOURCE_HASH_MAP.json",
+      "support_sha256": "777d759a0003688b55b0be7ebc847e02d677503e4c087dd8f76b65d177601b60",
+      "differences": []
+    },
+    {
+      "repository_path": "recipes/research-v1/provenance/runtime-support-v2/SUPPLIED_INPUT_SCHEMAS_AND_CHECKS.json",
+      "sha256": "5b8ec358dd1ad1846338f26af03e75b43e9fc31c8493693912fb7d7640f3ff1f",
+      "support_member": "SUPPLIED_INPUT_SCHEMAS_AND_CHECKS.json",
+      "support_sha256": "5b8ec358dd1ad1846338f26af03e75b43e9fc31c8493693912fb7d7640f3ff1f",
+      "differences": []
+    },
+    {
+      "repository_path": "recipes/research-v1/runtime-support-v2/contracts/INTERPOLATION_EXPORT_IDENTITIES.json",
+      "sha256": "c1be4427ac191a57eeac0dc8bed8a46c2d4770be01d04e8e408332c74a739c0a",
+      "support_member": "contracts/INTERPOLATION_EXPORT_IDENTITIES.json",
+      "support_sha256": "c1be4427ac191a57eeac0dc8bed8a46c2d4770be01d04e8e408332c74a739c0a",
+      "differences": []
+    },
+    {
+      "repository_path": "recipes/research-v1/runtime-support-v2/contracts/P3_FREEZE.projection.json",
+      "sha256": "a255b70e82073fe16120e34bc837157b473f0bf2114af8f953493fa593430603",
+      "support_member": "contracts/P3_FREEZE.projection.json",
+      "support_sha256": "a255b70e82073fe16120e34bc837157b473f0bf2114af8f953493fa593430603",
+      "differences": []
+    },
+    {
+      "repository_path": "recipes/research-v1/runtime-support-v2/contracts/P3_HISTORICAL_MARKER_IDENTITIES.json",
+      "sha256": "f79969dac1b8fcffc30d6d11bf3a452d05838992db247ce73b3998a13c99cac8",
+      "support_member": "contracts/P3_HISTORICAL_MARKER_IDENTITIES.json",
+      "support_sha256": "f79969dac1b8fcffc30d6d11bf3a452d05838992db247ce73b3998a13c99cac8",
+      "differences": []
+    },
+    {
+      "repository_path": "recipes/research-v1/runtime-support-v2/contracts/P3_RUN_CONFIG.adapter.json",
+      "sha256": "1c101bca3399f848a49a278db115ed05f4db783ff92676e7e164a54e9f798d1d",
+      "support_member": "contracts/P3_RUN_CONFIG.adapter.json",
+      "support_sha256": "1c101bca3399f848a49a278db115ed05f4db783ff92676e7e164a54e9f798d1d",
+      "differences": []
+    },
+    {
+      "repository_path": "recipes/research-v1/runtime-support-v2/contracts/SYMBOL_DEPENDENCIES.json",
+      "sha256": "f2a6798199c4be7edeae1f66b05fcb997181969d13f98c1ec185b2e4be0d0af3",
+      "support_member": "contracts/SYMBOL_DEPENDENCIES.json",
+      "support_sha256": "f2a6798199c4be7edeae1f66b05fcb997181969d13f98c1ec185b2e4be0d0af3",
+      "differences": []
+    },
+    {
+      "repository_path": "recipes/research-v1/runtime-support-v2/frozen_native/config.json",
+      "sha256": "fe6cd464a09a0605f6ead38867c0497edc71de31fa45446f790e3f9a4f937369",
+      "support_member": "frozen_native/config.json",
+      "support_sha256": "fe6cd464a09a0605f6ead38867c0497edc71de31fa45446f790e3f9a4f937369",
+      "differences": []
+    },
+    {
+      "repository_path": "recipes/research-v1/runtime-support-v2/frozen_native/inference.py",
+      "sha256": "17e307631b8e5fd8be8c9d7e992632a6dfbc26708287318fca1259f6d1dd548d",
+      "support_member": "frozen_native/inference.py",
+      "support_sha256": "17e307631b8e5fd8be8c9d7e992632a6dfbc26708287318fca1259f6d1dd548d",
+      "differences": []
+    },
+    {
+      "repository_path": "recipes/research-v1/runtime-support-v2/frozen_native/requirements-inference-tested.txt",
+      "sha256": "dd6b7d954f0153cc6898a9aa0f45901e3727906172e0045d9bc776daf2f7163e",
+      "support_member": "frozen_native/requirements-inference-tested.txt",
+      "support_sha256": "dd6b7d954f0153cc6898a9aa0f45901e3727906172e0045d9bc776daf2f7163e",
+      "differences": []
+    },
+    {
+      "repository_path": "recipes/research-v1/runtime-support-v2/frozen_native/special_tokens_map.json",
+      "sha256": "79bc49c15e40cfc59779b5559d452c058a06f684a2867d97c3c0190933d8801f",
+      "support_member": "frozen_native/special_tokens_map.json",
+      "support_sha256": "79bc49c15e40cfc59779b5559d452c058a06f684a2867d97c3c0190933d8801f",
+      "differences": []
+    },
+    {
+      "repository_path": "recipes/research-v1/runtime-support-v2/frozen_native/src/accepted_generate.py",
+      "sha256": "5c4214f0d2a985ee7b24da431ce1bf521c96ae6f7dfa816ef800b505eb68013c",
+      "support_member": "frozen_native/src/accepted_generate.py",
+      "support_sha256": "5c4214f0d2a985ee7b24da431ce1bf521c96ae6f7dfa816ef800b505eb68013c",
+      "differences": []
+    },
+    {
+      "repository_path": "recipes/research-v1/runtime-support-v2/helpers/p3_checkers.py",
+      "sha256": "593d806622cbfbb085622f8d6d249b307f56d3893c2a967c4b83511594a9d0b6",
+      "support_member": "helpers/p3_checkers.py",
+      "support_sha256": "593d806622cbfbb085622f8d6d249b307f56d3893c2a967c4b83511594a9d0b6",
+      "differences": []
+    },
+    {
+      "repository_path": "recipes/research-v1/runtime-support-v2/helpers/p3_io.py",
+      "sha256": "99175c95ab72fe4e0769dced8334c540756f354e068c4260536380515064779d",
+      "support_member": "helpers/p3_io.py",
+      "support_sha256": "99175c95ab72fe4e0769dced8334c540756f354e068c4260536380515064779d",
+      "differences": []
+    },
+    {
+      "repository_path": "recipes/research-v1/runtime-support-v2/helpers/p3_plan.py",
+      "sha256": "74f320c8c8fc02134da4dcaabc46f74d8684934009710486b6eea7e414e8c189",
+      "support_member": "helpers/p3_plan.py",
+      "support_sha256": "74f320c8c8fc02134da4dcaabc46f74d8684934009710486b6eea7e414e8c189",
+      "differences": []
+    }
+  ],
+  "adapters": {
+    "p2.py": {
+      "implementation": "unchanged recovered trainer and accepted adapter",
+      "differences": [],
+      "real_validation": "supplied RunPod PASS; not locally rerun"
+    },
+    "p3.py": {
+      "source": "sources/posttraining/runs/p3_basic_instruction_generalization_20260907/runtime/execute.py",
+      "source_sha256": "50e1a842d41569d90f6cbe4d0ac4ba428ab3e59afc21ba2cff5b4b4b3f3c4f5b",
+      "selected_functions": [
+        "load_model",
+        "encoded_rows",
+        "checkpoint",
+        "train",
+        "generate",
+        "agg",
+        "evaluate",
+        "val500",
+        "baseline"
+      ],
+      "original_runtime_sha256": "269a791849d4d7ecbac5a7f0edd0daf416de5254901468787abdb1b4ea4c95b9",
+      "bindings": [
+        "CKPT",
+        "TOK",
+        "DATA row/hash resolver",
+        "CONFIG.source_checkpoint",
+        "EVAL",
+        "TRAIN",
+        "P2 val500 resolver"
+      ],
+      "differences": [
+        "Startup imports/orchestration are replaced by explicit function/global bindings; no prepare/curriculum import.",
+        "training-only removes exactly the train baseline assertion, omits evaluate/val500 callbacks and full private freeze checks; no baseline marker.",
+        "historical-schedule validates every original freeze dependency and runs actual baseline in separate process before training; keeps 320/640 evaluations.",
+        "Exact supplied pure checker function is bound separately, avoiding private startup imports.",
+        "No final/Part A/dev100/likelihood/outer review orchestration; no full replay claim.",
+        "Local path metadata, timing, potential omitted-evaluation RNG effects and serialization differ."
+      ]
+    },
+    "interpolate.py": {
+      "source": "sources/posttraining/runs/p3_retention_two_point_interpolation_20260907/runtime/blend.py",
+      "source_sha256": "da23bfb911a09762ed1ac6017e1a50bcd2bb9e9eb99557ea0df549fdd4603e05",
+      "selected_functions": [
+        "interpolate",
+        "state_digest",
+        "main"
+      ],
+      "bindings": [
+        "PARENTS (original identities)",
+        "TOK",
+        "RUN",
+        "FLAGS"
+      ],
+      "differences": [
+        "No numerical function-body edits. Explicit globals replace startup/common imports.",
+        "Creates fresh preparation/weights directories; complete recorded config and post-run historical tensor-digest/buffer guards added.",
+        "FLAGS is new adapter status, not historical review/selection. No later evaluation.",
+        "Relocated derivation paths may change serialized file hashes; original/new identities recorded separately."
+      ]
+    },
+    "export_native.py": {
+      "source": "sources/posttraining/runs/alpha075_native_inference_export_v1/evidence/scripts/export_weights.py",
+      "source_sha256": "2b229c18d6d39306c27ebd56e8810be886e054c8f5ed25d1b43b20fe0e5a5e7b",
+      "support_boundary_map": "runtime-support-v2/RUNTIME_SUPPORT.md#native-export-actual-operations-and-complete-builder-boundary",
+      "bindings": [
+        "source_checkpoint",
+        "frozen_inference_root",
+        "canonical tokenizer",
+        "fresh out_dir"
+      ],
+      "differences": [
+        "Complete explicit builder; never executes the build_bundle.py excerpt.",
+        "Reuses restricted recovered loader and hash-identical native model; fixed assets copied verbatim.",
+        "Replaces original executable/venv path guard with recorded dependency disclosure; execution environment unvalidated here.",
+        "Adds complete config/finite/historical alpha075 tensor-digest/alias/count guards.",
+        "Optional new interpolation receipt binds changed serialization hash without relaxing recorded tensor digest.",
+        "New public metadata/manifest/archive omit private review/parity pages; parity NOT_RUN."
+      ]
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "train/STATUS.json": {
+    "sha256": "3cc2bc46749b57baf8f608881778dec1be657f4229aa8089a710dec3f483cd3b",
+    "historical_record_only": true,
+    "status": "COMPLETED",
+    "completed_updates": 640,
+    "source_sha256": null
+  },
+  "evaluation/BASELINE_COMPLETE.json": {
+    "sha256": "fc1044d33b5182e863a210a3c4a43eed65eb6a4e51fc5e898c07b5a45caae690",
+    "historical_record_only": true,
+    "status": "COMPLETE",
+    "completed_updates": 0,
+    "source_sha256": "20afc40096568343c59d8a55e9606667c279f5f1c976908c57de18a0107f4e4e"
+  }
+}

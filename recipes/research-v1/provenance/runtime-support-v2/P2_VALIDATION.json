@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "returncode": 0,
+  "python": "3.10.12",
+  "versions": {
+    "torch": "2.11.0+cu126",
+    "numpy": "2.2.6",
+    "tokenizers": "0.22.2",
+    "safetensors": "0.8.0"
+  },
+  "interpreter": "${PRIVATE_CHECKOUT}/.venv/bin/python",
+  "working_directory": "${MAINTENANCE}/work (outside checkout and extracted source)",
+  "adapter_sha256": "bbbb02e276cce9f0797ab68cab032181f939151cd31c728ff944e272007fe3db",
+  "archive_sha256": "79db3f26d26491c692f9fd73ed34f68adcd0222c069a43f88f30a58be38d2915",
+  "transport_entries_verified": 32,
+  "adapter_unchanged": true,
+  "result": {
+    "validation": "data-path checked; no model work",
+    "original_plan_sha256": "20ee8fb0151ae761a9dbe2529663ff24a0295edf033be3baaa69bf8db68e3798",
+    "public_plan_sha256": "20ee8fb0151ae761a9dbe2529663ff24a0295edf033be3baaa69bf8db68e3798",
+    "semantic_changes": [],
+    "location_changes": [
+      "consumption_plan.train_path",
+      "--train_jsonl",
+      "--val_jsonl",
+      "--init_from_pretrain",
+      "--out_dir",
+      "--p2_consumption_plan",
+      "--tokenizer_path"
+    ],
+    "train_rows": 12000,
+    "validation_rows": 500,
+    "source_root": "${TRANSPORT}/recipes/research-v1/sources/posttraining"
+  },
+  "audit_ids_unique_and_disjoint": true,
+  "every_row_supervised_targets_matches_encoding": true,
+  "deterministic_plan_rederived_and_equal": true,
+  "original_launch_matches_after_known_path_projection": true,
+  "source_root_isolation": true,
+  "imported_local_modules": [
+    "sft",
+    "sft.p2_plan",
+    "sft.train_sft",
+    "src",
+    "src.chat_template",
+    "src.model",
+    "src.optim",
+    "src.posttrain_preflight",
+    "src.posttrain_resume",
+    "src.special_tokens",
+    "src.tracking"
+  ],
+  "out_dir_created": false,
+  "prohibited_attempts": [],
+  "elapsed_seconds": 25.80665135383606,
+  "execution_method": "Unchanged p2.py via runpy __main__ with --validate-only; guard rejects model constructors, torch.load, CUDA initialization, subprocess/network and writes outside maintenance. Exact argv/env/wrapper retained in private report. An observer precheck initially compared absolute vs projected paths and failed before invoking p2.py; observer-only correction applied. No adapter/input fix required.",
+  "training_or_model_reproduction_claim": false
+}

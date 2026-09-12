@@ -1,0 +1,1190 @@
+{
+  "status": "PASS",
+  "frozen_original_sha256": "d9e63373a2ea1cc946fba1a5384916a736b9c31133b60cced6764a0d5cd3881d",
+  "data": {
+    "train.jsonl": {
+      "sha256": "9eac9961ef825b5441147075750abbb428681a75c41fa7b9790ee625eab0c301",
+      "expected_sha256": "9eac9961ef825b5441147075750abbb428681a75c41fa7b9790ee625eab0c301",
+      "hash_matches_frozen": true,
+      "bytes": 7715517,
+      "rows": 7168,
+      "observed_top_level_schema": {
+        "audit_id": {
+          "present_rows": 7168,
+          "types": [
+            "str"
+          ]
+        },
+        "condition": {
+          "present_rows": 7168,
+          "types": [
+            "str"
+          ]
+        },
+        "family": {
+          "present_rows": 7168,
+          "types": [
+            "str"
+          ]
+        },
+        "formatted_tokens": {
+          "present_rows": 7168,
+          "types": [
+            "int"
+          ]
+        },
+        "group_id": {
+          "present_rows": 7168,
+          "types": [
+            "str"
+          ]
+        },
+        "input_unsupervised_tokens": {
+          "present_rows": 7168,
+          "types": [
+            "int"
+          ]
+        },
+        "matched_payload_id": {
+          "present_rows": 7168,
+          "types": [
+            "str"
+          ]
+        },
+        "messages": {
+          "present_rows": 7168,
+          "types": [
+            "list"
+          ]
+        },
+        "payload": {
+          "present_rows": 7168,
+          "types": [
+            "dict"
+          ]
+        },
+        "reference": {
+          "present_rows": 7168,
+          "types": [
+            "str"
+          ]
+        },
+        "shifted_targets": {
+          "present_rows": 7168,
+          "types": [
+            "int"
+          ]
+        },
+        "split": {
+          "present_rows": 7168,
+          "types": [
+            "str"
+          ]
+        },
+        "structured_record": {
+          "present_rows": 7168,
+          "types": [
+            "dict"
+          ]
+        },
+        "template_id": {
+          "present_rows": 7168,
+          "types": [
+            "str"
+          ]
+        },
+        "variant": {
+          "present_rows": 7168,
+          "types": [
+            "int"
+          ]
+        }
+      },
+      "unique_audit_ids": true,
+      "messages_schema": {
+        "type": "array",
+        "items": {
+          "role": "string",
+          "content": "string"
+        }
+      },
+      "contents_exported": false,
+      "encoded_rows": 7168,
+      "encoded_formatted_tokens": 376321,
+      "encoded_supervised_targets": 44544,
+      "max_encoded_length": 80,
+      "assistant_content_and_eos_only": true
+    },
+    "replay.jsonl": {
+      "sha256": "41e5371e47f10ba292418a29630f4c9174b2bdaee47f6d58039f26b964280fdf",
+      "expected_sha256": "41e5371e47f10ba292418a29630f4c9174b2bdaee47f6d58039f26b964280fdf",
+      "hash_matches_frozen": true,
+      "bytes": 6621423,
+      "rows": 3072,
+      "observed_top_level_schema": {
+        "assigned_split": {
+          "present_rows": 3072,
+          "types": [
+            "str"
+          ]
+        },
+        "assistant_content_tokens_total": {
+          "present_rows": 3072,
+          "types": [
+            "int"
+          ]
+        },
+        "assistant_message_content_token_counts": {
+          "present_rows": 1357,
+          "types": [
+            "list"
+          ]
+        },
+        "assistant_turns": {
+          "present_rows": 3072,
+          "types": [
+            "int"
+          ]
+        },
+        "audit_id": {
+          "present_rows": 3072,
+          "types": [
+            "str"
+          ]
+        },
+        "deterministic_checks": {
+          "present_rows": 3072,
+          "types": [
+            "list"
+          ]
+        },
+        "formatted_tokens": {
+          "present_rows": 3072,
+          "types": [
+            "int"
+          ]
+        },
+        "group_id": {
+          "present_rows": 3072,
+          "types": [
+            "str"
+          ]
+        },
+        "input_unsupervised_tokens": {
+          "present_rows": 3072,
+          "types": [
+            "int"
+          ]
+        },
+        "max_assistant_content_tokens": {
+          "present_rows": 3072,
+          "types": [
+            "int"
+          ]
+        },
+        "messages": {
+          "present_rows": 3072,
+          "types": [
+            "list"
+          ]
+        },
+        "messages_sha256": {
+          "present_rows": 3072,
+          "types": [
+            "str"
+          ]
+        },
+        "origin_pool": {
+          "present_rows": 3072,
+          "types": [
+            "str"
+          ]
+        },
+        "original_row_index": {
+          "present_rows": 3072,
+          "types": [
+            "int"
+          ]
+        },
+        "original_split": {
+          "present_rows": 1357,
+          "types": [
+            "str"
+          ]
+        },
+        "p2_task": {
+          "present_rows": 3072,
+          "types": [
+            "str"
+          ]
+        },
+        "p3_formatted_tokens": {
+          "present_rows": 3072,
+          "types": [
+            "int"
+          ]
+        },
+        "p3_shifted_targets": {
+          "present_rows": 3072,
+          "types": [
+            "int"
+          ]
+        },
+        "per_turn": {
+          "present_rows": 3072,
+          "types": [
+            "list"
+          ]
+        },
+        "selection_rank_sha256": {
+          "present_rows": 1357,
+          "types": [
+            "str"
+          ]
+        },
+        "sequence_tokens": {
+          "present_rows": 3072,
+          "types": [
+            "int"
+          ]
+        },
+        "serialized_token_count": {
+          "present_rows": 1357,
+          "types": [
+            "int"
+          ]
+        },
+        "shifted_supervised_tokens": {
+          "present_rows": 3072,
+          "types": [
+            "int"
+          ]
+        },
+        "shifted_targets": {
+          "present_rows": 3072,
+          "types": [
+            "int"
+          ]
+        },
+        "source": {
+          "present_rows": 3072,
+          "types": [
+            "str"
+          ]
+        },
+        "task_supervised_tokens": {
+          "present_rows": 3072,
+          "types": [
+            "dict"
+          ]
+        },
+        "task_type": {
+          "present_rows": 3072,
+          "types": [
+            "str"
+          ]
+        },
+        "judgment": {
+          "present_rows": 1715,
+          "types": [
+            "dict"
+          ]
+        },
+        "original_d4_route": {
+          "present_rows": 1715,
+          "types": [
+            "str"
+          ]
+        },
+        "quality": {
+          "present_rows": 1715,
+          "types": [
+            "str"
+          ]
+        },
+        "python_function_ast_evidence": {
+          "present_rows": 256,
+          "types": [
+            "dict"
+          ]
+        },
+        "python_function_code_turn_lower_tokens": {
+          "present_rows": 256,
+          "types": [
+            "int"
+          ]
+        }
+      },
+      "unique_audit_ids": true,
+      "messages_schema": {
+        "type": "array",
+        "items": {
+          "role": "string",
+          "content": "string"
+        }
+      },
+      "contents_exported": false,
+      "encoded_rows": 3072,
+      "encoded_formatted_tokens": 575908,
+      "encoded_supervised_targets": 216932,
+      "max_encoded_length": 512,
+      "assistant_content_and_eos_only": true
+    },
+    "UPDATE_PLAN.jsonl": {
+      "sha256": "ccb0af993e426e47f9bc0c910b8500f0d4a45b44522514739d56772e75448655",
+      "expected_sha256": "ccb0af993e426e47f9bc0c910b8500f0d4a45b44522514739d56772e75448655",
+      "hash_matches_frozen": true,
+      "bytes": 651886,
+      "rows": 640,
+      "observed_top_level_schema": {
+        "block": {
+          "present_rows": 640,
+          "types": [
+            "int"
+          ]
+        },
+        "epoch": {
+          "present_rows": 640,
+          "types": [
+            "int"
+          ]
+        },
+        "row_ids": {
+          "present_rows": 640,
+          "types": [
+            "list"
+          ]
+        },
+        "stream": {
+          "present_rows": 640,
+          "types": [
+            "str"
+          ]
+        },
+        "update": {
+          "present_rows": 640,
+          "types": [
+            "int"
+          ]
+        }
+      }
+    },
+    "development.jsonl": {
+      "sha256": "705be7d8e705a1ca8cc911c756bfd074e86b8715d6d6beeb2e509ba76d7da0f8",
+      "expected_sha256": "705be7d8e705a1ca8cc911c756bfd074e86b8715d6d6beeb2e509ba76d7da0f8",
+      "hash_matches_frozen": true,
+      "bytes": 605400,
+      "rows": 512,
+      "observed_top_level_schema": {
+        "audit_id": {
+          "present_rows": 512,
+          "types": [
+            "str"
+          ]
+        },
+        "condition": {
+          "present_rows": 512,
+          "types": [
+            "str"
+          ]
+        },
+        "family": {
+          "present_rows": 512,
+          "types": [
+            "str"
+          ]
+        },
+        "formatted_tokens": {
+          "present_rows": 512,
+          "types": [
+            "int"
+          ]
+        },
+        "group_id": {
+          "present_rows": 512,
+          "types": [
+            "str"
+          ]
+        },
+        "input_unsupervised_tokens": {
+          "present_rows": 512,
+          "types": [
+            "int"
+          ]
+        },
+        "matched_payload_id": {
+          "present_rows": 512,
+          "types": [
+            "str"
+          ]
+        },
+        "messages": {
+          "present_rows": 512,
+          "types": [
+            "list"
+          ]
+        },
+        "payload": {
+          "present_rows": 512,
+          "types": [
+            "dict"
+          ]
+        },
+        "reference": {
+          "present_rows": 512,
+          "types": [
+            "str"
+          ]
+        },
+        "shifted_targets": {
+          "present_rows": 512,
+          "types": [
+            "int"
+          ]
+        },
+        "split": {
+          "present_rows": 512,
+          "types": [
+            "str"
+          ]
+        },
+        "structured_record": {
+          "present_rows": 512,
+          "types": [
+            "dict"
+          ]
+        },
+        "template_id": {
+          "present_rows": 512,
+          "types": [
+            "str"
+          ]
+        },
+        "variant": {
+          "present_rows": 512,
+          "types": [
+            "int"
+          ]
+        }
+      },
+      "unique_audit_ids": true,
+      "messages_schema": {
+        "type": "array",
+        "items": {
+          "role": "string",
+          "content": "string"
+        }
+      },
+      "contents_exported": false
+    },
+    "final.jsonl": {
+      "sha256": "4eb8408f01d92cd9fe1c0890a2eaa18b5726ac70dc0249fb1b94c82e7171ee30",
+      "expected_sha256": "4eb8408f01d92cd9fe1c0890a2eaa18b5726ac70dc0249fb1b94c82e7171ee30",
+      "hash_matches_frozen": true,
+      "bytes": 591348,
+      "rows": 512,
+      "observed_top_level_schema": {
+        "audit_id": {
+          "present_rows": 512,
+          "types": [
+            "str"
+          ]
+        },
+        "condition": {
+          "present_rows": 512,
+          "types": [
+            "str"
+          ]
+        },
+        "family": {
+          "present_rows": 512,
+          "types": [
+            "str"
+          ]
+        },
+        "formatted_tokens": {
+          "present_rows": 512,
+          "types": [
+            "int"
+          ]
+        },
+        "group_id": {
+          "present_rows": 512,
+          "types": [
+            "str"
+          ]
+        },
+        "input_unsupervised_tokens": {
+          "present_rows": 512,
+          "types": [
+            "int"
+          ]
+        },
+        "matched_payload_id": {
+          "present_rows": 512,
+          "types": [
+            "str"
+          ]
+        },
+        "messages": {
+          "present_rows": 512,
+          "types": [
+            "list"
+          ]
+        },
+        "payload": {
+          "present_rows": 512,
+          "types": [
+            "dict"
+          ]
+        },
+        "reference": {
+          "present_rows": 512,
+          "types": [
+            "str"
+          ]
+        },
+        "shifted_targets": {
+          "present_rows": 512,
+          "types": [
+            "int"
+          ]
+        },
+        "split": {
+          "present_rows": 512,
+          "types": [
+            "str"
+          ]
+        },
+        "structured_record": {
+          "present_rows": 512,
+          "types": [
+            "dict"
+          ]
+        },
+        "template_id": {
+          "present_rows": 512,
+          "types": [
+            "str"
+          ]
+        },
+        "variant": {
+          "present_rows": 512,
+          "types": [
+            "int"
+          ]
+        }
+      },
+      "unique_audit_ids": true,
+      "messages_schema": {
+        "type": "array",
+        "items": {
+          "role": "string",
+          "content": "string"
+        }
+      },
+      "contents_exported": false
+    },
+    "TRAIN_SAMPLE128.jsonl": {
+      "sha256": "4d14c93bf236f5689e779f248550e00f03f295d762f58b344bc3adfc31fd1596",
+      "expected_sha256": "4d14c93bf236f5689e779f248550e00f03f295d762f58b344bc3adfc31fd1596",
+      "hash_matches_frozen": true,
+      "bytes": 134962,
+      "rows": 128,
+      "observed_top_level_schema": {
+        "audit_id": {
+          "present_rows": 128,
+          "types": [
+            "str"
+          ]
+        },
+        "condition": {
+          "present_rows": 128,
+          "types": [
+            "str"
+          ]
+        },
+        "family": {
+          "present_rows": 128,
+          "types": [
+            "str"
+          ]
+        },
+        "formatted_tokens": {
+          "present_rows": 128,
+          "types": [
+            "int"
+          ]
+        },
+        "group_id": {
+          "present_rows": 128,
+          "types": [
+            "str"
+          ]
+        },
+        "input_unsupervised_tokens": {
+          "present_rows": 128,
+          "types": [
+            "int"
+          ]
+        },
+        "matched_payload_id": {
+          "present_rows": 128,
+          "types": [
+            "str"
+          ]
+        },
+        "messages": {
+          "present_rows": 128,
+          "types": [
+            "list"
+          ]
+        },
+        "payload": {
+          "present_rows": 128,
+          "types": [
+            "dict"
+          ]
+        },
+        "reference": {
+          "present_rows": 128,
+          "types": [
+            "str"
+          ]
+        },
+        "shifted_targets": {
+          "present_rows": 128,
+          "types": [
+            "int"
+          ]
+        },
+        "split": {
+          "present_rows": 128,
+          "types": [
+            "str"
+          ]
+        },
+        "structured_record": {
+          "present_rows": 128,
+          "types": [
+            "dict"
+          ]
+        },
+        "template_id": {
+          "present_rows": 128,
+          "types": [
+            "str"
+          ]
+        },
+        "variant": {
+          "present_rows": 128,
+          "types": [
+            "int"
+          ]
+        }
+      },
+      "unique_audit_ids": true,
+      "messages_schema": {
+        "type": "array",
+        "items": {
+          "role": "string",
+          "content": "string"
+        }
+      },
+      "contents_exported": false
+    }
+  },
+  "plan": {
+    "ordered_rows_exactly_rederived": true,
+    "updates": 640,
+    "rows_per_update": 32,
+    "total_exposures": 20480,
+    "unique_rows": 10240,
+    "every_row_exposures": 2,
+    "stream_updates": {
+      "procedural": 448,
+      "replay": 192
+    },
+    "per_ten_update_block": {
+      "procedural": 7,
+      "replay": 3
+    },
+    "supervised_target_exposure": 522952,
+    "raw_plan_row_ids_exported": false
+  },
+  "p2_inputs": {
+    "train_jsonl": {
+      "sha256": "37bc8aa8765c2ec11521cec4797a9621cfc198f5f6557c4e19962686c41559a8",
+      "bytes": 24989341,
+      "matches_original_launch": true,
+      "rows": 12000,
+      "recorded_supervised_targets": 997427,
+      "observed_top_level_schema": {
+        "assigned_split": {
+          "present_rows": 12000,
+          "types": [
+            "str"
+          ]
+        },
+        "assistant_content_tokens_total": {
+          "present_rows": 12000,
+          "types": [
+            "int"
+          ]
+        },
+        "assistant_turns": {
+          "present_rows": 12000,
+          "types": [
+            "int"
+          ]
+        },
+        "audit_id": {
+          "present_rows": 12000,
+          "types": [
+            "str"
+          ]
+        },
+        "deterministic_checks": {
+          "present_rows": 12000,
+          "types": [
+            "list"
+          ]
+        },
+        "group_id": {
+          "present_rows": 12000,
+          "types": [
+            "str"
+          ]
+        },
+        "judgment": {
+          "present_rows": 5956,
+          "types": [
+            "dict"
+          ]
+        },
+        "max_assistant_content_tokens": {
+          "present_rows": 12000,
+          "types": [
+            "int"
+          ]
+        },
+        "messages": {
+          "present_rows": 12000,
+          "types": [
+            "list"
+          ]
+        },
+        "messages_sha256": {
+          "present_rows": 12000,
+          "types": [
+            "str"
+          ]
+        },
+        "origin_pool": {
+          "present_rows": 12000,
+          "types": [
+            "str"
+          ]
+        },
+        "original_d4_route": {
+          "present_rows": 5956,
+          "types": [
+            "str"
+          ]
+        },
+        "original_row_index": {
+          "present_rows": 12000,
+          "types": [
+            "int"
+          ]
+        },
+        "p2_task": {
+          "present_rows": 12000,
+          "types": [
+            "str"
+          ]
+        },
+        "per_turn": {
+          "present_rows": 12000,
+          "types": [
+            "list"
+          ]
+        },
+        "quality": {
+          "present_rows": 5956,
+          "types": [
+            "str"
+          ]
+        },
+        "sequence_tokens": {
+          "present_rows": 12000,
+          "types": [
+            "int"
+          ]
+        },
+        "shifted_supervised_tokens": {
+          "present_rows": 12000,
+          "types": [
+            "int"
+          ]
+        },
+        "source": {
+          "present_rows": 12000,
+          "types": [
+            "str"
+          ]
+        },
+        "task_supervised_tokens": {
+          "present_rows": 12000,
+          "types": [
+            "dict"
+          ]
+        },
+        "task_type": {
+          "present_rows": 12000,
+          "types": [
+            "str"
+          ]
+        },
+        "assistant_message_content_token_counts": {
+          "present_rows": 6044,
+          "types": [
+            "list"
+          ]
+        },
+        "original_split": {
+          "present_rows": 6044,
+          "types": [
+            "str"
+          ]
+        },
+        "selection_rank_sha256": {
+          "present_rows": 6044,
+          "types": [
+            "str"
+          ]
+        },
+        "serialized_token_count": {
+          "present_rows": 6044,
+          "types": [
+            "int"
+          ]
+        },
+        "python_function_ast_evidence": {
+          "present_rows": 907,
+          "types": [
+            "dict"
+          ]
+        },
+        "python_function_code_turn_lower_tokens": {
+          "present_rows": 907,
+          "types": [
+            "int"
+          ]
+        }
+      }
+    },
+    "val_jsonl": {
+      "sha256": "9acca1a4f94cd15ce1e3c22dbc2de70f16eaf7405e068e078219a2ef52a94796",
+      "bytes": 1049806,
+      "matches_original_launch": true,
+      "rows": 500,
+      "recorded_supervised_targets": 43573,
+      "observed_top_level_schema": {
+        "assigned_split": {
+          "present_rows": 500,
+          "types": [
+            "str"
+          ]
+        },
+        "assistant_content_tokens_total": {
+          "present_rows": 500,
+          "types": [
+            "int"
+          ]
+        },
+        "assistant_message_content_token_counts": {
+          "present_rows": 259,
+          "types": [
+            "list"
+          ]
+        },
+        "assistant_turns": {
+          "present_rows": 500,
+          "types": [
+            "int"
+          ]
+        },
+        "audit_id": {
+          "present_rows": 500,
+          "types": [
+            "str"
+          ]
+        },
+        "deterministic_checks": {
+          "present_rows": 500,
+          "types": [
+            "list"
+          ]
+        },
+        "group_id": {
+          "present_rows": 500,
+          "types": [
+            "str"
+          ]
+        },
+        "max_assistant_content_tokens": {
+          "present_rows": 500,
+          "types": [
+            "int"
+          ]
+        },
+        "messages": {
+          "present_rows": 500,
+          "types": [
+            "list"
+          ]
+        },
+        "messages_sha256": {
+          "present_rows": 500,
+          "types": [
+            "str"
+          ]
+        },
+        "origin_pool": {
+          "present_rows": 500,
+          "types": [
+            "str"
+          ]
+        },
+        "original_row_index": {
+          "present_rows": 500,
+          "types": [
+            "int"
+          ]
+        },
+        "original_split": {
+          "present_rows": 259,
+          "types": [
+            "str"
+          ]
+        },
+        "p2_task": {
+          "present_rows": 500,
+          "types": [
+            "str"
+          ]
+        },
+        "per_turn": {
+          "present_rows": 500,
+          "types": [
+            "list"
+          ]
+        },
+        "selection_rank_sha256": {
+          "present_rows": 259,
+          "types": [
+            "str"
+          ]
+        },
+        "sequence_tokens": {
+          "present_rows": 500,
+          "types": [
+            "int"
+          ]
+        },
+        "serialized_token_count": {
+          "present_rows": 259,
+          "types": [
+            "int"
+          ]
+        },
+        "shifted_supervised_tokens": {
+          "present_rows": 500,
+          "types": [
+            "int"
+          ]
+        },
+        "source": {
+          "present_rows": 500,
+          "types": [
+            "str"
+          ]
+        },
+        "task_supervised_tokens": {
+          "present_rows": 500,
+          "types": [
+            "dict"
+          ]
+        },
+        "task_type": {
+          "present_rows": 500,
+          "types": [
+            "str"
+          ]
+        },
+        "judgment": {
+          "present_rows": 241,
+          "types": [
+            "dict"
+          ]
+        },
+        "original_d4_route": {
+          "present_rows": 241,
+          "types": [
+            "str"
+          ]
+        },
+        "quality": {
+          "present_rows": 241,
+          "types": [
+            "str"
+          ]
+        },
+        "python_function_ast_evidence": {
+          "present_rows": 39,
+          "types": [
+            "dict"
+          ]
+        },
+        "python_function_code_turn_lower_tokens": {
+          "present_rows": 39,
+          "types": [
+            "int"
+          ]
+        }
+      }
+    },
+    "p2_consumption_plan": {
+      "sha256": "20ee8fb0151ae761a9dbe2529663ff24a0295edf033be3baaa69bf8db68e3798",
+      "bytes": 2015889,
+      "matches_original_launch": true,
+      "schema": "p2_two_pass_materialized_v1",
+      "dataset_rows": 12000,
+      "seed": 20260906,
+      "max_steps": 750,
+      "warmup_steps": 38,
+      "consumed_rows": 24000,
+      "supervised_targets": 1994854,
+      "exposure_histogram": {
+        "0": 0,
+        "1": 0,
+        "2": 12000
+      },
+      "unused_tail_rows": 0
+    },
+    "base_checkpoint": {
+      "sha256": "95ae1201a5ce8a6f838e8e131c59b8779d639f4ec4cf4dbc553928b9b754b86e",
+      "bytes": 1071151407,
+      "opaque_full_hash_checked_by_p2": true,
+      "deserialized": false
+    }
+  },
+  "p3_replay_and_p2_validation_audit_ids_disjoint": true,
+  "bounded_frozen_dependency_checks": [
+    {
+      "logical_input": "runtime/checkers.py",
+      "expected_sha256": "6d9a886340677d4531e48307fa706db2fc415b5c64e3d26596992c702b3bb8c7",
+      "actual_sha256": "6d9a886340677d4531e48307fa706db2fc415b5c64e3d26596992c702b3bb8c7",
+      "matches": true
+    },
+    {
+      "logical_input": "runtime/curriculum.py",
+      "expected_sha256": "bb6571dcc0b568f3ab23352cbe8b3f844a502f8a8695dc1d9a2892e2911d4081",
+      "actual_sha256": "bb6571dcc0b568f3ab23352cbe8b3f844a502f8a8695dc1d9a2892e2911d4081",
+      "matches": true
+    },
+    {
+      "logical_input": "runtime/evaluate_likelihood.py",
+      "expected_sha256": "fdf73d7db29c70d46451fcc7199d8f93d6687ea3ddcd2b6f8eec407afa6526ea",
+      "actual_sha256": "fdf73d7db29c70d46451fcc7199d8f93d6687ea3ddcd2b6f8eec407afa6526ea",
+      "matches": true
+    },
+    {
+      "logical_input": "runtime/execute.py",
+      "expected_sha256": "269a791849d4d7ecbac5a7f0edd0daf416de5254901468787abdb1b4ea4c95b9",
+      "actual_sha256": "269a791849d4d7ecbac5a7f0edd0daf416de5254901468787abdb1b4ea4c95b9",
+      "matches": true
+    },
+    {
+      "logical_input": "runtime/launch.py",
+      "expected_sha256": "dcc5a1519813998fff8e802465c85ea1ccd1044fc73c45b58696bcbaf05dedc1",
+      "actual_sha256": "dcc5a1519813998fff8e802465c85ea1ccd1044fc73c45b58696bcbaf05dedc1",
+      "matches": true
+    },
+    {
+      "logical_input": "runtime/prepare.py",
+      "expected_sha256": "a554c82a3d5d5914e1ec7209dd4175df9d2833342c340483fc066e9ac53157b8",
+      "actual_sha256": "a554c82a3d5d5914e1ec7209dd4175df9d2833342c340483fc066e9ac53157b8",
+      "matches": true
+    },
+    {
+      "logical_input": "runtime/test_p3.py",
+      "expected_sha256": "b71519e6fe83f941c06a5a7c96fcfe00bd22c56a24bd78eeb2c76331b92a8a00",
+      "actual_sha256": "b71519e6fe83f941c06a5a7c96fcfe00bd22c56a24bd78eeb2c76331b92a8a00",
+      "matches": true
+    },
+    {
+      "logical_input": "preparation/RUN_CONFIG.json",
+      "expected_sha256": "93e93c25bc2bf57e0485146a4da285be68ed950acfbdcd07e6a1cc08ddad724d",
+      "actual_sha256": "93e93c25bc2bf57e0485146a4da285be68ed950acfbdcd07e6a1cc08ddad724d",
+      "matches": true
+    },
+    {
+      "logical_input": "src/model.py",
+      "expected_sha256": "2bc9fa8ae16636837c4a2937301a2419d0ac92faa2cc27560dacbd29a5144dc2",
+      "actual_sha256": "2bc9fa8ae16636837c4a2937301a2419d0ac92faa2cc27560dacbd29a5144dc2",
+      "matches": true
+    },
+    {
+      "logical_input": "src/chat_template.py",
+      "expected_sha256": "c25068dcb7d3a907dba7b7405d53a2962d91886abcaa25b0d5832a82e8bc821b",
+      "actual_sha256": "c25068dcb7d3a907dba7b7405d53a2962d91886abcaa25b0d5832a82e8bc821b",
+      "matches": true
+    },
+    {
+      "logical_input": "src/special_tokens.py",
+      "expected_sha256": "f767b864d7c8e0cb5e2c166c4f019f3f14666dcbf2b944c7909db050e4cf1e96",
+      "actual_sha256": "f767b864d7c8e0cb5e2c166c4f019f3f14666dcbf2b944c7909db050e4cf1e96",
+      "matches": true
+    },
+    {
+      "logical_input": "src/canonical_schedule.py",
+      "expected_sha256": "fc488c6cf2f30c92f1ee0b7e3563032e8d3a8e8f5e3802140cb304c9a17a2b15",
+      "actual_sha256": "fc488c6cf2f30c92f1ee0b7e3563032e8d3a8e8f5e3802140cb304c9a17a2b15",
+      "matches": true
+    },
+    {
+      "logical_input": "sft/train_sft.py",
+      "expected_sha256": "997201f1c280ece1d54b796f3b2a05fd3bda38b4cd14f7eeaa08a3c3b13b31e4",
+      "actual_sha256": "997201f1c280ece1d54b796f3b2a05fd3bda38b4cd14f7eeaa08a3c3b13b31e4",
+      "matches": true
+    },
+    {
+      "logical_input": "sft/p2_loss.py",
+      "expected_sha256": "ce2690970503bcee6641ebe68c3e5bf076984ea2fd37537daf0429375761cf42",
+      "actual_sha256": "ce2690970503bcee6641ebe68c3e5bf076984ea2fd37537daf0429375761cf42",
+      "matches": true
+    },
+    {
+      "logical_input": "sft/p2_evaluation.py",
+      "expected_sha256": "caac4bde8251b4ba2b999770630ad926c912d1ec0cfa006de65a471421ef0f7c",
+      "actual_sha256": "caac4bde8251b4ba2b999770630ad926c912d1ec0cfa006de65a471421ef0f7c",
+      "matches": true
+    },
+    {
+      "logical_input": "runs/sft_pilot_99step_preparation_20260906/evaluation/evaluate_pilot_checkpoint.py",
+      "expected_sha256": "c56286ed58ac4353d38f2e8fd4c01fd5d950c27a0e778cd7c74f6321692f4e9a",
+      "actual_sha256": "c56286ed58ac4353d38f2e8fd4c01fd5d950c27a0e778cd7c74f6321692f4e9a",
+      "matches": true
+    },
+    {
+      "logical_input": "runs/sft99_functional_diagnosis_20260906/benchmarks/run_likelihood.py",
+      "expected_sha256": "5202dc5e9b06f2469d3f3665e8a5ee6ecd5b205d54a7cb6ae59a588f6e33bc35",
+      "actual_sha256": "5202dc5e9b06f2469d3f3665e8a5ee6ecd5b205d54a7cb6ae59a588f6e33bc35",
+      "matches": true
+    }
+  ],
+  "private_evaluation_rows_hashed_and_schema_checked_only": true,
+  "model_operations": 0
+}

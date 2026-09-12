@@ -1,0 +1,103 @@
+{
+  "schema": "PUBLIC_RUNTIME_SUPPORT_V2",
+  "files": [
+    {
+      "path": "P2_VALIDATION.json",
+      "bytes": 2282,
+      "sha256": "dfad0ca99b729856ba0a5285fcbe30045d7d1ffd866700ad1ab45f0fd2218e89"
+    },
+    {
+      "path": "PACKAGE_CHECKS.json",
+      "bytes": 650,
+      "sha256": "05ada7ab6cc8307285cb7cc5a04c0c625796f8ef33b671152c259a359ef5fd63"
+    },
+    {
+      "path": "RUNTIME_SUPPORT.md",
+      "bytes": 22529,
+      "sha256": "80dda98dd61575c8d15b12c91fa7ce8c18ed5906bc57282368864d578ef95ac2"
+    },
+    {
+      "path": "SOURCE_HASH_MAP.json",
+      "bytes": 24822,
+      "sha256": "777d759a0003688b55b0be7ebc847e02d677503e4c087dd8f76b65d177601b60"
+    },
+    {
+      "path": "STATUS.json",
+      "bytes": 457,
+      "sha256": "758141a30afdad331d60fc9a80a0c4860f3c3664c7b929f42d1656a15019e2cd"
+    },
+    {
+      "path": "SUPPLIED_INPUT_SCHEMAS_AND_CHECKS.json",
+      "bytes": 28600,
+      "sha256": "5b8ec358dd1ad1846338f26af03e75b43e9fc31c8493693912fb7d7640f3ff1f"
+    },
+    {
+      "path": "contracts/INTERPOLATION_EXPORT_IDENTITIES.json",
+      "bytes": 4815,
+      "sha256": "c1be4427ac191a57eeac0dc8bed8a46c2d4770be01d04e8e408332c74a739c0a"
+    },
+    {
+      "path": "contracts/P3_FREEZE.projection.json",
+      "bytes": 2835,
+      "sha256": "a255b70e82073fe16120e34bc837157b473f0bf2114af8f953493fa593430603"
+    },
+    {
+      "path": "contracts/P3_HISTORICAL_MARKER_IDENTITIES.json",
+      "bytes": 540,
+      "sha256": "f79969dac1b8fcffc30d6d11bf3a452d05838992db247ce73b3998a13c99cac8"
+    },
+    {
+      "path": "contracts/P3_RUN_CONFIG.adapter.json",
+      "bytes": 1432,
+      "sha256": "1c101bca3399f848a49a278db115ed05f4db783ff92676e7e164a54e9f798d1d"
+    },
+    {
+      "path": "contracts/SYMBOL_DEPENDENCIES.json",
+      "bytes": 40811,
+      "sha256": "f2a6798199c4be7edeae1f66b05fcb997181969d13f98c1ec185b2e4be0d0af3"
+    },
+    {
+      "path": "frozen_native/config.json",
+      "bytes": 224,
+      "sha256": "fe6cd464a09a0605f6ead38867c0497edc71de31fa45446f790e3f9a4f937369"
+    },
+    {
+      "path": "frozen_native/inference.py",
+      "bytes": 3573,
+      "sha256": "17e307631b8e5fd8be8c9d7e992632a6dfbc26708287318fca1259f6d1dd548d"
+    },
+    {
+      "path": "frozen_native/requirements-inference-tested.txt",
+      "bytes": 113,
+      "sha256": "dd6b7d954f0153cc6898a9aa0f45901e3727906172e0045d9bc776daf2f7163e"
+    },
+    {
+      "path": "frozen_native/special_tokens_map.json",
+      "bytes": 214,
+      "sha256": "79bc49c15e40cfc59779b5559d452c058a06f684a2867d97c3c0190933d8801f"
+    },
+    {
+      "path": "frozen_native/src/accepted_generate.py",
+      "bytes": 1238,
+      "sha256": "5c4214f0d2a985ee7b24da431ce1bf521c96ae6f7dfa816ef800b505eb68013c"
+    },
+    {
+      "path": "helpers/p3_checkers.py",
+      "bytes": 1930,
+      "sha256": "593d806622cbfbb085622f8d6d249b307f56d3893c2a967c4b83511594a9d0b6"
+    },
+    {
+      "path": "helpers/p3_io.py",
+      "bytes": 1156,
+      "sha256": "99175c95ab72fe4e0769dced8334c540756f354e068c4260536380515064779d"
+    },
+    {
+      "path": "helpers/p3_plan.py",
+      "bytes": 1247,
+      "sha256": "74f320c8c8fc02134da4dcaabc46f74d8684934009710486b6eea7e414e8c189"
+    }
+  ],
+  "self_excluded": "MANIFEST.json",
+  "enclosing_archive_identity": "External .sha256 sidecar",
+  "scope": "Bounded support only; original and adapter identities are distinct"
+}

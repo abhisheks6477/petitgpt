@@ -8,8 +8,9 @@ Later DPO, response KD, LoRA and unified Base-SFT are experiments, not ancestors
 The soft-logit KD lab uses separate external models.
 
 This entry point integrates recovered run-specific source and distinguishes three
-things: **recorded historical launches**, **a public P2 path adapter**, and **new
-synthetic usage checks**. The full historical recipe is not currently runnable from
+things: **supported P2/P3/interpolation/export interfaces**, **checks with specified
+real or synthetic inputs**, and **full historical replay**. See the
+[posttraining commands and status table](recipes/research-v1/POSTTRAINING.md). The full historical recipe is not currently runnable from
 public inputs alone. Missing frozen contracts and data are listed below, not replaced
 with a generic SFT invocation. Existing [results](docs/petitgpt-v1/tables/) and
 [methodology](docs/petitgpt-v1/TECHNICAL_REPORT.md) remain unchanged.
@@ -77,9 +78,10 @@ these commands:
 Validation levels are separate: **source-recovered**, **syntax/config checked**,
 **data-path checked**, **training-smoke run**, **full historical reproduction**.
 The first two are established for the supplied source/configs. Synthetic schema
-checks are established separately. Exact historical data-path validation, any
-training smoke, export/score execution and full historical reproduction are **not
-established** by this repository maintenance change.
+checks are established separately. The supplied RunPod evidence establishes P2
+real-data path validation only, not an independent laptop rerun. Any training smoke,
+export/score execution and full historical reproduction are **not established**
+by this repository maintenance change.
 
 ## Tokenizer corpus, tokenizer training, selection and packing
 
@@ -234,9 +236,11 @@ metrics/preflight/status plus `CONSUMPTION_PLAN.public.json` and
 `PUBLIC_PATH_BINDINGS.json`. There is no new resume mode. Local path strings affect
 provenance/checkpoint serialization, so byte-identical checkpoint files are not promised.
 
-Validation here establishes CLI/source/config and synthetic contract behavior only;
-the exact-data branch could not run without the omitted input files. It does not
-certify full historical input authorization/review or claim reproduced P2 scores.
+The supplied RunPod evidence records the unchanged P2 adapter passing real 12k/500
+input, encoding and deterministic-plan validation with no model work. This was not
+independently rerun on the laptop and does not claim reproduced scores. See
+[posttraining interfaces V2](recipes/research-v1/POSTTRAINING.md) for the exact scope
+and environment, supported commands and remaining execution limits.
 
 ## P3 and fixed interpolation
 
@@ -244,16 +248,19 @@ certify full historical input authorization/review or claim reproduced P2 scores
 contains recovered `prepare.py`/`execute.py`; original/candidate hashes differ by
 handoff path redaction. The recorded launch in [p3_launch.json](configs/research-v1/p3_launch.json)
 is `python -u .../runtime/execute.py train` with frozen `RUN_CONFIG`/`UPDATE_PLAN`.
-This is **not a portable public launch**: imports of private `checkers`/`curriculum`,
-immutable file/source hashes and their 10,240-row plan remain required. No substitute
-curriculum is provided. Frozen dependency names/hashes are in
+The recovered historical script is not the public launcher. Use the new
+[p3.py adapter](recipes/research-v1/p3.py), with explicit frozen inputs and modes
+documented in [POSTTRAINING.md](recipes/research-v1/POSTTRAINING.md). It avoids private
+procedural-generator imports for supplied data; historical-schedule additionally
+requires all original freeze dependencies and preserves baseline/320/640 hooks.
+No substitute curriculum is provided. Frozen dependency names/hashes are in
 [p3_frozen_bindings.json](configs/research-v1/p3_frozen_bindings.json).
 
 P3 uses P2 weights only and fresh AdamW (.9/.95, eps1e-8, weight decay0), LR5e-5,
 32 warmup, cosine over 640 updates, min ratio .1; micro2×accum16, sequence512 inside
 the unchanged 2048 architecture, seed20260907, four CPU threads, zero workers,
-two passes and 7200s process cap with no automatic restart. Each block has seven
-procedural updates then three replay updates (7,168 procedural + 3,072 replay rows).
+two passes and 7200s process cap with no automatic restart. Each block shuffles seven
+procedural and three replay updates (7,168 procedural + 3,072 replay rows).
 Loss is effective-update assistant-target mean including EOS, BF16 forward with
 selected FP32 CE. Checkpoints include model/optimizer/config/step/scheduler/RNG
 and data/plan hashes. Step320 is the blend parent; adverse step640 remains reported.
@@ -267,9 +274,11 @@ Recorded launch: [interpolation_launch.json](configs/research-v1/interpolation_l
 Selected `weights/alpha075.pt` hash is
 `1da85cc329d55e92dacf51c36623779558c4c6c9a39d78a34a064f61fcddbe97`.
 It is an inference weight artifact, not a resumable optimizer state.
-The recovered script still needs parents and preparation manifests/directories;
-a public path port is not completed for those unavailable bindings. Its `.50`
-control and P3step640 negative evidence have not been removed or rescored.
+Use [interpolate.py](recipes/research-v1/interpolate.py) to bind original parents,
+canonical tokenizer and fresh output. Validation hashes opaque files only; execute
+retains the recovered tensor checks and emits separate new-output identities.
+No blending was performed here. Its `.50` control and P3step640 negative evidence
+have not been removed or rescored.
 
 ## Native export
 
@@ -282,9 +291,11 @@ metadata and equality evidence. Historical weight SHA256 is
 `4396efb7a52b047e7fdf513e46d1b401dfc70582d3aca1f9cb5a07e97d426ef1`.
 Eight recorded source/export precision-profile pairs matched; no new parity run
 was performed. `build_bundle.py` is explicitly a source excerpt, not complete
-publication orchestration. A runnable public export port remains blocked on the
-frozen INPUT_BINDINGS/evidence layout and source checkpoint; do not pass the
-projected config as the original binding. Existing released inference requires
+publication orchestration. The new [export_native.py](recipes/research-v1/export_native.py)
+binds checkpoint, frozen inference root, canonical tokenizer and fresh output,
+implementing strict conversion and complete native packaging from the supplied
+support map. It never executes that excerpt. No new export or parity was run.
+See [commands and contracts](recipes/research-v1/POSTTRAINING.md). Existing released inference requires
 the complete published bundle in the [run guide](docs/petitgpt-v1/RUN_GUIDE.md).
 
 ## Published evaluation, separate from generated-answer review
@@ -334,14 +345,16 @@ correctness. The fixed ARC/PIQA diagnostics were not untouched final tests.
    plans/launch contracts, and full Stage A/bridge state. Path-sanitized projections
    cannot satisfy original byte hashes. No bypass/optimizer reset is acceptable.
 2. **P2:** exact reviewed 12k/500 rows, original consumption plan and Base are external.
-   The path adapter is implemented; real-data validation and historical review-input
-   restoration remain unexecuted. Public redistribution needs a separate explicit
+   The path adapter is implemented; supplied RunPod real-data validation passed.
+   Local training and historical review-input restoration remain unexecuted. Public redistribution needs a separate explicit
    distribution review; no run-specific data were added here.
-3. **P3:** private curriculum/checkers, frozen config/update/data/evaluation contracts,
-   missing runtime helpers and exact parent. Source recovery does not close these gaps.
-4. **Interpolation/export/benchmark:** original runtime input/code/parity/request
-   manifests and weights, plus reviewed public path adapters for their fixed layouts.
-   Some handoff redactions invalidate frozen hashes/environment path guards.
+3. **P3:** supplied-data and historical-schedule interfaces are implemented, with
+   no model execution checked here. Original freeze/train/replay/plan/parent remain
+   external; historical-schedule also needs private evaluation/source bindings.
+   Final/Part A/dev100/likelihood and full historical replay remain outside the adapter.
+4. **Interpolation/export:** public interfaces and execution implementations exist;
+   original weights and separate authorized tensor/model validation remain needed.
+   **Public benchmark portability** remains a separate unresolved runtime/input gap.
 5. **Generated answers:** exact held-out rows and versioned adjudication artifacts are
    not fully public. The frozen scores remain evidence, not newly reproducible output.
 

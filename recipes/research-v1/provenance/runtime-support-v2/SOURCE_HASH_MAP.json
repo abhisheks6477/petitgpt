@@ -1,0 +1,433 @@
+{
+  "schema": "public-runtime-support-v2-source-map",
+  "new_sources": [
+    {
+      "original_logical_path": "runs/p3_basic_instruction_generalization_20260907/runtime/curriculum.py",
+      "original_sha256": "bb6571dcc0b568f3ab23352cbe8b3f844a502f8a8695dc1d9a2892e2911d4081",
+      "candidate_path": "helpers/p3_plan.py",
+      "candidate_sha256": "74f320c8c8fc02134da4dcaabc46f74d8684934009710486b6eea7e414e8c189",
+      "operation": "New public module; exact selected top-level source segments, explicit minimal imports; original immutable file unchanged",
+      "segments": [
+        {
+          "names": [
+            "SEED"
+          ],
+          "line_start": 8,
+          "line_end": 8,
+          "exact_segment_sha256": "3c6cace909b6d969cefd3421987f6b47e4c645cc24effe57d3cdaa0d296c32ed"
+        },
+        {
+          "names": [
+            "FAMILIES"
+          ],
+          "line_start": 9,
+          "line_end": 9,
+          "exact_segment_sha256": "2880c22d4840198e7d58bc62558cf25e34be4185ca0c809b5c7482e5b9a4ecc4"
+        },
+        {
+          "names": [
+            "canonical"
+          ],
+          "line_start": 125,
+          "line_end": 126,
+          "exact_segment_sha256": "18759ba65df91c9fbf0b04f98b6400332c5880f6f719700ef00965d0df671ae5"
+        },
+        {
+          "names": [
+            "digest"
+          ],
+          "line_start": 128,
+          "line_end": 129,
+          "exact_segment_sha256": "817cc943034d8f7ad48cadfc3f40339c313810669d7e71fb7b39de4865da1787"
+        },
+        {
+          "names": [
+            "build_plan"
+          ],
+          "line_start": 228,
+          "line_end": 244,
+          "exact_segment_sha256": "96feffdcc21b8fd587f6e806ab1a852bdc6ecc8fe3cbb983a37ac72b7129fdfd"
+        }
+      ]
+    },
+    {
+      "original_logical_path": "runs/p3_basic_instruction_generalization_20260907/runtime/prepare.py",
+      "original_sha256": "a554c82a3d5d5914e1ec7209dd4175df9d2833342c340483fc066e9ac53157b8",
+      "candidate_path": "helpers/p3_io.py",
+      "candidate_sha256": "99175c95ab72fe4e0769dced8334c540756f354e068c4260536380515064779d",
+      "operation": "New public module; exact selected top-level source segments, explicit minimal imports; original immutable file unchanged",
+      "segments": [
+        {
+          "names": [
+            "sha"
+          ],
+          "line_start": 15,
+          "line_end": 19,
+          "exact_segment_sha256": "e1af03f366a3c8e522228296c8b435bf51e27eed05b97682eab806f6164770d9"
+        },
+        {
+          "names": [
+            "rows"
+          ],
+          "line_start": 21,
+          "line_end": 21,
+          "exact_segment_sha256": "285e91525e2e799f07034464938448372ea518d7cd7bbe83ff9aec2eab212121"
+        },
+        {
+          "names": [
+            "write"
+          ],
+          "line_start": 22,
+          "line_end": 22,
+          "exact_segment_sha256": "49e9c3e41d6bef7750727799dded1b568241e3f2cefeb9834d6866a82eb6e642"
+        },
+        {
+          "names": [
+            "annotate"
+          ],
+          "line_start": 84,
+          "line_end": 95,
+          "exact_segment_sha256": "c71dccc7f4fdc7d98fb0a55965b6aad0c04e26fe20d04d4ff0affd2ddd2f628b"
+        }
+      ]
+    },
+    {
+      "original_logical_path": "runs/p3_basic_instruction_generalization_20260907/runtime/checkers.py",
+      "original_sha256": "6d9a886340677d4531e48307fa706db2fc415b5c64e3d26596992c702b3bb8c7",
+      "candidate_path": "helpers/p3_checkers.py",
+      "candidate_sha256": "593d806622cbfbb085622f8d6d249b307f56d3893c2a967c4b83511594a9d0b6",
+      "operation": "New public module; exact selected top-level source segments, explicit minimal imports; original immutable file unchanged",
+      "segments": [
+        {
+          "names": [
+            "check"
+          ],
+          "line_start": 10,
+          "line_end": 41,
+          "exact_segment_sha256": "29bda7f6c74634b3fc0e56aaf5bfbe54833c4a5bdbecf8d2c551d78c57190e61"
+        }
+      ]
+    },
+    {
+      "original_logical_path": "runs/alpha075_native_inference_export_v1/petitgpt-alpha075-native-research-v1/inference.py",
+      "original_sha256": "17e307631b8e5fd8be8c9d7e992632a6dfbc26708287318fca1259f6d1dd548d",
+      "candidate_path": "frozen_native/inference.py",
+      "candidate_sha256": "17e307631b8e5fd8be8c9d7e992632a6dfbc26708287318fca1259f6d1dd548d",
+      "operation": "Verbatim frozen non-weight bytes; not executed"
+    },
+    {
+      "original_logical_path": "runs/alpha075_native_inference_export_v1/petitgpt-alpha075-native-research-v1/src/accepted_generate.py",
+      "original_sha256": "5c4214f0d2a985ee7b24da431ce1bf521c96ae6f7dfa816ef800b505eb68013c",
+      "candidate_path": "frozen_native/src/accepted_generate.py",
+      "candidate_sha256": "5c4214f0d2a985ee7b24da431ce1bf521c96ae6f7dfa816ef800b505eb68013c",
+      "operation": "Verbatim frozen non-weight bytes; not executed"
+    },
+    {
+      "original_logical_path": "runs/alpha075_native_inference_export_v1/petitgpt-alpha075-native-research-v1/config.json",
+      "original_sha256": "fe6cd464a09a0605f6ead38867c0497edc71de31fa45446f790e3f9a4f937369",
+      "candidate_path": "frozen_native/config.json",
+      "candidate_sha256": "fe6cd464a09a0605f6ead38867c0497edc71de31fa45446f790e3f9a4f937369",
+      "operation": "Verbatim frozen non-weight bytes; not executed"
+    },
+    {
+      "original_logical_path": "runs/alpha075_native_inference_export_v1/petitgpt-alpha075-native-research-v1/special_tokens_map.json",
+      "original_sha256": "79bc49c15e40cfc59779b5559d452c058a06f684a2867d97c3c0190933d8801f",
+      "candidate_path": "frozen_native/special_tokens_map.json",
+      "candidate_sha256": "79bc49c15e40cfc59779b5559d452c058a06f684a2867d97c3c0190933d8801f",
+      "operation": "Verbatim frozen non-weight bytes; not executed"
+    },
+    {
+      "original_logical_path": "runs/alpha075_native_inference_export_v1/petitgpt-alpha075-native-research-v1/requirements-inference-tested.txt",
+      "original_sha256": "dd6b7d954f0153cc6898a9aa0f45901e3727906172e0045d9bc776daf2f7163e",
+      "candidate_path": "frozen_native/requirements-inference-tested.txt",
+      "candidate_sha256": "dd6b7d954f0153cc6898a9aa0f45901e3727906172e0045d9bc776daf2f7163e",
+      "operation": "Verbatim frozen non-weight bytes; not executed"
+    }
+  ],
+  "existing_transport_source_mappings": [
+    {
+      "original_logical_path": "runs/D4_completion_and_SFT_pilot_handoff/pilot_v2_preparation/selection/build_pilot_v2.py",
+      "observed_original_sha256": "ff72b684730813e25642732143b20e86263958134aece9d9c97cabc55a1c696d",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/runs/D4_completion_and_SFT_pilot_handoff/pilot_v2_preparation/selection/build_pilot_v2.py",
+      "transport_candidate_sha256": "ee7b155aeee55e7afeef5c97f5edc00db25391801c618be2698683703c9e0967",
+      "prior_handoff_original_sha256": "ff72b684730813e25642732143b20e86263958134aece9d9c97cabc55a1c696d",
+      "prior_handoff_candidate_sha256": "ee7b155aeee55e7afeef5c97f5edc00db25391801c618be2698683703c9e0967"
+    },
+    {
+      "original_logical_path": "runs/alpha075_native_inference_export_v1/evidence/scripts/build_bundle.py",
+      "observed_original_sha256": "e32251db2db1f42acac4dde1742c2e1d330b25a7a0bc2dd2bc335a14c42a223b",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/runs/alpha075_native_inference_export_v1/evidence/scripts/build_bundle.py",
+      "transport_candidate_sha256": "0c2c2c1616ad55de2fb8f204aa7d557943008ff5e1578c01e5642a746c072cef",
+      "prior_handoff_original_sha256": "e32251db2db1f42acac4dde1742c2e1d330b25a7a0bc2dd2bc335a14c42a223b",
+      "prior_handoff_candidate_sha256": "0c2c2c1616ad55de2fb8f204aa7d557943008ff5e1578c01e5642a746c072cef"
+    },
+    {
+      "original_logical_path": "runs/alpha075_native_inference_export_v1/evidence/scripts/export_weights.py",
+      "observed_original_sha256": "e09bed72a621f60b6b8fcbfa0ae0485da00b862a5b690fe0580d328c5bfbcd99",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/runs/alpha075_native_inference_export_v1/evidence/scripts/export_weights.py",
+      "transport_candidate_sha256": "2b229c18d6d39306c27ebd56e8810be886e054c8f5ed25d1b43b20fe0e5a5e7b",
+      "prior_handoff_original_sha256": "e09bed72a621f60b6b8fcbfa0ae0485da00b862a5b690fe0580d328c5bfbcd99",
+      "prior_handoff_candidate_sha256": "2b229c18d6d39306c27ebd56e8810be886e054c8f5ed25d1b43b20fe0e5a5e7b"
+    },
+    {
+      "original_logical_path": "runs/p3_basic_instruction_generalization_20260907/runtime/execute.py",
+      "observed_original_sha256": "269a791849d4d7ecbac5a7f0edd0daf416de5254901468787abdb1b4ea4c95b9",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/runs/p3_basic_instruction_generalization_20260907/runtime/execute.py",
+      "transport_candidate_sha256": "50e1a842d41569d90f6cbe4d0ac4ba428ab3e59afc21ba2cff5b4b4b3f3c4f5b",
+      "prior_handoff_original_sha256": "269a791849d4d7ecbac5a7f0edd0daf416de5254901468787abdb1b4ea4c95b9",
+      "prior_handoff_candidate_sha256": "50e1a842d41569d90f6cbe4d0ac4ba428ab3e59afc21ba2cff5b4b4b3f3c4f5b"
+    },
+    {
+      "original_logical_path": "runs/p3_basic_instruction_generalization_20260907/runtime/prepare.py",
+      "observed_original_sha256": "a554c82a3d5d5914e1ec7209dd4175df9d2833342c340483fc066e9ac53157b8",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/runs/p3_basic_instruction_generalization_20260907/runtime/prepare.py",
+      "transport_candidate_sha256": "a4b5793a9beaf2991a830bdce12c96afb8fd7488f25b82094e4db0e72ee714cf",
+      "prior_handoff_original_sha256": "a554c82a3d5d5914e1ec7209dd4175df9d2833342c340483fc066e9ac53157b8",
+      "prior_handoff_candidate_sha256": "a4b5793a9beaf2991a830bdce12c96afb8fd7488f25b82094e4db0e72ee714cf"
+    },
+    {
+      "original_logical_path": "runs/p3_retention_two_point_interpolation_20260907/runtime/blend.py",
+      "observed_original_sha256": "f264e55edd1674ad455c80f12ec4a998c22a8224867c5ff2f4548b8d21e74e8b",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/runs/p3_retention_two_point_interpolation_20260907/runtime/blend.py",
+      "transport_candidate_sha256": "da23bfb911a09762ed1ac6017e1a50bcd2bb9e9eb99557ea0df549fdd4603e05",
+      "prior_handoff_original_sha256": "f264e55edd1674ad455c80f12ec4a998c22a8224867c5ff2f4548b8d21e74e8b",
+      "prior_handoff_candidate_sha256": "da23bfb911a09762ed1ac6017e1a50bcd2bb9e9eb99557ea0df549fdd4603e05"
+    },
+    {
+      "original_logical_path": "runs/p3_retention_two_point_interpolation_20260907/runtime/common.py",
+      "observed_original_sha256": "68a25b7eef6ae860901ab4fbe12cf4b3d26b5372d39bb223d10e5073c39948c5",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/runs/p3_retention_two_point_interpolation_20260907/runtime/common.py",
+      "transport_candidate_sha256": "b9c7ce0d84ef924135d50380c102edd43cd5084c1bac3ad21a5cf49ac776de24",
+      "prior_handoff_original_sha256": "68a25b7eef6ae860901ab4fbe12cf4b3d26b5372d39bb223d10e5073c39948c5",
+      "prior_handoff_candidate_sha256": "b9c7ce0d84ef924135d50380c102edd43cd5084c1bac3ad21a5cf49ac776de24"
+    },
+    {
+      "original_logical_path": "runs/r1_behavior_onepass_mix_v1/runtime/accepted_generate.py",
+      "observed_original_sha256": "f8c9612fc3a8bb5538c126c4ba2a778736101acd9018fef9e7217a0722827e41",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/runs/r1_behavior_onepass_mix_v1/runtime/accepted_generate.py",
+      "transport_candidate_sha256": "f8c9612fc3a8bb5538c126c4ba2a778736101acd9018fef9e7217a0722827e41",
+      "prior_handoff_original_sha256": "f8c9612fc3a8bb5538c126c4ba2a778736101acd9018fef9e7217a0722827e41",
+      "prior_handoff_candidate_sha256": "f8c9612fc3a8bb5538c126c4ba2a778736101acd9018fef9e7217a0722827e41"
+    },
+    {
+      "original_logical_path": "runs/sft_p2_concise_instruction_20260906/data/finalize_p2_data.py",
+      "observed_original_sha256": "2e8a9c75904f438e12ef79cadd122b11fead4c8f3608332f92c04ddf84fe5550",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/runs/sft_p2_concise_instruction_20260906/data/finalize_p2_data.py",
+      "transport_candidate_sha256": "2e8a9c75904f438e12ef79cadd122b11fead4c8f3608332f92c04ddf84fe5550",
+      "prior_handoff_original_sha256": "2e8a9c75904f438e12ef79cadd122b11fead4c8f3608332f92c04ddf84fe5550",
+      "prior_handoff_candidate_sha256": "2e8a9c75904f438e12ef79cadd122b11fead4c8f3608332f92c04ddf84fe5550"
+    },
+    {
+      "original_logical_path": "runs/sft_p2_concise_instruction_20260906/data/prepare_p2_data.py",
+      "observed_original_sha256": "92eb6e8993c97aa5a1710942e82739dfd548ec769ee51e618f950bd11f75e1fd",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/runs/sft_p2_concise_instruction_20260906/data/prepare_p2_data.py",
+      "transport_candidate_sha256": "30ffd3540d20895e9c2884cba9d27f220b47f5afd1a9068faa90ed473eeb5d21",
+      "prior_handoff_original_sha256": "92eb6e8993c97aa5a1710942e82739dfd548ec769ee51e618f950bd11f75e1fd",
+      "prior_handoff_candidate_sha256": "30ffd3540d20895e9c2884cba9d27f220b47f5afd1a9068faa90ed473eeb5d21"
+    },
+    {
+      "original_logical_path": "sft/__init__.py",
+      "observed_original_sha256": null,
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/sft/__init__.py",
+      "transport_candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prior_handoff_original_sha256": null,
+      "prior_handoff_candidate_sha256": null
+    },
+    {
+      "original_logical_path": "sft/p2_evaluation.py",
+      "observed_original_sha256": "caac4bde8251b4ba2b999770630ad926c912d1ec0cfa006de65a471421ef0f7c",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/sft/p2_evaluation.py",
+      "transport_candidate_sha256": "caac4bde8251b4ba2b999770630ad926c912d1ec0cfa006de65a471421ef0f7c",
+      "prior_handoff_original_sha256": "caac4bde8251b4ba2b999770630ad926c912d1ec0cfa006de65a471421ef0f7c",
+      "prior_handoff_candidate_sha256": "caac4bde8251b4ba2b999770630ad926c912d1ec0cfa006de65a471421ef0f7c"
+    },
+    {
+      "original_logical_path": "sft/p2_loss.py",
+      "observed_original_sha256": "ce2690970503bcee6641ebe68c3e5bf076984ea2fd37537daf0429375761cf42",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/sft/p2_loss.py",
+      "transport_candidate_sha256": "ce2690970503bcee6641ebe68c3e5bf076984ea2fd37537daf0429375761cf42",
+      "prior_handoff_original_sha256": "ce2690970503bcee6641ebe68c3e5bf076984ea2fd37537daf0429375761cf42",
+      "prior_handoff_candidate_sha256": "ce2690970503bcee6641ebe68c3e5bf076984ea2fd37537daf0429375761cf42"
+    },
+    {
+      "original_logical_path": "sft/p2_plan.py",
+      "observed_original_sha256": "a22d118c370fa9f5c5fab062ae4b1163e4f0d5569f65877136fd2c55d04899e6",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/sft/p2_plan.py",
+      "transport_candidate_sha256": "a22d118c370fa9f5c5fab062ae4b1163e4f0d5569f65877136fd2c55d04899e6",
+      "prior_handoff_original_sha256": "a22d118c370fa9f5c5fab062ae4b1163e4f0d5569f65877136fd2c55d04899e6",
+      "prior_handoff_candidate_sha256": "a22d118c370fa9f5c5fab062ae4b1163e4f0d5569f65877136fd2c55d04899e6"
+    },
+    {
+      "original_logical_path": "sft/train_sft.py",
+      "observed_original_sha256": "997201f1c280ece1d54b796f3b2a05fd3bda38b4cd14f7eeaa08a3c3b13b31e4",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/sft/train_sft.py",
+      "transport_candidate_sha256": "997201f1c280ece1d54b796f3b2a05fd3bda38b4cd14f7eeaa08a3c3b13b31e4",
+      "prior_handoff_original_sha256": "997201f1c280ece1d54b796f3b2a05fd3bda38b4cd14f7eeaa08a3c3b13b31e4",
+      "prior_handoff_candidate_sha256": "997201f1c280ece1d54b796f3b2a05fd3bda38b4cd14f7eeaa08a3c3b13b31e4"
+    },
+    {
+      "original_logical_path": "src/__init__.py",
+      "observed_original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/src/__init__.py",
+      "transport_candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prior_handoff_original_sha256": null,
+      "prior_handoff_candidate_sha256": null
+    },
+    {
+      "original_logical_path": "src/canonical_schedule.py",
+      "observed_original_sha256": "fc488c6cf2f30c92f1ee0b7e3563032e8d3a8e8f5e3802140cb304c9a17a2b15",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/src/canonical_schedule.py",
+      "transport_candidate_sha256": "fc488c6cf2f30c92f1ee0b7e3563032e8d3a8e8f5e3802140cb304c9a17a2b15",
+      "prior_handoff_original_sha256": "fc488c6cf2f30c92f1ee0b7e3563032e8d3a8e8f5e3802140cb304c9a17a2b15",
+      "prior_handoff_candidate_sha256": "fc488c6cf2f30c92f1ee0b7e3563032e8d3a8e8f5e3802140cb304c9a17a2b15"
+    },
+    {
+      "original_logical_path": "src/chat_template.py",
+      "observed_original_sha256": "c25068dcb7d3a907dba7b7405d53a2962d91886abcaa25b0d5832a82e8bc821b",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/src/chat_template.py",
+      "transport_candidate_sha256": "c25068dcb7d3a907dba7b7405d53a2962d91886abcaa25b0d5832a82e8bc821b",
+      "prior_handoff_original_sha256": "c25068dcb7d3a907dba7b7405d53a2962d91886abcaa25b0d5832a82e8bc821b",
+      "prior_handoff_candidate_sha256": "c25068dcb7d3a907dba7b7405d53a2962d91886abcaa25b0d5832a82e8bc821b"
+    },
+    {
+      "original_logical_path": "src/model.py",
+      "observed_original_sha256": "2bc9fa8ae16636837c4a2937301a2419d0ac92faa2cc27560dacbd29a5144dc2",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/src/model.py",
+      "transport_candidate_sha256": "2bc9fa8ae16636837c4a2937301a2419d0ac92faa2cc27560dacbd29a5144dc2",
+      "prior_handoff_original_sha256": "2bc9fa8ae16636837c4a2937301a2419d0ac92faa2cc27560dacbd29a5144dc2",
+      "prior_handoff_candidate_sha256": "2bc9fa8ae16636837c4a2937301a2419d0ac92faa2cc27560dacbd29a5144dc2"
+    },
+    {
+      "original_logical_path": "src/optim.py",
+      "observed_original_sha256": "13116860174f8557e6ab5a9b21011ecc15dfa0b82e0e6e394fff3554935e264a",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/src/optim.py",
+      "transport_candidate_sha256": "13116860174f8557e6ab5a9b21011ecc15dfa0b82e0e6e394fff3554935e264a",
+      "prior_handoff_original_sha256": "13116860174f8557e6ab5a9b21011ecc15dfa0b82e0e6e394fff3554935e264a",
+      "prior_handoff_candidate_sha256": "13116860174f8557e6ab5a9b21011ecc15dfa0b82e0e6e394fff3554935e264a"
+    },
+    {
+      "original_logical_path": "src/posttrain_preflight.py",
+      "observed_original_sha256": "2abf0d434c399d4bba3304ce8769c63a8708f77794d4731864a3e2ee8875268e",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/src/posttrain_preflight.py",
+      "transport_candidate_sha256": "2abf0d434c399d4bba3304ce8769c63a8708f77794d4731864a3e2ee8875268e",
+      "prior_handoff_original_sha256": "2abf0d434c399d4bba3304ce8769c63a8708f77794d4731864a3e2ee8875268e",
+      "prior_handoff_candidate_sha256": "2abf0d434c399d4bba3304ce8769c63a8708f77794d4731864a3e2ee8875268e"
+    },
+    {
+      "original_logical_path": "src/posttrain_resume.py",
+      "observed_original_sha256": "f939a0ee53187eb3e1c1b77bdb1715ce6979012c8ee808f1c092df5a1dd141f3",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/src/posttrain_resume.py",
+      "transport_candidate_sha256": "f939a0ee53187eb3e1c1b77bdb1715ce6979012c8ee808f1c092df5a1dd141f3",
+      "prior_handoff_original_sha256": "f939a0ee53187eb3e1c1b77bdb1715ce6979012c8ee808f1c092df5a1dd141f3",
+      "prior_handoff_candidate_sha256": "f939a0ee53187eb3e1c1b77bdb1715ce6979012c8ee808f1c092df5a1dd141f3"
+    },
+    {
+      "original_logical_path": "src/special_tokens.py",
+      "observed_original_sha256": "f767b864d7c8e0cb5e2c166c4f019f3f14666dcbf2b944c7909db050e4cf1e96",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/src/special_tokens.py",
+      "transport_candidate_sha256": "f767b864d7c8e0cb5e2c166c4f019f3f14666dcbf2b944c7909db050e4cf1e96",
+      "prior_handoff_original_sha256": "f767b864d7c8e0cb5e2c166c4f019f3f14666dcbf2b944c7909db050e4cf1e96",
+      "prior_handoff_candidate_sha256": "f767b864d7c8e0cb5e2c166c4f019f3f14666dcbf2b944c7909db050e4cf1e96"
+    },
+    {
+      "original_logical_path": "src/tracking.py",
+      "observed_original_sha256": "df70f4f2b4ef81c0e85a88c59140c4dd198d82475aa84eeb736f83cf20ee5353",
+      "transport_candidate_path": "recipes/research-v1/sources/posttraining/src/tracking.py",
+      "transport_candidate_sha256": "df70f4f2b4ef81c0e85a88c59140c4dd198d82475aa84eeb736f83cf20ee5353",
+      "prior_handoff_original_sha256": "df70f4f2b4ef81c0e85a88c59140c4dd198d82475aa84eeb736f83cf20ee5353",
+      "prior_handoff_candidate_sha256": "df70f4f2b4ef81c0e85a88c59140c4dd198d82475aa84eeb736f83cf20ee5353"
+    }
+  ],
+  "historical_identity_rule": "Original and adapter hashes are distinct identities. Source projections do not satisfy historical source freeze checks.",
+  "p2_launch_projection": {
+    "original_logical_path": "runs/sft_p2_concise_instruction_20260906/runtime/FINAL_LAUNCH_CONFIG.json",
+    "original_sha256": "446d91c2b16819097474fe9540f2cb230cf098d943b462ac89f9c2f7b40bc41f",
+    "transport_candidate_path": "configs/research-v1/p2_effective_launch.json",
+    "candidate_sha256": "502d140fb6fe4fd9de5a79ae3db1a20081d3618dc0451f5b2133bcf88eac0892",
+    "check": "Every retained field matches original after known path projection; original additional control/provenance fields remain original-only."
+  },
+  "export_generation_binding": {
+    "original_logical_path": "runs/r1_behavior_onepass_mix_v1/runtime/accepted_generate.py",
+    "original_sha256": "f8c9612fc3a8bb5538c126c4ba2a778736101acd9018fef9e7217a0722827e41",
+    "frozen_candidate_path": "frozen_native/src/accepted_generate.py",
+    "candidate_sha256": "5c4214f0d2a985ee7b24da431ce1bf521c96ae6f7dfa816ef800b505eb68013c",
+    "historical_change": "Add autocast_enabled=True argument and pass enabled=autocast_enabled to CUDA BF16 autocast; frozen bytes copied unchanged in V2."
+  },
+  "additional_contract_source_boundaries": [
+    {
+      "original_logical_path": "runs/alpha075_native_inference_export_v1/evidence/scripts/build_bundle.py",
+      "original_sha256": "e32251db2db1f42acac4dde1742c2e1d330b25a7a0bc2dd2bc335a14c42a223b",
+      "physical_lines": 17,
+      "functions": [],
+      "copied": false,
+      "reason": "Documented public source/output contract; whole script includes private bindings/evidence or top-level execution."
+    },
+    {
+      "original_logical_path": "runs/alpha075_native_inference_export_v1/evidence/scripts/export_weights.py",
+      "original_sha256": "e09bed72a621f60b6b8fcbfa0ae0485da00b862a5b690fe0580d328c5bfbcd99",
+      "physical_lines": 55,
+      "functions": [
+        {
+          "name": "sha",
+          "line_start": 14,
+          "line_end": 18
+        }
+      ],
+      "copied": false,
+      "reason": "Documented public source/output contract; whole script includes private bindings/evidence or top-level execution."
+    },
+    {
+      "original_logical_path": "runs/alpha075_native_inference_export_v1/evidence/scripts/document.py",
+      "original_sha256": "84fbb0cbb140a8c5c778a1693cec7e023ce810accfce574cc7e309513762532c",
+      "physical_lines": 121,
+      "functions": [
+        {
+          "name": "dump",
+          "line_start": 4,
+          "line_end": 4
+        },
+        {
+          "name": "sha",
+          "line_start": 5,
+          "line_end": 5
+        }
+      ],
+      "copied": false,
+      "reason": "Documented public source/output contract; whole script includes private bindings/evidence or top-level execution."
+    },
+    {
+      "original_logical_path": "runs/alpha075_native_inference_export_v1/evidence/scripts/finalize.py",
+      "original_sha256": "6ffb46e3bb87c9f86505cab3916407c63f301a11ff971526f9a2fd2a90934999",
+      "physical_lines": 161,
+      "functions": [
+        {
+          "name": "sha",
+          "line_start": 4,
+          "line_end": 8
+        },
+        {
+          "name": "dump",
+          "line_start": 9,
+          "line_end": 9
+        },
+        {
+          "name": "listing",
+          "line_start": 10,
+          "line_end": 10
+        },
+        {
+          "name": "manifest",
+          "line_start": 11,
+          "line_end": 12
+        },
+        {
+          "name": "pack_verify",
+          "line_start": 65,
+          "line_end": 87
+        }
+      ],
+      "copied": false,
+      "reason": "Documented public source/output contract; whole script includes private bindings/evidence or top-level execution."
+    }
+  ]
+}

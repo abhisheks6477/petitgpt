@@ -1,0 +1,1492 @@
+[
+  {
+    "source": "runs/p3_basic_instruction_generalization_20260907/runtime/execute.py",
+    "sha256": "269a791849d4d7ecbac5a7f0edd0daf416de5254901468787abdb1b4ea4c95b9",
+    "imports": [
+      "import argparse",
+      "import collections",
+      "import datetime",
+      "import hashlib",
+      "import json",
+      "import math",
+      "import os",
+      "import random",
+      "import signal",
+      "import subprocess",
+      "import sys",
+      "import time",
+      "from pathlib import Path",
+      "import torch",
+      "from torch.utils.data import DataLoader",
+      "from src.model import GPT, gpt_config_from_checkpoint_dict",
+      "from src.chat_template import load_chat_tokenizer, encode_prompt, encode_chat, encode_completion",
+      "from src.canonical_schedule import lr_schedule",
+      "from sft.train_sft import load_ckpt, effective_batch_backward, checked_optimizer_step, collate_fn_builder, save_checkpoint_atomic",
+      "from sft.p2_loss import assistant_nll_sum_fp32",
+      "from sft.p2_evaluation import evaluate_position_nll",
+      "from checkers import check",
+      "from prepare import RUN, OUT as DATA, ROOT, P2, H, TOK, sha, rows, write, canonical"
+    ],
+    "functions": [
+      {
+        "name": "verify_freeze",
+        "signature": "",
+        "line_start": 45,
+        "line_end": 52,
+        "called_functions": [
+          "(DATA / 'FROZEN.json').read_text",
+          "(DATA / 'RUN_CONFIG.json').read_text",
+          "freeze['accepted_source_files'].items",
+          "freeze['files'].items",
+          "json.loads",
+          "sha"
+        ]
+      },
+      {
+        "name": "load_model",
+        "signature": "path, tag",
+        "line_start": 54,
+        "line_end": 67,
+        "called_functions": [
+          "GPT",
+          "any",
+          "ck.get",
+          "gpt_config_from_checkpoint_dict",
+          "hasattr",
+          "k.removeprefix",
+          "k.startswith",
+          "load_ckpt",
+          "model.load_state_dict",
+          "model.parameters",
+          "model.to",
+          "model.to('cuda').eval",
+          "p.numel",
+          "sd.items",
+          "sha",
+          "str",
+          "sum",
+          "time.monotonic",
+          "write"
+        ]
+      },
+      {
+        "name": "generate",
+        "signature": "model, tok, messages, cap",
+        "line_start": 69,
+        "line_end": 83,
+        "called_functions": [
+          "bool",
+          "encode_prompt",
+          "gen[0, len(ids):].tolist",
+          "len",
+          "max",
+          "model.generate",
+          "range",
+          "set",
+          "sum",
+          "tok.decode",
+          "torch.autocast",
+          "torch.inference_mode",
+          "torch.tensor",
+          "tuple"
+        ]
+      },
+      {
+        "name": "agg",
+        "signature": "rs",
+        "line_start": 85,
+        "line_end": 105,
+        "called_functions": [
+          "all",
+          "cm['negative'].values",
+          "cm['positive'].values",
+          "collections.Counter",
+          "collections.Counter((r['reference'] for r in rs)).values",
+          "len",
+          "max",
+          "sum"
+        ]
+      },
+      {
+        "name": "evaluate",
+        "signature": "model, tok, rs, tag",
+        "line_start": 107,
+        "line_end": 135,
+        "called_functions": [
+          "(EVAL / (tag + '_OUTPUTS.jsonl')).open",
+          "a.keys",
+          "agg",
+          "b.keys",
+          "canonical",
+          "check",
+          "enumerate",
+          "f.flush",
+          "f.write",
+          "generate",
+          "json.dumps",
+          "len",
+          "model.eval",
+          "print",
+          "results.append",
+          "sha",
+          "sorted",
+          "sum",
+          "time.monotonic",
+          "torch.inference_mode",
+          "write"
+        ]
+      },
+      {
+        "name": "val500",
+        "signature": "model, tok, tag",
+        "line_start": 137,
+        "line_end": 150,
+        "called_functions": [
+          "DataLoader",
+          "collate_fn_builder",
+          "evaluate_position_nll",
+          "json.dumps",
+          "len",
+          "print",
+          "result.update",
+          "rows",
+          "sha",
+          "time.monotonic",
+          "torch.inference_mode",
+          "write"
+        ]
+      },
+      {
+        "name": "baseline",
+        "signature": "tok",
+        "line_start": 152,
+        "line_end": 158,
+        "called_functions": [
+          "(EVAL / 'BASELINE_COMPLETE.json').exists",
+          "evaluate",
+          "load_model",
+          "rows",
+          "val500",
+          "write"
+        ]
+      },
+      {
+        "name": "encoded_rows",
+        "signature": "tok",
+        "line_start": 160,
+        "line_end": 168,
+        "called_functions": [
+          "encode_chat",
+          "len",
+          "r.get",
+          "rows",
+          "sum",
+          "torch.tensor"
+        ]
+      },
+      {
+        "name": "checkpoint",
+        "signature": "model, opt, cfg, step, status",
+        "line_start": 170,
+        "line_end": 180,
+        "called_functions": [
+          "model.state_dict",
+          "opt.state_dict",
+          "path.exists",
+          "path.stat",
+          "random.getstate",
+          "save_checkpoint_atomic",
+          "sha",
+          "str",
+          "torch.cuda.get_rng_state_all",
+          "torch.get_rng_state",
+          "write"
+        ]
+      },
+      {
+        "name": "train",
+        "signature": "tok, process_started",
+        "line_start": 182,
+        "line_end": 243,
+        "called_functions": [
+          "(EVAL / 'BASELINE_COMPLETE.json').exists",
+          "(TRAIN / 'SINGLE_TRAINING_LAUNCH.json').open",
+          "(TRAIN / 'UPDATE_METRICS.jsonl').open",
+          "TimeoutError",
+          "batches.append",
+          "canonical",
+          "checked_optimizer_step",
+          "checkpoint",
+          "collections.Counter",
+          "datetime.datetime.now",
+          "datetime.datetime.now(datetime.timezone.utc).isoformat",
+          "dict",
+          "effective_batch_backward",
+          "encoded_rows",
+          "evaluate",
+          "json.dump",
+          "json.dumps",
+          "load_model",
+          "log.flush",
+          "log.write",
+          "lr_schedule",
+          "max",
+          "model.parameters",
+          "model.train",
+          "opt.zero_grad",
+          "os.getpid",
+          "print",
+          "random.seed",
+          "range",
+          "rows",
+          "signal.setitimer",
+          "signal.signal",
+          "status.update",
+          "str",
+          "sum",
+          "time.monotonic",
+          "torch.cuda.manual_seed_all",
+          "torch.cuda.max_memory_allocated",
+          "torch.cuda.max_memory_reserved",
+          "torch.cuda.reset_peak_memory_stats",
+          "torch.cuda.synchronize",
+          "torch.manual_seed",
+          "torch.optim.AdamW",
+          "torch.stack",
+          "type",
+          "val500",
+          "write"
+        ]
+      },
+      {
+        "name": "part_a",
+        "signature": "model, tok",
+        "line_start": 245,
+        "line_end": 270,
+        "called_functions": [
+          "(EVAL / 'P3_PART_A_VALIDATION32.jsonl').open",
+          "assistant_nll_sum_fp32",
+          "canonical",
+          "encode_completion",
+          "f.flush",
+          "f.write",
+          "float",
+          "generate",
+          "json.dumps",
+          "len",
+          "model",
+          "print",
+          "results.append",
+          "rows",
+          "sum",
+          "summary",
+          "torch.autocast",
+          "torch.inference_mode",
+          "torch.tensor",
+          "write"
+        ]
+      },
+      {
+        "name": "final_eval",
+        "signature": "tok",
+        "line_start": 272,
+        "line_end": 282,
+        "called_functions": [
+          "(TRAIN / 'STATUS.json').read_text",
+          "datetime.datetime.now",
+          "datetime.datetime.now(datetime.timezone.utc).isoformat",
+          "evaluate",
+          "json.loads",
+          "load_model",
+          "part_a",
+          "path.exists",
+          "rows",
+          "sha",
+          "str",
+          "torch.cuda.empty_cache",
+          "write"
+        ]
+      },
+      {
+        "name": "main",
+        "signature": "",
+        "line_start": 284,
+        "line_end": 291,
+        "called_functions": [
+          "argparse.ArgumentParser",
+          "baseline",
+          "final_eval",
+          "json.dumps",
+          "load_chat_tokenizer",
+          "parser.add_argument",
+          "parser.parse_args",
+          "print",
+          "random.seed",
+          "str",
+          "time.monotonic",
+          "torch.cuda.is_available",
+          "torch.manual_seed",
+          "torch.set_num_threads",
+          "train",
+          "verify_freeze"
+        ]
+      }
+    ]
+  },
+  {
+    "source": "runs/p3_basic_instruction_generalization_20260907/runtime/prepare.py",
+    "sha256": "a554c82a3d5d5914e1ec7209dd4175df9d2833342c340483fc066e9ac53157b8",
+    "imports": [
+      "import collections",
+      "import hashlib",
+      "import json",
+      "import re",
+      "import sys",
+      "from pathlib import Path",
+      "from src.chat_template import load_chat_tokenizer, encode_chat",
+      "from curriculum import SEED, WORDS, build_procedural, build_plan, canonical, digest, inventory, training_values"
+    ],
+    "functions": [
+      {
+        "name": "sha",
+        "signature": "p",
+        "line_start": 15,
+        "line_end": 19,
+        "called_functions": [
+          "Path",
+          "Path(p).open",
+          "f.read",
+          "h.hexdigest",
+          "h.update",
+          "hashlib.sha256",
+          "iter"
+        ]
+      },
+      {
+        "name": "rows",
+        "signature": "p",
+        "line_start": 21,
+        "line_end": 21,
+        "called_functions": [
+          "Path",
+          "Path(p).read_text",
+          "Path(p).read_text().splitlines",
+          "json.loads",
+          "l.strip"
+        ]
+      },
+      {
+        "name": "write",
+        "signature": "p, obj",
+        "line_start": 22,
+        "line_end": 22,
+        "called_functions": [
+          "Path",
+          "Path(p).write_text",
+          "json.dumps"
+        ]
+      },
+      {
+        "name": "jsonl",
+        "signature": "p, rs",
+        "line_start": 23,
+        "line_end": 23,
+        "called_functions": [
+          "''.join",
+          "Path",
+          "Path(p).write_text",
+          "canonical"
+        ]
+      },
+      {
+        "name": "identity",
+        "signature": "r",
+        "line_start": 24,
+        "line_end": 24,
+        "called_functions": [
+          "r.get"
+        ]
+      },
+      {
+        "name": "norm",
+        "signature": "s",
+        "line_start": 25,
+        "line_end": 25,
+        "called_functions": [
+          "' '.join",
+          "re.findall",
+          "s.casefold"
+        ]
+      },
+      {
+        "name": "context",
+        "signature": "r",
+        "line_start": 26,
+        "line_end": 26,
+        "called_functions": [
+          "'\\n'.join",
+          "norm",
+          "r.get"
+        ]
+      },
+      {
+        "name": "select_replay",
+        "signature": "tok",
+        "line_start": 28,
+        "line_end": 82,
+        "called_functions": [
+          "(OUT / 'REVIEW_DEFERRALS.jsonl').exists",
+          "(P2 / 'data/FROZEN_MANIFEST.json').read_text",
+          "H.glob",
+          "Path",
+          "any",
+          "bad_aids.update",
+          "collections.Counter",
+          "collections.defaultdict",
+          "context",
+          "desired.items",
+          "dict",
+          "digest",
+          "encode_chat",
+          "identity",
+          "json.loads",
+          "len",
+          "pools.items",
+          "pools.values",
+          "pools[r['p2_task']].append",
+          "protected_paths.append",
+          "r.get",
+          "rows",
+          "selected.sort",
+          "sha",
+          "sorted",
+          "str",
+          "sum"
+        ]
+      },
+      {
+        "name": "annotate",
+        "signature": "tok, r",
+        "line_start": 84,
+        "line_end": 95,
+        "called_functions": [
+          "all",
+          "any",
+          "encode_chat",
+          "len",
+          "tok.encode",
+          "zip"
+        ]
+      },
+      {
+        "name": "main",
+        "signature": "",
+        "line_start": 97,
+        "line_end": 167,
+        "called_functions": [
+          "'\\n'.join",
+          "'\\n\\n'.join",
+          "(OUT / 'ALL_TEMPLATES.md').write_text",
+          "(OUT / 'FROZEN.json').exists",
+          "(OUT / 'PREVIEW48.md').write_text",
+          "(OUT / 'PREVIEW48_INITIAL.jsonl').exists",
+          "WORDS[(n + 7) % len(WORDS)].title",
+          "abs",
+          "annotate",
+          "available.get",
+          "build_plan",
+          "build_procedural",
+          "chosen.append",
+          "digest",
+          "enumerate",
+          "full_replay.casefold",
+          "full_replay.casefold().count",
+          "int",
+          "inventory",
+          "json.dumps",
+          "jsonl",
+          "len",
+          "load_chat_tokenizer",
+          "m['role'].upper",
+          "min",
+          "pools.items",
+          "pools.values",
+          "print",
+          "r.get",
+          "range",
+          "rows",
+          "select_replay",
+          "set",
+          "sets.items",
+          "sha",
+          "sorted",
+          "str",
+          "sum",
+          "text.append",
+          "tok.encode",
+          "training_values",
+          "v.casefold",
+          "value_stats.append",
+          "w.title",
+          "write",
+          "{**sets, 'replay': replay}.items"
+        ]
+      }
+    ]
+  },
+  {
+    "source": "runs/p3_basic_instruction_generalization_20260907/runtime/curriculum.py",
+    "sha256": "bb6571dcc0b568f3ab23352cbe8b3f844a502f8a8695dc1d9a2892e2911d4081",
+    "imports": [
+      "import hashlib",
+      "import json",
+      "import random"
+    ],
+    "functions": [
+      {
+        "name": "canonical",
+        "signature": "obj",
+        "line_start": 125,
+        "line_end": 126,
+        "called_functions": [
+          "json.dumps"
+        ]
+      },
+      {
+        "name": "digest",
+        "signature": "obj",
+        "line_start": 128,
+        "line_end": 129,
+        "called_functions": [
+          "canonical",
+          "canonical(obj).encode",
+          "hashlib.sha256",
+          "hashlib.sha256(canonical(obj).encode()).hexdigest"
+        ]
+      },
+      {
+        "name": "inventory",
+        "signature": "",
+        "line_start": 131,
+        "line_end": 133,
+        "called_functions": [
+          "enumerate"
+        ]
+      },
+      {
+        "name": "training_values",
+        "signature": "",
+        "line_start": 135,
+        "line_end": 136,
+        "called_functions": [
+          "enumerate",
+          "w.title"
+        ]
+      },
+      {
+        "name": "create_payloads",
+        "signature": "pool, count, rng, signatures",
+        "line_start": 138,
+        "line_end": 159,
+        "called_functions": [
+          "distract.copy",
+          "list",
+          "out.append",
+          "range",
+          "rng.choice",
+          "rng.sample",
+          "rng.shuffle",
+          "sum",
+          "zip"
+        ]
+      },
+      {
+        "name": "task_payload",
+        "signature": "group, family, variant",
+        "line_start": 161,
+        "line_end": 169,
+        "called_functions": [
+          "dict"
+        ]
+      },
+      {
+        "name": "reference",
+        "signature": "family, p",
+        "line_start": 171,
+        "line_end": 175,
+        "called_functions": [
+          "dict",
+          "json.dumps"
+        ]
+      },
+      {
+        "name": "render",
+        "signature": "family, index, p",
+        "line_start": 177,
+        "line_end": 187,
+        "called_functions": [
+          "', '.join",
+          "'; '.join",
+          "'\\n'.join",
+          "TEMPLATES[family][index].format",
+          "args.update",
+          "dict"
+        ]
+      },
+      {
+        "name": "make_row",
+        "signature": "group, family, variant, index, split, condition, ordinal",
+        "line_start": 189,
+        "line_end": 205,
+        "called_functions": [
+          "'; '.join",
+          "digest",
+          "list",
+          "reference",
+          "render",
+          "reversed",
+          "task_payload"
+        ]
+      },
+      {
+        "name": "build_procedural",
+        "signature": "pools, signatures",
+        "line_start": 207,
+        "line_end": 226,
+        "called_functions": [
+          "create_payloads",
+          "enumerate",
+          "make_row",
+          "random.Random",
+          "range",
+          "sets['train'].append",
+          "sets[split].append"
+        ]
+      },
+      {
+        "name": "build_plan",
+        "signature": "proc, replay",
+        "line_start": 228,
+        "line_end": 244,
+        "called_functions": [
+          "len",
+          "plan.append",
+          "random.Random",
+          "range",
+          "rng.shuffle",
+          "streams.values"
+        ]
+      }
+    ]
+  },
+  {
+    "source": "runs/p3_basic_instruction_generalization_20260907/runtime/checkers.py",
+    "sha256": "6d9a886340677d4531e48307fa706db2fc415b5c64e3d26596992c702b3bb8c7",
+    "imports": [
+      "import json",
+      "import re"
+    ],
+    "functions": [
+      {
+        "name": "check",
+        "signature": "row, text",
+        "line_start": 10,
+        "line_end": 41,
+        "called_functions": [
+          "(_ for _ in ()).throw",
+          "ValueError",
+          "all",
+          "any",
+          "bool",
+          "duplicate.append",
+          "isinstance",
+          "json.loads",
+          "next",
+          "re.escape",
+          "re.search",
+          "set"
+        ]
+      }
+    ]
+  },
+  {
+    "source": "runs/p3_basic_instruction_generalization_20260907/runtime/launch.py",
+    "sha256": "dcc5a1519813998fff8e802465c85ea1ccd1044fc73c45b58696bcbaf05dedc1",
+    "imports": [
+      "import datetime",
+      "import json",
+      "import os",
+      "from pathlib import Path",
+      "import subprocess",
+      "import sys",
+      "import time"
+    ],
+    "functions": [
+      {
+        "name": "write",
+        "signature": "p, x",
+        "line_start": 12,
+        "line_end": 12,
+        "called_functions": [
+          "json.dumps",
+          "p.write_text"
+        ]
+      },
+      {
+        "name": "main",
+        "signature": "",
+        "line_start": 13,
+        "line_end": 35,
+        "called_functions": [
+          "(RUN / 'PIPELINE_LAUNCH.json').open",
+          "(RUN / (name + '.log')).open",
+          "SystemExit",
+          "datetime.datetime.now",
+          "datetime.datetime.now(datetime.timezone.utc).isoformat",
+          "json.dump",
+          "json.dumps",
+          "os.getpid",
+          "phases.append",
+          "print",
+          "proc.wait",
+          "str",
+          "subprocess.Popen",
+          "time.monotonic",
+          "write"
+        ]
+      }
+    ]
+  },
+  {
+    "source": "runs/p3_basic_instruction_generalization_20260907/runtime/evaluate_likelihood.py",
+    "sha256": "fdf73d7db29c70d46451fcc7199d8f93d6687ea3ddcd2b6f8eec407afa6526ea",
+    "imports": [
+      "from __future__ import annotations",
+      "import argparse",
+      "import hashlib",
+      "import importlib.util",
+      "import json",
+      "from pathlib import Path",
+      "import sys",
+      "import time",
+      "import torch",
+      "from tokenizers import Tokenizer",
+      "from src.model import GPT, gpt_config_from_checkpoint_dict",
+      "from sft.train_sft import load_ckpt"
+    ],
+    "functions": [
+      {
+        "name": "main",
+        "signature": "",
+        "line_start": 16,
+        "line_end": 60,
+        "called_functions": [
+          "''.join",
+          "ADAPTER.read_bytes",
+          "GPT",
+          "Path",
+          "Path(args.checkpoint).resolve",
+          "Path(args.out_dir).resolve",
+          "Tokenizer.from_file",
+          "ValueError",
+          "adapter.Encoding",
+          "adapter.crosscheck",
+          "adapter.format_doc",
+          "adapter.load_docs",
+          "adapter.prepare_requests",
+          "adapter.save",
+          "adapter.score_batch",
+          "adapter.sha",
+          "argparse.ArgumentParser",
+          "ck.get",
+          "destination.is_relative_to",
+          "destination.mkdir",
+          "docs.items",
+          "enumerate",
+          "gpt_config_from_checkpoint_dict",
+          "hashlib.sha256",
+          "hashlib.sha256(ADAPTER.read_bytes()).hexdigest",
+          "importlib.util.module_from_spec",
+          "importlib.util.spec_from_file_location",
+          "int",
+          "json.dumps",
+          "len",
+          "load_ckpt",
+          "max",
+          "min",
+          "model.eval",
+          "model.eval().requires_grad_",
+          "model.eval().requires_grad_(False).to",
+          "model.load_state_dict",
+          "model.parameters",
+          "p.numel",
+          "parser.add_argument",
+          "parser.parse_args",
+          "path.write_text",
+          "print",
+          "range",
+          "records.append",
+          "sorted",
+          "spec.loader.exec_module",
+          "str",
+          "sum",
+          "time.perf_counter",
+          "torch.cuda.max_memory_allocated",
+          "torch.cuda.reset_peak_memory_stats",
+          "torch.manual_seed",
+          "torch.set_grad_enabled",
+          "torch.set_num_threads",
+          "zip"
+        ]
+      }
+    ]
+  },
+  {
+    "source": "sft/train_sft.py",
+    "sha256": "997201f1c280ece1d54b796f3b2a05fd3bda38b4cd14f7eeaa08a3c3b13b31e4",
+    "imports": [
+      "from __future__ import annotations",
+      "import argparse",
+      "from collections.abc import Mapping",
+      "from dataclasses import asdict",
+      "import hashlib",
+      "import json",
+      "import math",
+      "import os",
+      "from pathlib import Path",
+      "import random",
+      "import signal",
+      "import sys",
+      "import time",
+      "from typing import Any",
+      "import numpy as np",
+      "import torch",
+      "import torch.nn.functional as F",
+      "from torch.utils.data import DataLoader, Dataset",
+      "from src.chat_template import IGNORE_INDEX, build_example, decode_completion, encode_chat, encode_prompt, extract_last_user_and_ref, load_chat_tokenizer, prepare_prompt_messages, truncate_chat_sequence",
+      "from src.model import GPT, GPTConfig, gpt_config_from_checkpoint_dict",
+      "from src.optim import build_optimizer",
+      "from src.posttrain_preflight import require_preflight_passed, run_jsonl_preflight",
+      "from src.posttrain_resume import DeterministicEpochBatchSampler, build_resume_contract_base, capture_rng_state, make_loader_generator, require_resume_step, restore_rng_state, restore_training_state, resume_contract_for_step, validate_resume_contract, validate_training_controls",
+      "from src.special_tokens import EOS_ID, PAD_ID",
+      "from src.tracking import Tracker",
+      "from sft.p2_loss import assistant_nll_sum_fp32",
+      "from sft.p2_evaluation import evaluate_position_nll",
+      "from sft.p2_plan import MaterializedP2BatchSampler",
+      "from sft.p2_plan import load_checked_plan"
+    ],
+    "functions": [
+      {
+        "name": "read_jsonl",
+        "signature": "path: str",
+        "line_start": 101,
+        "line_end": 108,
+        "called_functions": [
+          "json.loads",
+          "line.strip",
+          "open",
+          "rows.append"
+        ]
+      },
+      {
+        "name": "preflight_sft_record",
+        "signature": "split: str, example: dict[str, Any], *, tok, seq_len: int, default_system: str | None",
+        "line_start": 111,
+        "line_end": 147,
+        "called_functions": [
+          "ValueError",
+          "encode_chat",
+          "encode_prompt",
+          "example.get",
+          "int",
+          "isinstance",
+          "len",
+          "prepare_prompt_messages",
+          "sum",
+          "truncate_chat_sequence"
+        ]
+      },
+      {
+        "name": "collate_fn_builder",
+        "signature": "tok, seq_len: int, default_system: str | None, debug_first_batch: bool, refusal_downweight: float, refusal_patterns: list[str], refusal_mode: str",
+        "line_start": 165,
+        "line_end": 217,
+        "called_functions": [
+          "(labels[0] != -100).nonzero",
+          "(labels[0] != -100).nonzero(as_tuple=False).squeeze",
+          "(labels[0] != -100).sum",
+          "(labels[0] != -100).sum().item",
+          "build_example",
+          "ex.get",
+          "float",
+          "hashlib.sha256",
+          "hashlib.sha256(json.dumps(ex, sort_keys=True, ensure_ascii=False, separators=(',', ':')).encode()).hexdigest",
+          "idx.numel",
+          "input_ids[0, idx].tolist",
+          "int",
+          "json.dumps",
+          "json.dumps(ex, sort_keys=True, ensure_ascii=False, separators=(',', ':')).encode",
+          "labels[0].numel",
+          "print",
+          "str",
+          "tok.decode",
+          "torch.stack",
+          "torch.tensor",
+          "weights[0].item",
+          "ws.append",
+          "xs.append",
+          "ys.append"
+        ]
+      },
+      {
+        "name": "masked_ce_loss",
+        "signature": "logits: torch.Tensor, labels: torch.Tensor, weights: torch.Tensor | None=None, reduction: str='token_mean'",
+        "line_start": 220,
+        "line_end": 268,
+        "called_functions": [
+          "(labels2 != -100).float",
+          "(loss_ex * weights).sum",
+          "(loss_tok * mask).sum",
+          "(mask * w).sum",
+          "(mask * w).sum().clamp_min",
+          "F.cross_entropy",
+          "F.cross_entropy(logits2.view(-1, V), labels2.view(-1), ignore_index=-100, reduction='none').view",
+          "ValueError",
+          "labels2.view",
+          "labels[:, 1:].contiguous",
+          "logits.size",
+          "logits2.view",
+          "logits[:, :-1, :].contiguous",
+          "loss_tok.sum",
+          "mask.sum",
+          "mask.sum(dim=1).clamp_min",
+          "torch.ones",
+          "weights.sum",
+          "weights.sum().clamp_min",
+          "weights.to",
+          "weights.view"
+        ]
+      },
+      {
+        "name": "supervised_target_count",
+        "signature": "labels: torch.Tensor",
+        "line_start": 271,
+        "line_end": 278,
+        "called_functions": [
+          "(counts == 0).any",
+          "(counts == 0).any().item",
+          "(labels[:, 1:] != IGNORE_INDEX).sum",
+          "ValueError",
+          "bool",
+          "counts.numel",
+          "counts.sum",
+          "counts.sum().item",
+          "int"
+        ]
+      },
+      {
+        "name": "assistant_nll_sum",
+        "signature": "logits: torch.Tensor, labels: torch.Tensor",
+        "line_start": 281,
+        "line_end": 288,
+        "called_functions": [
+          "F.cross_entropy",
+          "labels[:, 1:].contiguous",
+          "labels[:, 1:].contiguous().view",
+          "logits[:, :-1, :].contiguous",
+          "logits[:, :-1, :].contiguous().view"
+        ]
+      },
+      {
+        "name": "effective_batch_backward",
+        "signature": "model, batches, *, device, autocast_dtype=None, nll_sum_fn=None",
+        "line_start": 291,
+        "line_end": 328,
+        "called_functions": [
+          "'\\n'.join",
+          "'\\n'.join(row_ids).encode",
+          "(weights == 1).all",
+          "(weights == 1).all().item",
+          "FloatingPointError",
+          "ValueError",
+          "batch.get",
+          "batch['input_ids'].to",
+          "batch['labels'].to",
+          "bool",
+          "counts.append",
+          "float",
+          "hashlib.sha256",
+          "hashlib.sha256('\\n'.join(row_ids).encode()).hexdigest",
+          "int",
+          "len",
+          "loss.backward",
+          "model",
+          "nll.detach",
+          "nll.detach().item",
+          "nll_sum_fn",
+          "row_ids.extend",
+          "sum",
+          "supervised_target_count",
+          "torch.autocast",
+          "torch.device",
+          "torch.isfinite",
+          "torch.isfinite(loss).item",
+          "torch.isfinite(nll).item"
+        ]
+      },
+      {
+        "name": "checked_optimizer_step",
+        "signature": "model, optimizer, *, loss: float, grad_clip: float",
+        "line_start": 331,
+        "line_end": 348,
+        "called_functions": [
+          "FloatingPointError",
+          "RuntimeError",
+          "bool",
+          "finite.item",
+          "float",
+          "math.isfinite",
+          "model.parameters",
+          "norm.item",
+          "optimizer.step",
+          "torch.isfinite",
+          "torch.isfinite(p.grad).all",
+          "torch.nn.utils.clip_grad_norm_",
+          "torch.stack",
+          "torch.stack([torch.isfinite(p.grad).all() for p in parameters]).all"
+        ]
+      },
+      {
+        "name": "evaluate_token_mean",
+        "signature": "model, loader, *, device, autocast_dtype=None, expected_rows=None, should_stop=None",
+        "line_start": 351,
+        "line_end": 387,
+        "called_functions": [
+          "'\\n'.join",
+          "'\\n'.join(row_ids).encode",
+          "FloatingPointError",
+          "InterruptedError",
+          "ValueError",
+          "assistant_nll_sum",
+          "batch.get",
+          "batch['input_ids'].to",
+          "batch['labels'].to",
+          "bool",
+          "float",
+          "hashlib.sha256",
+          "hashlib.sha256('\\n'.join(row_ids).encode()).hexdigest",
+          "int",
+          "len",
+          "model",
+          "model.eval",
+          "model.train",
+          "nll.item",
+          "row_ids.extend",
+          "set",
+          "should_stop",
+          "supervised_target_count",
+          "torch.autocast",
+          "torch.device",
+          "torch.isfinite",
+          "torch.isfinite(nll).item",
+          "torch.no_grad"
+        ]
+      },
+      {
+        "name": "write_pilot_status",
+        "signature": "out_dir: str, status: dict",
+        "line_start": 390,
+        "line_end": 394,
+        "called_functions": [
+          "Path",
+          "json.dumps",
+          "os.replace",
+          "path.with_suffix",
+          "temporary.write_text"
+        ]
+      },
+      {
+        "name": "save_checkpoint_atomic",
+        "signature": "path: str, obj: dict[str, Any]",
+        "line_start": 397,
+        "line_end": 400,
+        "called_functions": [
+          "os.replace",
+          "torch.save"
+        ]
+      },
+      {
+        "name": "load_ckpt",
+        "signature": "path: str",
+        "line_start": 403,
+        "line_end": 409,
+        "called_functions": [
+          "np.dtype",
+          "torch.load",
+          "torch.serialization.safe_globals",
+          "type"
+        ]
+      },
+      {
+        "name": "build_arg_parser",
+        "signature": "",
+        "line_start": 412,
+        "line_end": 552,
+        "called_functions": [
+          "ap.add_argument",
+          "argparse.ArgumentParser"
+        ]
+      },
+      {
+        "name": "validate_sft_args",
+        "signature": "args: argparse.Namespace",
+        "line_start": 555,
+        "line_end": 594,
+        "called_functions": [
+          "ValueError",
+          "args.refusal_patterns.strip",
+          "getattr",
+          "validate_training_controls"
+        ]
+      },
+      {
+        "name": "main",
+        "signature": "argv: list[str] | None=None, *, stage_kind: str='sft'",
+        "line_start": 597,
+        "line_end": 1389,
+        "called_functions": [
+          "DataLoader",
+          "DeterministicEpochBatchSampler",
+          "GPT",
+          "GPT(cfg).to",
+          "GPTConfig",
+          "JsonlOffsetsDataset",
+          "MaterializedP2BatchSampler",
+          "Path",
+          "Path(sdir).mkdir",
+          "RuntimeError",
+          "SystemExit",
+          "Tracker",
+          "ValueError",
+          "any",
+          "apply_repetition_penalty",
+          "args.refusal_patterns.split",
+          "asdict",
+          "ban_repeat_ngrams",
+          "banned.add",
+          "batch.get",
+          "batch['input_ids'].to",
+          "batch['labels'].to",
+          "batch['weights'].to",
+          "bool",
+          "buffered_batches.append",
+          "build_arg_parser",
+          "build_arg_parser().parse_args",
+          "build_fixed_prompt_ids",
+          "build_optimizer",
+          "build_resume_contract_base",
+          "build_sampling_examples",
+          "capture_rng_state",
+          "checked_optimizer_step",
+          "ck.get",
+          "collate_fn_builder",
+          "decode_completion",
+          "dict",
+          "effective_batch_backward",
+          "emit_samples",
+          "encode_prompt",
+          "enumerate",
+          "ex.get",
+          "extract_last_user_and_ref",
+          "f.writelines",
+          "float",
+          "g.manual_seed",
+          "get_lr",
+          "gpt_config_from_checkpoint_dict",
+          "ids.size",
+          "ids[0, -args.sample_repetition_window:].tolist",
+          "ids[0, prompt_len:].tolist",
+          "ids[0].tolist",
+          "in_rng.getstate",
+          "in_rng.randrange",
+          "in_rng.setstate",
+          "int",
+          "isinstance",
+          "iter",
+          "json.dumps",
+          "k.startswith",
+          "len",
+          "lines.append",
+          "load_chat_tokenizer",
+          "load_checked_plan",
+          "load_ckpt",
+          "logits[0, -1, :].float",
+          "logits_1d.numel",
+          "logits_1d.size",
+          "loss.backward",
+          "loss.item",
+          "losses.append",
+          "make_loader_generator",
+          "mask.scatter_",
+          "masked_ce_loss",
+          "math.ceil",
+          "math.cos",
+          "math.isfinite",
+          "max",
+          "meta.get",
+          "min",
+          "model",
+          "model.eval",
+          "model.load_state_dict",
+          "model.named_parameters",
+          "model.parameters",
+          "model.state_dict",
+          "model.train",
+          "next",
+          "np.random.seed",
+          "open",
+          "optimizer.state_dict",
+          "optimizer.step",
+          "optimizer.zero_grad",
+          "os.environ.get",
+          "os.fsync",
+          "os.getpid",
+          "os.makedirs",
+          "os.path.join",
+          "p.strip",
+          "pg.get",
+          "phase.endswith",
+          "preflight_sft_record",
+          "prepare_prompt_messages",
+          "previous_handlers.items",
+          "print",
+          "probs.sum",
+          "probs.sum().item",
+          "random.Random",
+          "random.seed",
+          "range",
+          "read_jsonl",
+          "require_preflight_passed",
+          "require_resume_step",
+          "restore_rng_state",
+          "restore_training_state",
+          "resume_checkpoint.get",
+          "resume_contract_base['data_order'].update",
+          "resume_contract_for_step",
+          "rows.append",
+          "run_jsonl_preflight",
+          "sample_from_ids",
+          "save_checkpoint_atomic",
+          "save_training_checkpoint",
+          "scaler.scale",
+          "scaler.scale(loss).backward",
+          "scaler.state_dict",
+          "scaler.step",
+          "scaler.unscale_",
+          "scaler.update",
+          "sd.items",
+          "sd.keys",
+          "set",
+          "signal.signal",
+          "str",
+          "stream.fileno",
+          "stream.flush",
+          "stream.write",
+          "sum",
+          "supervised_target_count",
+          "time.perf_counter",
+          "time.time",
+          "tok.decode",
+          "tok.get_vocab_size",
+          "top_k_top_p",
+          "torch.Generator",
+          "torch.amp.GradScaler",
+          "torch.argmax",
+          "torch.argmax(next_logits).item",
+          "torch.autocast",
+          "torch.cat",
+          "torch.cuda.device_count",
+          "torch.cuda.is_available",
+          "torch.cuda.is_bf16_supported",
+          "torch.cuda.manual_seed_all",
+          "torch.cuda.max_memory_allocated",
+          "torch.cuda.max_memory_reserved",
+          "torch.cuda.reset_peak_memory_stats",
+          "torch.cuda.synchronize",
+          "torch.cumsum",
+          "torch.distributed.get_world_size",
+          "torch.distributed.is_available",
+          "torch.distributed.is_initialized",
+          "torch.full_like",
+          "torch.isnan",
+          "torch.isnan(probs).any",
+          "torch.manual_seed",
+          "torch.multinomial",
+          "torch.multinomial(probs, num_samples=1, generator=g).item",
+          "torch.nn.utils.clip_grad_norm_",
+          "torch.no_grad",
+          "torch.softmax",
+          "torch.sort",
+          "torch.tensor",
+          "torch.topk",
+          "torch.where",
+          "torch.zeros_like",
+          "tracker.log",
+          "tracker.log_run_start",
+          "tracker.render",
+          "truncate_chat_sequence",
+          "tuple",
+          "type",
+          "v_loss.item",
+          "validate_resume_contract",
+          "validate_sft_args",
+          "validation_fn",
+          "vars",
+          "vb['input_ids'].to",
+          "vb['labels'].to",
+          "write_pilot_status"
+        ]
+      }
+    ]
+  },
+  {
+    "source": "sft/p2_loss.py",
+    "sha256": "ce2690970503bcee6641ebe68c3e5bf076984ea2fd37537daf0429375761cf42",
+    "imports": [
+      "from typing import Literal",
+      "import torch",
+      "import torch.nn.functional as F"
+    ],
+    "functions": [
+      {
+        "name": "_selected_ce_fp32",
+        "signature": "logits: torch.Tensor, labels: torch.Tensor, reduction: Literal['none', 'sum']",
+        "line_start": 14,
+        "line_end": 32,
+        "called_functions": [
+          "F.cross_entropy",
+          "ValueError",
+          "selected_labels.numel",
+          "selected_logits.float",
+          "torch.autocast"
+        ]
+      },
+      {
+        "name": "assistant_nll_sum_fp32",
+        "signature": "logits: torch.Tensor, labels: torch.Tensor",
+        "line_start": 35,
+        "line_end": 42,
+        "called_functions": [
+          "_selected_ce_fp32"
+        ]
+      },
+      {
+        "name": "assistant_token_nll_fp32",
+        "signature": "logits: torch.Tensor, labels: torch.Tensor",
+        "line_start": 45,
+        "line_end": 51,
+        "called_functions": [
+          "_selected_ce_fp32"
+        ]
+      }
+    ]
+  },
+  {
+    "source": "sft/p2_evaluation.py",
+    "sha256": "caac4bde8251b4ba2b999770630ad926c912d1ec0cfa006de65a471421ef0f7c",
+    "imports": [
+      "import hashlib",
+      "import torch",
+      "from sft.p2_loss import assistant_token_nll_fp32"
+    ],
+    "functions": [
+      {
+        "name": "answer_position_buckets",
+        "signature": "labels",
+        "line_start": 8,
+        "line_end": 26,
+        "called_functions": [
+          "(result >= 0).all",
+          "ValueError",
+          "bool",
+          "enumerate",
+          "range",
+          "shifted[row].tolist",
+          "torch.full_like"
+        ]
+      },
+      {
+        "name": "evaluate_position_nll",
+        "signature": "model, loader, *, device, autocast_dtype=None, expected_rows=None, should_stop=None",
+        "line_start": 28,
+        "line_end": 61,
+        "called_functions": [
+          "'\\n'.join",
+          "'\\n'.join(row_ids).encode",
+          "((y[:, 1:] != -100).sum(1) == 0).any",
+          "(y[:, 1:] != -100).sum",
+          "FloatingPointError",
+          "InterruptedError",
+          "ValueError",
+          "abs",
+          "answer_position_buckets",
+          "answer_position_buckets(batch['labels']).to",
+          "assistant_token_nll_fp32",
+          "batch['input_ids'].to",
+          "batch['labels'].to",
+          "bool",
+          "correct[take].sum",
+          "enumerate",
+          "float",
+          "hashlib.sha256",
+          "hashlib.sha256('\\n'.join(row_ids).encode()).hexdigest",
+          "int",
+          "len",
+          "logits[:, :-1][mask].argmax",
+          "model",
+          "model.eval",
+          "model.train",
+          "nll.double",
+          "nll.double().sum",
+          "nll[take].double",
+          "nll[take].double().sum",
+          "row_ids.extend",
+          "set",
+          "should_stop",
+          "stats.values",
+          "sum",
+          "take.sum",
+          "torch.autocast",
+          "torch.device",
+          "torch.isfinite",
+          "torch.isfinite(nll).all",
+          "torch.no_grad"
+        ]
+      }
+    ]
+  },
+  {
+    "source": "src/canonical_schedule.py",
+    "sha256": "fc488c6cf2f30c92f1ee0b7e3563032e8d3a8e8f5e3802140cb304c9a17a2b15",
+    "imports": [
+      "from __future__ import annotations",
+      "import math"
+    ],
+    "functions": [
+      {
+        "name": "lr_schedule",
+        "signature": "step: int, warmup_steps: int, base_lr: float, *, schedule: str='cosine', schedule_total_steps: int=0, decay_start_step: int=-1, decay_end_step: int=-1, min_lr_ratio: float=0.1",
+        "line_start": 16,
+        "line_end": 57,
+        "called_functions": [
+          "ValueError",
+          "float",
+          "int",
+          "math.cos",
+          "max",
+          "min"
+        ]
+      }
+    ]
+  }
+]

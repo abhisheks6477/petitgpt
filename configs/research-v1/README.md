@@ -33,3 +33,8 @@ it does not overwrite that historical evidence. Public data distribution was
 limited to source/config identities and authored synthetic fixtures; no run-specific
 training or held-out rows, checkpoints, raw outcomes or private retention inventory
 were added.
+
+For callable P2/P3/interpolation/export commands and schemas, use
+[Posttraining entry points V2](../../recipes/research-v1/POSTTRAINING.md).
+These historical records remain evidence; new local bindings and adapter hashes
+are recorded separately in RELOCATION_V2.json.
