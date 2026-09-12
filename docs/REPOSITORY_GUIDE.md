@@ -28,7 +28,7 @@ These are reading entry points, not an instruction to run every script or a clai
 | [tokenizer/](../tokenizer/) | Tokenizer corpus preparation, training, validation, and versioned release files. See [tokenizer_training/](../tokenizer/tokenizer_training/) and [releases/tokenizer_v1/](../tokenizer/releases/tokenizer_v1/). |
 | [pretrain/](../pretrain/) | Reusable data selection, shard/reference-validation contracts and training. Exact release source lives in the recipe roots. Start with [train_pretrain.py](../pretrain/train_pretrain.py) and [run_plan_contract.py](../pretrain/run_plan_contract.py); input construction lives in [build_pretrain_shards.py](../pretrain/build_pretrain_shards.py). |
 | [sft/](../sft/) | SFT data preparation and shared supervised training. Start with [train_sft.py](../sft/train_sft.py); [prepare_sft_mix_split_local.py](../sft/prepare_sft_mix_split_local.py) accepts an explicit mixture config. |
-| [distill/](../distill/) | Retained distillation/KD research tooling, including teacher-data preparation and verification. [train_distill.py](../distill/train_distill.py) delegates text-response training to the SFT engine; it does not by itself reproduce the separate soft-logit lab. Some data-preparation scripts call external teachers. |
+| [distill/](../distill/README.md) | Retained response-distillation research tooling, with a tool/status index for teacher-data preparation and verification. [train_distill.py](../distill/train_distill.py) delegates text-response training to the SFT engine; it does not by itself reproduce the separate soft-logit lab. Retired helpers are indexed in [legacy/distill/](../legacy/distill/README.md). Some data-preparation scripts call external teachers. |
 | [dpo/](../dpo/) | Retained preference-data preparation and DPO research implementation; see [dpo.py](../dpo/dpo.py). |
 | [experiments/](../experiments/README.md) | Measured research index; [GRPO](../experiments/grpo/README.md) is implementation-only with active tests, not an established research-v1 run. |
 | [recipes/research-v1/](../recipes/research-v1/README.md) | Reader new-run training/evaluation entry point, prepared input schemas and separate historical adapters over recovered source roots. |
@@ -47,7 +47,9 @@ and unused predecessor tokenizers were removed from HEAD; the short history note
 points to their pre-removal commit. The immutable migration CSV describes its older
 snapshot, not the current runtime. Published scientific evidence remains unchanged.
 
-DPO/KD shared code remains in functional directories. GRPO moved to experiments
+DPO/KD shared code remains in functional directories; seven retired distillation
+helpers moved to [legacy/distill/](../legacy/distill/README.md), preserving their contents.
+GRPO moved to experiments
 with its imports, direct-script bootstrap, CI and active tests updated. No test was
 archived or disabled. `src/model_moe.py` remains a tested implementation with no
 released-weight or completed research-v1 experiment claim.

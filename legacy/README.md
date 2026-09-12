@@ -6,6 +6,10 @@ old diagnostic source and the immutable [migration record](MIGRATIONS.csv).
 The migration CSV describes the tree at commit `5044497`; it is not a current
 runtime file manifest and does not assert that every migrated artifact remains at HEAD.
 
+[Archived distillation helpers](distill/README.md) separately records seven later
+file moves: an applied source patch, teacher smoke scripts and earlier data-preparation
+variants. Their original contents remain available alongside the reasons for archival.
+
 Reader closeout removed 665 obsolete files from HEAD: 378 per-step sample texts,
 281 per-step output/sample/benchmark snapshots, four old tokenizer/config JSONs,
 and two old shard-sanity dumps. No active code/test/report reference to their current

@@ -5,7 +5,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Any, Dict, Iterable, Iterator, List, Optional
 
-from general_utils import cleanup_prompt_text, extract_last_user_from_messages, normalize_space, print_counter, read_jsonl, stable_id, write_jsonl
+from general_utils import cleanup_prompt_text, extract_last_user_from_messages, normalize_space, read_jsonl, stable_id, write_jsonl
 
 BANNED_KEYWORDS = [
     "python", "javascript", "function", "code", "algorithm", "bug", "debug", "sql",
@@ -139,7 +139,7 @@ def main() -> None:
     write_jsonl(args.out_jsonl, all_rows)
     c = Counter([r["source"] for r in all_rows])
     print(f"Wrote {len(all_rows)} raw open prompts to {args.out_jsonl}")
-    print_counter("source_counts", c)
+    print(f"source_counts: {dict(c.most_common())}")
 
 if __name__ == "__main__":
     main()

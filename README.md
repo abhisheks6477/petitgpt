@@ -116,7 +116,7 @@ See the [repository guide](docs/REPOSITORY_GUIDE.md) for reading entry points, d
 | [`inference_native/`](inference_native/) | Released native inference code, without model weights |
 | [`src/`](src/) | Shared model and training components |
 | [`pretrain/`](pretrain/), [`tokenizer/`](tokenizer/) | Pretraining and tokenizer tooling |
-| [`sft/`](sft/), [`distill/`](distill/), [`dpo/`](dpo/) | Reusable post-training implementations; exact P2 uses the recovered recipe |
+| [`sft/`](sft/), [`distill/`](distill/README.md), [`dpo/`](dpo/) | Reusable post-training implementations; distill has a tool/status index; exact P2 uses the recovered recipe |
 | [`experiments/`](experiments/README.md) | Measured research index and implementation-only GRPO |
 | [`recipes/research-v1/`](recipes/research-v1/README.md), [`configs/research-v1/`](configs/research-v1/README.md) | New-run reader workflows, historical replay interfaces, recovered sources and effective settings |
 | [`legacy/`](legacy/README.md) | Retained experiment summaries/configs and a short Git-history guide; obsolete snapshots removed |
