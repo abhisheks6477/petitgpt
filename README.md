@@ -1,4 +1,4 @@
-# petitgpt
+# PetitGPT
 
 **A 124.6M-parameter language-model research project, from tokenizer training and pretraining to post-training, evaluation, and native inference.**
 
@@ -6,9 +6,9 @@
 
 [Model and tokenizer](https://huggingface.co/yqi0/petitgpt) · [Tokenizer files](tokenizer/README.md) · [Training and reproducibility](TRAINING_AND_REPRODUCIBILITY.md) · [Technical report](docs/petitgpt-v1/TECHNICAL_REPORT.md) · [Run guide](docs/petitgpt-v1/RUN_GUIDE.md) · [Model card](docs/petitgpt-v1/MODEL_CARD.md)
 
-petitgpt explores what can be learned by building and evaluating a small language model under a single-GPU training budget. The project includes a custom byte-level BPE tokenizer, approximately 13 billion pretraining positions, controlled post-training experiments, and evaluations that distinguish reference-answer fit from complete generated-answer correctness.
+PetitGPT explores what can be learned by building and evaluating a small language model under a single-GPU training budget. The project includes a custom byte-level BPE tokenizer, approximately 13 billion pretraining positions, controlled post-training experiments, and evaluations that distinguish reference-answer fit from complete generated-answer correctness.
 
-The released **research-v1** checkpoint is **alpha075**. It is an inspectable research artifact, not a production-ready general assistant.
+The released **research-v1** checkpoint is **alpha075**.
 
 ## At a glance
 
