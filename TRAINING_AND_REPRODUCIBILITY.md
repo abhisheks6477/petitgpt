@@ -1,12 +1,12 @@
 # Train and evaluate PetitGPT from prepared inputs
 
-This manual describes a **new run of the research-v1 method**. You provide prepared
+For interested readers, this manual describes a way to **reproduce the research-v1 method from the beginning**. One provides prepared
 local data; the adapters reuse the recovered research-v1 trainers and fixed native
-model. New data/checkpoints have new hashes and new results. They are not the released
+model. New data/checkpoints have new hashes and new results. These are not the released
 alpha075. Published results remain in the unchanged [technical report](docs/petitgpt-v1/TECHNICAL_REPORT.md).
 
 Read [model/tokenizer](tokenizer/README.md) → [prepared input schemas](recipes/research-v1/PREPARED_INPUTS.md)
-→ pretrain → posttrain → likelihood evaluation. The shared `pretrain/train_pretrain.py`
+→ [pretrain](#pretrain-ab) → [posttrain](#posttraining) → [likelihood evaluation](#export-and-evaluate). The shared `pretrain/train_pretrain.py`
 is useful research tooling but is not the trainer used by this route.
 
 ## Setup and conventions
