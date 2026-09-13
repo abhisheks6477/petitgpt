@@ -96,6 +96,7 @@ The published format is **native PyTorch**, not a Transformers `AutoModel` packa
 ## Train and evaluate
 
 We pretrained PetitGPT, applied supervised fine-tuning, and explored DPO and response distillation in separate experimental branches. For more details, please refer to [Technical report](docs/petitgpt-v1/TECHNICAL_REPORT.md). This repository preserves the implementations and recorded results of that work.
+
 For interested readers, to train and evaluate a new model on your own prepared data using the research-v1 method, please follow the [practical manual](TRAINING_AND_REPRODUCIBILITY.md):
 [model/token contract](tokenizer/README.md) → [prepared inputs](recipes/research-v1/PREPARED_INPUTS.md)
 → [pretrain A/B](TRAINING_AND_REPRODUCIBILITY.md#pretrain-ab)
