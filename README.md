@@ -43,7 +43,7 @@ Later DPO, DeepSeek response-distillation, LoRA, and unified Base-SFT updates ar
 
 ## Results at a glance
 
-The benchmark picture is mixed rather than uniformly favorable. Under the project's fixed protocol, alpha075 leads both SmolLM baselines on ARC-Easy and ARC-Challenge, trails both on PIQA and HellaSwag, and falls between SmolLM and SmolLM2 on IFEval. These are task-specific observations under one protocol, not evidence of general superiority: the three models' training data, compute, and tokenizers were not matched, and no significance test was run. ARC-Challenge, HellaSwag, and IFEval were added in a later evaluation extension and are not covered by the technical report.
+The benchmark picture is mixed rather than uniformly favorable. Under the project's fixed protocol, alpha075 leads both SmolLM baselines on ARC-Easy and ARC-Challenge, trails both on PIQA and HellaSwag, and falls between SmolLM and SmolLM2 on IFEval. **For context, SmolLM-135M was pretrained on 600B tokens and SmolLM2-135M on 2T tokens, each on 64 H100 GPUs, whereas PetitGPT was pretrained on about 13B tokens on one RTX 4090.**
 
 ### Zero-shot likelihood benchmarks
 
