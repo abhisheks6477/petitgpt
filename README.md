@@ -126,7 +126,7 @@ The Python entry point is `recipes/research-v1/reader.py`, with `--policy new-ru
 It accepts newly produced compatible checkpoints; private approval files and
 historical data hashes belong only to the separate historical replay interfaces.
 
-For experiments beyond that workflow, the top-level pretrain/, sft/, dpo/, and distill/ directories provide reusable research tools. These implementations may differ from the stage-specific versions used by the recipes.
+For experiments beyond that workflow, the top-level [`pretrain/`](pretrain/), [`sft/`](sft/), [`dpo/`](dpo/), and [`distill/`](distill/) directories provide reusable research tools. These implementations may differ from the stage-specific versions used by the recipes.
 
 Using different data produces new checkpoints and results, rather than reproducing the published alpha075 exactly. See the practical manual for validation status and current execution limits.
 
