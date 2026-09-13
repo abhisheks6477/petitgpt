@@ -150,8 +150,8 @@ Treat generated factual claims and code as unverified. The model has not been va
 
 ## Licensing, sources, and citation
 
-Author-controlled code, model, and tokenizer are offered under [Apache-2.0](LICENSE), only for rights the author can grant. Author-written reports and documentation are licensed under [CC BY 4.0](docs/petitgpt-v1/DOCUMENTATION_LICENSE.md), an explicit exception to the root code license. Third-party terms remain applicable.
+Code, model, and tokenizer are offered under [Apache-2.0](LICENSE). Reports and documentation are licensed under [CC BY 4.0](docs/petitgpt-v1/DOCUMENTATION_LICENSE.md). Third-party terms remain applicable.
 
-The [source notice](SOURCE_NOTICE.md) and [third-party notices](THIRD_PARTY_NOTICES.md) document provenance, differing component declarations, historical-version limits, and unresolved source-license questions. Disclosure is not a claim of legal clearance, and the model license does not relicense the original data.
+The [source notice](SOURCE_NOTICE.md) and [third-party notices](THIRD_PARTY_NOTICES.md) document provenance, differing component declarations, and historical-version limits. Disclosure is not a claim of legal clearance, and the model license does not relicense the original data.
 
-For citation metadata, use [`CITATION.cff`](CITATION.cff). When reporting results, identify the model revision and evaluation protocol rather than only the project name.
+For citation metadata, please use [`CITATION.cff`](CITATION.cff).
