@@ -31,7 +31,7 @@ The central question is not just whether a training loss decreases, but whether 
 
 The experiments cover supervised fine-tuning, preference optimization, response distillation, a separate shared-tokenizer soft-distillation lab, LoRA adaptation, loss allocation, and parameter interpolation. Several runs improved fitting or individual tasks without delivering a balanced improvement over the selected reference. Those results are retained rather than presented as successful upgrades.
 
-**Released weights and experimental coverage are different things.** The released model follows:
+**Released weights and experimental coverage are different things.** In the released model's training path, **P2** is supervised fine-tuning on concise instructions, and **P3** is a further adaptation stage on basic instruction tasks with replay examples from earlier instruction data:
 
 ```text
 Base step_049590 → P2 step750 → P3 step320
@@ -43,7 +43,9 @@ Later DPO, DeepSeek response-distillation, LoRA, and unified Base-SFT updates ar
 
 ## Results at a glance
 
-The benchmark picture is mixed rather than uniformly favorable. Under the project's fixed protocol, alpha075 leads both SmolLM baselines on ARC-Easy and ARC-Challenge, trails both on PIQA and HellaSwag, and falls between SmolLM and SmolLM2 on IFEval. **For context, SmolLM-135M was pretrained on 600B tokens and SmolLM2-135M on 2T tokens, each on 64 H100 GPUs, whereas PetitGPT was pretrained on about 13B tokens on one RTX 4090.**
+The benchmark picture is mixed rather than uniformly favorable. Under the project's fixed protocol, alpha075 leads both SmolLM baselines on ARC-Easy and ARC-Challenge, trails both on PIQA and HellaSwag, and falls between SmolLM and SmolLM2 on IFEval.
+
+**Competitive ARC results on a small pretraining budget.** PetitGPT was pretrained on approximately 13B positions using one RTX 4090. The base models behind the instruct baselines were pretrained on 600B tokens for [SmolLM-135M](https://huggingface.co/HuggingFaceTB/SmolLM-135M#training) and 2T tokens for [SmolLM2-135M](https://huggingface.co/HuggingFaceTB/SmolLM2-135M#training); both official model cards report 64 H100 GPUs. PetitGPT's ARC results suggest promising data efficiency under this evaluation protocol. Different tokenizers, datasets and post-training procedures make this an observational comparison; total training FLOPs, GPU-hours and costs were not compared.
 
 ### Zero-shot likelihood benchmarks
 
@@ -53,7 +55,16 @@ The benchmark picture is mixed rather than uniformly favorable. Under the projec
 | SmolLM-135M-Instruct | 49.24% / 43.48% | 25.43% / 27.22% | **67.08% / 67.25%** | 34.60% / 41.96% |
 | SmolLM2-135M-Instruct | 54.00% / 48.82% | 25.94% / 27.73% | 66.70% / 66.76% | **35.02% / 42.90%** |
 
-ARC-Easy: 2,376 test rows; ARC-Challenge: 1,172 test rows; PIQA: 1,838 validation rows; HellaSwag: 10,042 validation rows. All four tasks score raw completion likelihood zero-shot on the same rows for all three models, with no chat template, no BOS/EOS insertion, FP32 parameters and forward, batch size 1, no sampling, and first-argmax tie-breaking. `acc_norm` is the project-protocol variant: the continuation likelihood divided by the Unicode-character length of the original candidate text (for HellaSwag, the pinned task-preprocessed ending without its leading delimiter), **not** its token count, so it is not necessarily identical to an externally reported `acc_norm`. The evaluator is protocol-compatible with pinned harness code rather than a full installed-harness run. ARC-Easy and PIQA were earlier project diagnostics rather than untouched final tests, and no contamination audit was performed.
+All three models are evaluated on the same rows using zero-shot completion likelihood. `acc_norm` uses character-length normalization under this project's protocol and may differ from externally reported scores. ARC-Easy and PIQA were used during project development; no contamination audit was performed.
+
+<details>
+<summary>Likelihood evaluation protocol and dataset sizes</summary>
+
+ARC-Easy: 2,376 test rows; ARC-Challenge: 1,172 test rows; PIQA: 1,838 validation rows; HellaSwag: 10,042 validation rows. All four tasks score raw completion likelihood zero-shot on the same rows for all three models, with no chat template, no BOS/EOS insertion, FP32 parameters and forward, batch size 1, no sampling, and first-argmax tie-breaking.
+
+`acc_norm` is the project-protocol variant: the continuation likelihood divided by the Unicode-character length of the original candidate text (for HellaSwag, the pinned task-preprocessed ending without its leading delimiter), **not** its token count, so it is not necessarily identical to an externally reported `acc_norm`. The evaluator is protocol-compatible with pinned harness code rather than a full installed-harness run. ARC-Easy and PIQA were earlier project diagnostics rather than untouched final tests, and no contamination audit was performed.
+
+</details>
 
 ### Instruction following: IFEval
 
@@ -63,7 +74,16 @@ ARC-Easy: 2,376 test rows; ARC-Challenge: 1,172 test rows; PIQA: 1,838 validatio
 | SmolLM-135M-Instruct | 10.35% (56/541) | 21.82% (182/834) | 12.01% (65/541) | 24.10% (201/834) | 290/541 |
 | **SmolLM2-135M-Instruct** | **21.63% (117/541)** | **35.85% (299/834)** | **22.55% (122/541)** | **37.29% (311/834)** | 233/541 |
 
-IFEval is a generative evaluation and is not part of the likelihood protocol above. Each model received the same official IFEval user prompt (541 prompts, 834 instructions, 25 instruction types) as a single user message, formatted by its own native chat formatter: alpha075's released formatter with no default system message, and the pinned SmolLM and SmolLM2 tokenizer chat templates, where SmolLM2's template inserts its own default system text. The formatted token inputs therefore differ across models; this is a native-chat comparison, not an identical-token-input experiment. Generation was zero-shot and greedy with no sampling and `max_new_tokens=1280`, with no added system prompt or few-shot messages. Responses were scored by the pinned IFEval strict/loose programmatic verifier with no LLM judge; no prompts were dropped or truncated. Responses that reached the 1,280-token cap are scored as-is, and the cap-hit counts are reported without any claim about what a larger budget would change. SmolLM2 scores highest on all four metrics, alpha075 is in the middle, and SmolLM lowest; all three show substantial instruction-following limitations at this scale.
+IFEval scores generated responses to the same 541 prompts, using each model's own chat template and greedy decoding. Outputs are capped at 1,280 new tokens and scored as-is, including those that hit the cap. SmolLM2 leads all four instruction-following metrics, followed by alpha075 and SmolLM.
+
+<details>
+<summary>IFEval formatting, generation and scoring protocol</summary>
+
+IFEval is a generative evaluation and is not part of the likelihood protocol above. Each model received the same official IFEval user prompt (541 prompts, 834 instructions, 25 instruction types) as a single user message, formatted by its own native chat formatter: alpha075's released formatter with no default system message, and the pinned SmolLM and SmolLM2 tokenizer chat templates, where SmolLM2's template inserts its own default system text. The formatted token inputs therefore differ across models; this is a native-chat comparison, not an identical-token-input experiment.
+
+Generation was zero-shot and greedy with no sampling and `max_new_tokens=1280`, with no added system prompt or few-shot messages. Responses were scored by the pinned IFEval strict/loose programmatic verifier with no LLM judge; no prompts were dropped or truncated. Responses that reached the 1,280-token cap are scored as-is, and the cap-hit counts are reported without any claim about what a larger budget would change. SmolLM2 scores highest on all four metrics, alpha075 is in the middle, and SmolLM lowest; all three show substantial instruction-following limitations at this scale.
+
+</details>
 
 **Benchmark scores are not chat reliability.** In the separate, versioned full-answer review, alpha075 produced a correct Python interface on 42/46 prompts but a correct complete answer on 0/46. Ordinary QA, faithful rewriting, and context-dependent instructions also remain limited. The [report](docs/petitgpt-v1/TECHNICAL_REPORT.md) preserves both positive results and failure cases, with content, format, interface, and finite test evidence kept separate.
 
@@ -105,7 +125,10 @@ For interested readers, to train and evaluate a new model on your own prepared d
 The Python entry point is `recipes/research-v1/reader.py`, with `--policy new-run`.
 It accepts newly produced compatible checkpoints; private approval files and
 historical data hashes belong only to the separate historical replay interfaces.
+
 For experiments beyond that workflow, the top-level pretrain/, sft/, dpo/, and distill/ directories provide reusable research tools. These implementations may differ from the stage-specific versions used by the recipes.
+
+Using different data produces new checkpoints and results, rather than reproducing the published alpha075 exactly. See the practical manual for validation status and current execution limits.
 
 <!-- You supply local prepared data and an environment matching the recorded dependencies.
 No reader command downloads data, models or teacher responses. The release-sized
