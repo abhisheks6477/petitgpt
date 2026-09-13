@@ -107,11 +107,11 @@ It accepts newly produced compatible checkpoints; private approval files and
 historical data hashes belong only to the separate historical replay interfaces.
 For experiments beyond that workflow, the top-level pretrain/, sft/, dpo/, and distill/ directories provide reusable research tools. These implementations may differ from the stage-specific versions used by the recipes.
 
-You supply local prepared data and an environment matching the recorded dependencies.
+<!-- You supply local prepared data and an environment matching the recorded dependencies.
 No reader command downloads data, models or teacher responses. The release-sized
 recipe uses the canonical tokenizer, 30-layer model and original schedule/batch settings;
 P3's step320 is taken from a **640-update** schedule. Different data produces a new
-model, not another copy of the published alpha075 or its reported scores.
+model, not another copy of the published alpha075 or its reported scores. -->
 
 <!-- CLI/schema/tokenizer/order tests and small synthetic CPU tensor/serialization checks
 have run. One bounded real CPU export of the existing alpha075 passed after a
@@ -140,13 +140,13 @@ See the [repository guide](docs/REPOSITORY_GUIDE.md) for reading entry points, d
 | [`docs/petitgpt-v1/`](docs/petitgpt-v1/) | Current report, versioned results, model card, and run guide |
 | [`HISTORICAL_README.md`](docs/petitgpt-v1/HISTORICAL_README.md) | Earlier project narrative; not the released model's specification |
 
-The repository retains earlier experiments. Older scripts and result files must not be mistaken for the current release recipe. Private run records, complete training data, optimizer checkpoints, and some evaluation artifacts are not distributed in this public repository; GitHub alone is not a complete backup or a guarantee of one-command reproduction of every historical run.
+The repository retains earlier experiments. Older scripts and result files must not be mistaken for the current release recipe. Private run records, complete training data, optimizer checkpoints, and some evaluation artifacts are not distributed in this public repository.
 
-## Reproducibility and responsible use
+<!-- ## Reproducibility and responsible use
 
 The native export preserved all 213 named state entries and tied embeddings. Eight fixed source/export pairs matched exactly within their respective precision profiles. This establishes the recorded export equivalence on the tested environment, not quality certification or universal cross-hardware reproducibility.
 
-Treat generated factual claims and code as unverified. The model has not been validated for production, high-stakes use, tool use, or broad multilingual capability. Research is the intended use, not an additional noncommercial restriction.
+Treat generated factual claims and code as unverified. The model has not been validated for production, high-stakes use, tool use, or broad multilingual capability. Research is the intended use, not an additional noncommercial restriction. -->
 
 ## Licensing, sources, and citation
 
