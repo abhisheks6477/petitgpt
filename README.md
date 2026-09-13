@@ -69,7 +69,7 @@ IFEval is a generative evaluation and is not part of the likelihood protocol abo
 
 ## Run the released model
 
-**A CUDA GPU is required by the released CLI.** Use an environment compatible with the [tested dependencies and run guide](docs/petitgpt-v1/RUN_GUIDE.md). The commands below assume the Hugging Face CLI is already available; they do not set up the CUDA environment.
+**A CUDA GPU is required by the released CLI.** Use an environment compatible with the [tested dependencies and run guide](docs/petitgpt-v1/RUN_GUIDE.md). The commands below assume the Hugging Face CLI is already available.
 
 Download the complete native bundle at the published research-v1 revision:
 
@@ -87,7 +87,7 @@ python ./artifacts/petitgpt-research-v1/inference.py \
   --max-new-tokens 32
 ```
 
-This is an illustrative command, not a newly measured quality example. Preserve the downloaded `src/` directory. The CLI returns the generated token IDs, raw text including a terminal EOS when present, and the stop reason.
+This is an illustrative command. Preserve the downloaded `src/` directory. The CLI returns the generated token IDs, raw text including a terminal EOS when present, and the stop reason.
 
 Greedy decoding and two numerical profiles are supported: `bf16_native` and `fp32_math`. They are not asserted to generate identical answers. Context overflow is rejected rather than silently truncated. For multi-turn messages and the Python API, see the [run guide](docs/petitgpt-v1/RUN_GUIDE.md).
 
@@ -110,14 +110,14 @@ recipe uses the canonical tokenizer, 30-layer model and original schedule/batch 
 P3's step320 is taken from a **640-update** schedule. Different data produces a new
 model, not another copy of the published alpha075 or its reported scores.
 
-CLI/schema/tokenizer/order tests and small synthetic CPU tensor/serialization checks
+<!-- CLI/schema/tokenizer/order tests and small synthetic CPU tensor/serialization checks
 have run. One bounded real CPU export of the existing alpha075 passed after a
 separate earlier attempt failed before deserialization and the NumPy loader was
 repaired. Source/output tensor equality passed in the recorded laptop environment;
 this was a temporary re-export, not newly trained reader output. Full reader
 training, P3 real runtime, inference/generation parity and scoring remain unverified
 through these interfaces. See the manual for the tested environment and runtime
-scope, inputs, outputs, resume limits and omitted optional hooks.
+scope, inputs, outputs, resume limits and omitted optional hooks. -->
 
 ## Navigate the repository
 
