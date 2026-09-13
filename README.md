@@ -43,17 +43,29 @@ Later DPO, DeepSeek response-distillation, LoRA, and unified Base-SFT updates ar
 
 ## Results at a glance
 
-The table below reports the fixed **FP32 zero-shot multiple-choice likelihood** evaluation. All three models were measured on the same task rows and protocol; their training data and compute budgets were not matched.
+The benchmark picture is mixed rather than uniformly favorable. Under the project's fixed protocol, alpha075 leads both SmolLM baselines on ARC-Easy and ARC-Challenge, trails both on PIQA and HellaSwag, and falls between SmolLM and SmolLM2 on IFEval. These are task-specific observations under one protocol, not evidence of general superiority: the three models' training data, compute, and tokenizers were not matched, and no significance test was run. ARC-Challenge, HellaSwag, and IFEval were added in a later evaluation extension and are not covered by the technical report.
 
-| Model | ARC-Easy acc | ARC-Easy acc_norm | PIQA acc | PIQA acc_norm |
+### Zero-shot likelihood benchmarks
+
+| Model | ARC-Easy acc / acc_norm | ARC-Challenge acc / acc_norm | PIQA acc / acc_norm | HellaSwag acc / acc_norm |
 |---|---:|---:|---:|---:|
-| **petitgpt-alpha075** | **57.74%** | **52.36%** | 63.49% | 62.30% |
-| SmolLM-135M-Instruct | 49.24% | 43.48% | **67.08%** | **67.25%** |
-| SmolLM2-135M-Instruct | 54.00% | 48.82% | 66.70% | 66.76% |
+| **petitgpt-alpha075** | **57.74% / 52.36%** | **28.16% / 32.68%** | 63.49% / 62.30% | 31.28% / 35.60% |
+| SmolLM-135M-Instruct | 49.24% / 43.48% | 25.43% / 27.22% | **67.08% / 67.25%** | 34.60% / 41.96% |
+| SmolLM2-135M-Instruct | 54.00% / 48.82% | 25.94% / 27.73% | 66.70% / 66.76% | **35.02% / 42.90%** |
 
-ARC-Easy uses 2,376 test questions; PIQA uses 1,838 validation questions. `acc_norm` normalizes by the original candidate answer's Unicode-character length, **not** its token count. This is raw completion scoring without a chat template, and the evaluator is protocol-compatible with pinned harness code rather than a full installed-harness run. These previously used project diagnostics are not untouched final tests; no contamination audit or statistical significance claim is made.
+ARC-Easy: 2,376 test rows; ARC-Challenge: 1,172 test rows; PIQA: 1,838 validation rows; HellaSwag: 10,042 validation rows. All four tasks score raw completion likelihood zero-shot on the same rows for all three models, with no chat template, no BOS/EOS insertion, FP32 parameters and forward, batch size 1, no sampling, and first-argmax tie-breaking. `acc_norm` is the project-protocol variant: the continuation likelihood divided by the Unicode-character length of the original candidate text (for HellaSwag, the pinned task-preprocessed ending without its leading delimiter), **not** its token count, so it is not necessarily identical to an externally reported `acc_norm`. The evaluator is protocol-compatible with pinned harness code rather than a full installed-harness run. ARC-Easy and PIQA were earlier project diagnostics rather than untouched final tests, and no contamination audit was performed.
 
-**Multiple-choice performance is not chat reliability.** In the separate, versioned full-answer review, alpha075 produced a correct Python interface on 42/46 prompts but a correct complete answer on 0/46. Ordinary QA, faithful rewriting, and context-dependent instructions also remain limited. The [report](docs/petitgpt-v1/TECHNICAL_REPORT.md) preserves both positive results and failure cases, with content, format, interface, and finite test evidence kept separate.
+### Instruction following: IFEval
+
+| Model | Prompt strict | Instruction strict | Prompt loose | Instruction loose | 1,280-token cap hits |
+|---|---:|---:|---:|---:|---:|
+| petitgpt-alpha075 | 17.19% (93/541) | 28.54% (238/834) | 17.74% (96/541) | 29.98% (250/834) | 40/541 |
+| SmolLM-135M-Instruct | 10.35% (56/541) | 21.82% (182/834) | 12.01% (65/541) | 24.10% (201/834) | 290/541 |
+| **SmolLM2-135M-Instruct** | **21.63% (117/541)** | **35.85% (299/834)** | **22.55% (122/541)** | **37.29% (311/834)** | 233/541 |
+
+IFEval is a generative evaluation and is not part of the likelihood protocol above. Each model received the same official IFEval user prompt (541 prompts, 834 instructions, 25 instruction types) as a single user message, formatted by its own native chat formatter: alpha075's released formatter with no default system message, and the pinned SmolLM and SmolLM2 tokenizer chat templates, where SmolLM2's template inserts its own default system text. The formatted token inputs therefore differ across models; this is a native-chat comparison, not an identical-token-input experiment. Generation was zero-shot and greedy with no sampling and `max_new_tokens=1280`, with no added system prompt or few-shot messages. Responses were scored by the pinned IFEval strict/loose programmatic verifier with no LLM judge; no prompts were dropped or truncated. Responses that reached the 1,280-token cap are scored as-is, and the cap-hit counts are reported without any claim about what a larger budget would change. SmolLM2 scores highest on all four metrics, alpha075 is in the middle, and SmolLM lowest; all three show substantial instruction-following limitations at this scale.
+
+**Benchmark scores are not chat reliability.** In the separate, versioned full-answer review, alpha075 produced a correct Python interface on 42/46 prompts but a correct complete answer on 0/46. Ordinary QA, faithful rewriting, and context-dependent instructions also remain limited. The [report](docs/petitgpt-v1/TECHNICAL_REPORT.md) preserves both positive results and failure cases, with content, format, interface, and finite test evidence kept separate.
 
 ## Run the released model
 
