@@ -1,9 +1,8 @@
 # Tokenizer
 
 The current public tokenizer is **[releases/tokenizer_v1/](releases/tokenizer_v1/)**.
-Use `tokenizer/releases/tokenizer_v1/tokenizer.json` explicitly. There is no
-unversioned alias or fallback. Its original bytes and [SHA256SUMS](releases/tokenizer_v1/SHA256SUMS)
-are preserved; do not retrain, resave, or overwrite this release.
+Use `tokenizer/releases/tokenizer_v1/tokenizer.json` explicitly. Its original bytes and [SHA256SUMS](releases/tokenizer_v1/SHA256SUMS)
+are preserved.
 
 ```text
 tokenizer.json SHA256
@@ -16,7 +15,7 @@ It is a 32,000-token byte-level BPE with no normalizer or postprocessor and
 BOS/EOS explicitly; chat formatting masks roles and prompts and supervises
 assistant content plus EOS. Literal control-token text must not inject role IDs.
 
-From any working directory, set `REPO` to your checkout:
+For interested readers, from any working directory, set `REPO` to your checkout:
 
 ```bash
 REPO=/path/to/petitgpt
@@ -32,6 +31,6 @@ launch, start at [Training and reproducibility](../TRAINING_AND_REPRODUCIBILITY.
 [Preparation](data_preparation/) and [training/validation tools](tokenizer_training/)
 remain available; their presence does not mean all frozen historical inputs ship here.
 
-The unused four-special-token predecessors were removed from HEAD. Their exact
+<!-- The unused four-special-token predecessors were removed from HEAD. Their exact
 pre-removal commit/paths are described in [the history note](../legacy/tokenizers/README.md).
-They are incompatible with the current chat contract and are not alternatives for research-v1.
+They are incompatible with the current chat contract and are not alternatives for research-v1. -->
