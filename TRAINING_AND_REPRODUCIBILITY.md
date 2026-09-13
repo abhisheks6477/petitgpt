@@ -11,15 +11,11 @@ is useful research tooling but is not the trainer used by this route.
 
 ## Setup and conventions
 
-Use a fresh Python process per command, from outside the checkout. The recorded
-execution reference is Linux, Python 3.10.12, torch 2.11.0+cu126, NumPy 2.2.6,
+The execution reference is Python 3.10.12, torch 2.11.0+cu126, NumPy 2.2.6,
 tokenizers 0.22.2 and safetensors 0.8.0. Training and the recorded likelihood profile
-require a BF16-capable CUDA GPU; export and interpolation use CPU tensors. See
+require a BF16-capable CUDA GPU. See
 [recorded requirements](recipes/research-v1/runtime-support-v2/frozen_native/requirements-inference-tested.txt).
-Dependencies are not installed by the scripts. Metadata/encoding validation uses
-installed Python/tokenizers/NumPy; P2 plan utilities also import torch. The bounded
-CPU export result below covers a different laptop environment; reader training,
-inference/parity and scoring in that environment remain unverified.
+
 
 ```bash
 export REPO=/path/to/your/petitgpt-checkout
