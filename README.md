@@ -47,6 +47,8 @@ The benchmark picture is mixed rather than uniformly favorable. Under the projec
 
 **Competitive ARC results on a small pretraining budget.** PetitGPT was pretrained on approximately 13B positions using one RTX 4090. The base models behind the instruct baselines were pretrained on 600B tokens for [SmolLM-135M](https://huggingface.co/HuggingFaceTB/SmolLM-135M#training) and 2T tokens for [SmolLM2-135M](https://huggingface.co/HuggingFaceTB/SmolLM2-135M#training); both official model cards report 64 H100 GPUs. PetitGPT's ARC results suggest promising data efficiency under this evaluation protocol. Different tokenizers, datasets and post-training procedures make this an observational comparison; total training FLOPs, GPU-hours and costs were not compared.
 
+All comparison results below were measured in this project on pinned model revisions; the SmolLM and SmolLM2 numbers are our own evaluations under the protocols described here, not scores copied from their official model cards.
+
 ### Zero-shot likelihood benchmarks
 
 | Model | ARC-Easy acc / acc_norm | ARC-Challenge acc / acc_norm | PIQA acc / acc_norm | HellaSwag acc / acc_norm |
