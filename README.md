@@ -6,7 +6,7 @@
 
 [Model and tokenizer](https://huggingface.co/yqi0/petitgpt) · [Tokenizer files](tokenizer/README.md) · [Training and reproducibility](TRAINING_AND_REPRODUCIBILITY.md) · [Technical report](docs/petitgpt-v1/TECHNICAL_REPORT.md) · [Run guide](docs/petitgpt-v1/RUN_GUIDE.md) · [Model card](docs/petitgpt-v1/MODEL_CARD.md)
 
-PetitGPT explores what can be learned by building and evaluating a small language model under limited training budget. The project includes a custom byte-level BPE tokenizer, approximately 13 billion pretraining positions, controlled post-training experiments, and evaluations that distinguish reference-answer fit from complete generated-answer correctness.
+PetitGPT explores what can be learned by building and evaluating a small language model under a limited training budget. The project includes a custom byte-level BPE tokenizer, approximately 13 billion pretraining positions, controlled post-training experiments, and evaluations that distinguish reference-answer fit from complete generated-answer correctness.
 
 The released **research-v1** checkpoint is **alpha075**.
 
@@ -23,7 +23,9 @@ The released **research-v1** checkpoint is **alpha075**.
 | Pretraining | Approximately 13B positions; one NVIDIA RTX 4090 |
 | Released inference | Native PyTorch on CUDA; stored FP32 weights |
 
-The technical report separates planned, serialized, packed, and actually processed token counts, and distinguishes local GPU computation from external teacher-API work.
+![PetitGPT reference validation loss across Stage A and Stage B, with a Stage B detail panel](docs/petitgpt-v1/figures/pretraining_validation.png)
+
+*Reference validation loss during pretraining: all 10 recorded evaluations, with no smoothing; lines connect observations within each stage. The right panel enlarges Stage B using a different vertical scale. See the [data and interpretation](docs/petitgpt-v1/TECHNICAL_REPORT.md#44-observed-results).*
 
 ## What this project investigates
 
@@ -39,7 +41,7 @@ Base step_049590 → P2 step750 → P3 step320
 alpha075 = P2 + 0.75 × (P3_step320 − P2)
 ```
 
-Later DPO, DeepSeek response-distillation, LoRA, and unified Base-SFT updates are **not** in alpha075. The soft-logit lab used separate external models. See the [report](docs/petitgpt-v1/TECHNICAL_REPORT.md) for each experiment's initialization and evaluation scope.
+Later DPO, response-distillation, LoRA, and unified Base-SFT updates are **not** in alpha075. The soft-logit lab used separate external models. See the [report](docs/petitgpt-v1/TECHNICAL_REPORT.md) for each experiment's initialization and evaluation scope.
 
 ## Results at a glance
 
@@ -66,8 +68,6 @@ ARC-Easy: 2,376 test rows; ARC-Challenge: 1,172 test rows; PIQA: 1,838 validatio
 
 `acc_norm` is the project-protocol variant: the continuation likelihood divided by the Unicode-character length of the original candidate text (for HellaSwag, the pinned task-preprocessed ending without its leading delimiter), **not** its token count, so it is not necessarily identical to an externally reported `acc_norm`. The evaluator is protocol-compatible with pinned harness code rather than a full installed-harness run.
 
-<!-- ARC-Easy and PIQA were earlier project diagnostics rather than untouched final tests, and no contamination audit was performed. -->
-
 </details>
 
 ### Instruction following: IFEval
@@ -85,11 +85,11 @@ IFEval scores generated responses to the same 541 prompts, using each model's ow
 
 IFEval is a generative evaluation and is not part of the likelihood protocol above. Each model received the same official IFEval user prompt (541 prompts, 834 instructions, 25 instruction types) as a single user message, formatted by its own native chat formatter: alpha075's released formatter with no default system message, and the pinned SmolLM and SmolLM2 tokenizer chat templates, where SmolLM2's template inserts its own default system text. The formatted token inputs therefore differ across models; this is a native-chat comparison, not an identical-token-input experiment.
 
-Generation was zero-shot and greedy with no sampling and `max_new_tokens=1280`, with no added system prompt or few-shot messages. Responses were scored by the pinned IFEval strict/loose programmatic verifier with no LLM judge; no prompts were dropped or truncated. Responses that reached the 1,280-token cap are scored as-is, and the cap-hit counts are reported without any claim about what a larger budget would change. SmolLM2 scores highest on all four metrics, alpha075 is in the middle, and SmolLM lowest; all three show substantial instruction-following limitations at this scale.
+Generation was zero-shot and greedy with no sampling and `max_new_tokens=1280`, with no added system prompt or few-shot messages. Responses were scored by the pinned IFEval strict/loose programmatic verifier with no LLM judge; no prompts were dropped or truncated. Responses that reached the 1,280-token cap are scored as-is, and the cap-hit counts are reported without any claim about what a larger budget would change.
 
 </details>
 
-**Benchmark scores are not chat reliability.** In the separate, versioned full-answer review, alpha075 produced a correct Python interface on 42/46 prompts but a correct complete answer on 0/46. Ordinary QA, faithful rewriting, and context-dependent instructions also remain limited. The [report](docs/petitgpt-v1/TECHNICAL_REPORT.md) preserves both positive results and failure cases, with content, format, interface, and finite test evidence kept separate.
+**Benchmark scores are not chat reliability.** In the separate, versioned full-answer review, alpha075 produced a correct Python interface on 42/46 prompts but a correct complete answer on 0/46. Ordinary QA, faithful rewriting, and context-dependent instructions also remain limited. The report's [success, failure, and scoring-boundary cases](docs/petitgpt-v1/TECHNICAL_REPORT.md#85-qualitative-cases-successes-and-failures) show what these judgments mean, with content, format, interface, and finite test evidence kept separate.
 
 ## Run the released model
 
@@ -111,43 +111,31 @@ python ./artifacts/petitgpt-research-v1/inference.py \
   --max-new-tokens 32
 ```
 
-This is an illustrative command. Preserve the downloaded `src/` directory. The CLI returns the generated token IDs, raw text including a terminal EOS when present, and the stop reason.
+Preserve the downloaded `src/` directory. The CLI returns the generated token IDs, raw text including a terminal EOS when present, and the stop reason.
 
 Greedy decoding and two numerical profiles are supported: `bf16_native` and `fp32_math`. They are not asserted to generate identical answers. Context overflow is rejected rather than silently truncated. For multi-turn messages and the Python API, see the [run guide](docs/petitgpt-v1/RUN_GUIDE.md).
 
 The published format is **native PyTorch**, not a Transformers `AutoModel` package. GGUF, ONNX, vLLM, llama.cpp, and CPU inference are not implemented or validated by this release.
 
+## Intended use and limitations
+
+PetitGPT is intended for research and experimentation. Verify generated factual claims and review generated code before use. The model has not been validated for production or high-stakes use, tool use, or broad multilingual capability; see the [model card](docs/petitgpt-v1/MODEL_CARD.md#intended-use-and-use-it-is-not-intended-for) for its intended use and limitations.
+
 ## Train and evaluate
 
 We pretrained PetitGPT, applied supervised fine-tuning, and explored DPO and response distillation in separate experimental branches. For more details, please refer to [Technical report](docs/petitgpt-v1/TECHNICAL_REPORT.md). This repository preserves the implementations and recorded results of that work.
 
-For interested readers, to train and evaluate a new model on your own prepared data using the research-v1 method, please follow the [practical manual](TRAINING_AND_REPRODUCIBILITY.md):
-[model/token contract](tokenizer/README.md) → [prepared inputs](recipes/research-v1/PREPARED_INPUTS.md)
+To train and evaluate a new model on your own prepared data using the research-v1 method, follow the [practical manual](TRAINING_AND_REPRODUCIBILITY.md):
+[tokenizer contract](tokenizer/README.md) → [prepared inputs](recipes/research-v1/PREPARED_INPUTS.md)
 → [pretrain A/B](TRAINING_AND_REPRODUCIBILITY.md#pretrain-ab)
 → [P2/P3 and fixed blend](TRAINING_AND_REPRODUCIBILITY.md#posttraining)
 → [native export and likelihood evaluation](TRAINING_AND_REPRODUCIBILITY.md#export-and-evaluate).
-The Python entry point is `recipes/research-v1/reader.py`, with `--policy new-run`.
-It accepts newly produced compatible checkpoints; private approval files and
-historical data hashes belong only to the separate historical replay interfaces.
+
+The entry point is `recipes/research-v1/reader.py --policy new-run`. The public reader commands were added after the original runs as reproduction entry points; they call recovered stage-specific code. The manual documents the original launch scripts, required inputs, validation status, and execution limits.
 
 For experiments beyond that workflow, the top-level [`pretrain/`](pretrain/), [`sft/`](sft/), [`dpo/`](dpo/), and [`distill/`](distill/) directories provide reusable research tools. These implementations may differ from the stage-specific versions used by the recipes.
 
-Using different data produces new checkpoints and results, rather than reproducing the published alpha075 exactly. See the practical manual for validation status and current execution limits.
-
-<!-- You supply local prepared data and an environment matching the recorded dependencies.
-No reader command downloads data, models or teacher responses. The release-sized
-recipe uses the canonical tokenizer, 30-layer model and original schedule/batch settings;
-P3's step320 is taken from a **640-update** schedule. Different data produces a new
-model, not another copy of the published alpha075 or its reported scores. -->
-
-<!-- CLI/schema/tokenizer/order tests and small synthetic CPU tensor/serialization checks
-have run. One bounded real CPU export of the existing alpha075 passed after a
-separate earlier attempt failed before deserialization and the NumPy loader was
-repaired. Source/output tensor equality passed in the recorded laptop environment;
-this was a temporary re-export, not newly trained reader output. Full reader
-training, P3 real runtime, inference/generation parity and scoring remain unverified
-through these interfaces. See the manual for the tested environment and runtime
-scope, inputs, outputs, resume limits and omitted optional hooks. -->
+Using different data produces new checkpoints and results, rather than reproducing the published alpha075 exactly.
 
 ## Navigate the repository
 
@@ -168,12 +156,6 @@ See the [repository guide](docs/REPOSITORY_GUIDE.md) for reading entry points, d
 | [`HISTORICAL_README.md`](docs/petitgpt-v1/HISTORICAL_README.md) | Earlier project narrative; not the released model's specification |
 
 The repository retains earlier experiments. Older scripts and result files must not be mistaken for the current release recipe. Private run records, complete training data, optimizer checkpoints, and some evaluation artifacts are not distributed in this public repository.
-
-<!-- ## Reproducibility and responsible use
-
-The native export preserved all 213 named state entries and tied embeddings. Eight fixed source/export pairs matched exactly within their respective precision profiles. This establishes the recorded export equivalence on the tested environment, not quality certification or universal cross-hardware reproducibility.
-
-Treat generated factual claims and code as unverified. The model has not been validated for production, high-stakes use, tool use, or broad multilingual capability. Research is the intended use, not an additional noncommercial restriction. -->
 
 ## Licensing, sources, and citation
 
