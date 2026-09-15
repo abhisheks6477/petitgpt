@@ -10,13 +10,13 @@ Under the project's zero-shot likelihood protocols, alpha075 scores **57.74% ARC
 
 **Reliable generation remains the unresolved problem.** Procedural instruction following improved, but later adaptation repeatedly traded natural-task retention for narrow gains. In the versioned full-answer review, alpha075 produced a correct Python interface on **42/46** prompts and a correct whole answer on **0/46**. The strongest outcome is a working, traceable training and export pipeline; lower loss and competitive multiple-choice scores did not establish a reliable assistant (`C-ASSIST-07`).
 
-Read [pretraining](#4-pretraining) for the data and loss curve, [post-training](#5-post-training-and-the-selected-weights) for the selection trade-off, and [evaluation](#8-evaluation) for protocols and results. The [training manual](../../TRAINING_AND_REPRODUCIBILITY.md) describes the public reproduction workflow.
+Read [pretraining](#4-pretraining) for the data and loss curve, [post-training](#5-post-training-and-the-selected-weights) for the selection trade-off, and [evaluation](#8-evaluation) for protocols and results. [Success and failure cases](#85-qualitative-cases-successes-and-failures) illustrate what the scores mean. The [training manual](../../TRAINING_AND_REPRODUCIBILITY.md) describes the public reproduction workflow.
 
 ---
 
 ## 2. Scope and terminology
 
-This report combines recorded training runs, later research branches, and separate evaluation campaigns. Numbers carry claim identifiers such as `C-PT-03`, resolved through the [public evidence index](provenance/PUBLIC_EVIDENCE_INDEX.json). Aggregate tables and plotting data accompany the report; raw training data, evaluation texts and the full internal evidence collection are not distributed here.
+This report combines recorded training runs, later research branches, and separate evaluation campaigns. Numbers carry claim identifiers such as `C-PT-03`, resolved through the [public evidence index](provenance/PUBLIC_EVIDENCE_INDEX.json). Aggregate tables, plotting data and seven selected [assistant-response cases](examples/README.md) accompany the report. The raw training corpus, complete evaluation suites and full internal evidence collection are not distributed here.
 
 Four boundaries hold throughout:
 
@@ -34,7 +34,8 @@ Four boundaries hold throughout:
 | dev100 | A reused 100-prompt suite scored with narrow, strict generation checks. |
 | dev512 | A procedural development battery: exact copying (COPY), field lookup (FIELD), set membership (MEMBERSHIP) and structured output (JSON). Its 32 shared content groups × 4 families × 4 presentations produce 512 correlated rows. |
 | val500 | The original P2 validation conversations: 500 rows and 43,573 supervised assistant/EOS targets, also reused for P3 and interpolation diagnostics. |
-| old93 / new96 | QA41 + practical38 + Python14 / natural64 + Python32; two reused generation suites. |
+| old93 | Older generation suite: QA41 + practical38 + Python14, totaling 93 prompts. |
+| new96 | Newer generation suite: natural64 + Python32, totaling 96 prompts. |
 | Practical group score | Average correctness within each dialogue, then equal weighting of 27 dialogue groups covering 38 turns. Bounds retain unresolved labels; they are not confidence intervals. |
 | Joint success | Content success and, where the prompt requires an explicit format, format success. Unresolved judgments remain unresolved. |
 | Retention screen / gate | A predeclared threshold for preserving earlier capabilities during adaptation. A failed gate can stop a run or rule out promotion. |
@@ -95,7 +96,7 @@ The selection record establishes the training mixture per source and stage: **St
 
 Machine-readable form, including per-source targets, overshoot and the licence string recorded at each pinned revision: [`tables/PRETRAIN_SOURCE_MIXTURE.csv`](tables/PRETRAIN_SOURCE_MIXTURE.csv).
 
-**Recorded source and transport revisions.** The PES2O and StackExchange manifests have `source.revision=a319f19eef1e257417b11ea8c30da266ae175557` and `source.parquet_revision=c58ab4b6ff990115e1ff3121953754ee2bc29501`. Both fields are preserved in the table; they are not silently treated as the same revision. No source bytes were re-downloaded or equivalence between these commits independently established in this document review. Other absent transport fields remain not recorded, rather than being filled from the source revision.
+**Recorded source and transport revisions.** PES2O and StackExchange record `source.revision=a319f19e…` and `source.parquet_revision=c58ab4b6…`. The [mixture table](tables/PRETRAIN_SOURCE_MIXTURE.csv) preserves both full revisions, with missing transport fields left unrecorded. Equivalence between the two commits has not been established.
 
 Two qualifications matter. First, these are **selected/retained** counts — the quantity the selection stage committed per source. Packing concatenates documents into a continuous 2,048-token block stream, so a per-source *consumed* figure does not exist as a separate measured quantity; §4.2 gives consumption at stream level only. Second, the `structured_tutorial` node draws on two upstream bindings and the record does not split its 343,750,175 tokens between them.
 
@@ -173,11 +174,9 @@ P2 initialized from the accepted base checkpoint through a weights-only stage in
 
 The data are 12,000 training and 500 validation conversations with original messages preserved — no truncation, no injected system text. Supervised targets are 997,427 per exposure at two exposures per row, giving 1,994,854 supervised target observations and 24,000 row exposures; validation carries 43,573 targets (`C-P2-02`). The supervised-target mix is 44.99% general QA, 22.00% text transformation, 20.00% instruction constraints, 8.00% basic Python and 5.00% practical chat, drawn from seven instruction subsets (`C-P2-03`).
 
-**Instruction-data origin.** Those seven labels are values of a row-level `source` column inside a single pinned collection, `HuggingFaceTB/smol-smoltalk` at revision `f73fe857d519ff6ac5af2ea67c4d3834da7b8bcc`, config `default`, train split, not seven separate repositories and not repository configurations. Two independent project build records name that collection and revision, and the P2 frozen manifest binds both of their outputs by digest, so the chain from collection to P2 selection is closed by hashes rather than by names (`C-SRC-01`). The publisher's card at that exact pinned revision carries a flat Apache-2.0 badge and states that the collection is a subset of a parent collection. The parent card — read at its current head, because the pinned child card links the parent without a revision — limits its Apache-2.0 grant to four newly generated subsets and directs readers to the original dataset for each incorporated public dataset. Four of the seven labels correspond to those newly generated subsets; three correspond to incorporated public datasets, of which one declares `odc-by` (differing from the collection badge), one declares `apache-2.0`, and one declares no licence at all in its card metadata (`C-SRC-02`). A collection badge is therefore not treated here as resolving component licences, and no licence determination is made.
+**Instruction-data origin.** The seven subsets are row-level `source` values within `HuggingFaceTB/smol-smoltalk` at revision `f73fe857d519ff6ac5af2ea67c4d3834da7b8bcc`, config `default`, train split. The recorded P2 selection is linked to that collection by manifest hashes; component provenance and licence status are summarized in §12 (`C-SRC-01`).
 
-**Supervision policy.** P2's frozen manifest pins its formatter by hash; the file carrying that exact hash implements the encoder used at training time, and it supervises **every assistant turn's content plus that turn's trailing EOS**, masking BOS, role tokens, and all system and user content (`C-P2-06`). The recorded 13,889 assistant turns across 12,000 conversations imply 1,889 assistant turns beyond a one-assistant-turn-per-conversation baseline. They do not determine how many conversations are multi-turn, because one conversation may contain several extra assistant turns. The all-assistant-turn supervision claim rests on the pinned encoder and its training call path; counts alone do not establish the masking policy. The run's execution-time preflight independently records 997,427 supervised tokens out of 2,403,722 encoded tokens across 12,000 records, with zero truncations (`C-P2-07`).
-
-This is a P2 fact only. Later branches describe their own data as final-answer-only; that is their recorded policy for their own rows and is not evidence about P2, nor is P2 evidence about them.
+**Supervision policy.** The pinned training encoder supervises **every assistant turn's content and trailing EOS**, masking BOS, role tokens, and system/user content (`C-P2-06`). Execution-time preflight records 997,427 supervised tokens out of 2,403,722 encoded tokens across 12,000 conversations, with zero truncations (`C-P2-07`). Later branches' supervision policies are recorded separately in the experiment ledger.
 
 P2's terminal readouts are candid: validation token NLL **1.3221**, dev100 strict **0/100**, and `quality_acceptance_demonstrated: false` (`C-P2-04`). Loss improved; usability did not.
 
@@ -279,11 +278,15 @@ On the retention diagnostic, DP1's terminal state **retained 24 of 34 joint pass
 
 ### 7.2 Did correcting the answer text instead of the preference help?
 
-KD1 tested exactly that: the same 160 chosen answers, the same order and learning-rate prefix as DP1's first 20 updates, but plain supervised cross-entropy on the chosen side only. It did what the objective promises — chosen-answer likelihood rose more than DPO's on both splits (training chosen NLL 1.3857 → 1.1471 versus 1.2248; held-out 1.4035 → 1.3030 versus 1.3419) and it recovered more sampled answers, reaching 27/34 positive-only retention against DP1's 24/34. It still failed the historical retention gate, with practical upper bound 19/81 below the fixed 22/81, and produced one natural gain against two losses in a single class (`C-RES-13`).
+**Chosen-answer SFT improved fitting and sampled-answer retention relative to the DPO control, but still failed the retention gate.**
+
+KD1 used the same 160 chosen answers, the same order and learning-rate prefix as DP1's first 20 updates, but plain supervised cross-entropy on the chosen side only. It did what the objective promises — chosen-answer likelihood rose more than DPO's on both splits (training chosen NLL 1.3857 → 1.1471 versus 1.2248; held-out 1.4035 → 1.3030 versus 1.3419) and it recovered more sampled answers, reaching 27/34 positive-only retention against DP1's 24/34. It still failed the historical retention gate, with practical upper bound 19/81 below the fixed 22/81, and produced one natural gain against two losses in a single class (`C-RES-13`).
 
 This was a bounded 160-example, 20-update control. It neither establishes nor refutes sequence-level knowledge distillation in general, and it does not show that 20 updates suffice for the best achievable cross-entropy result.
 
 ### 7.3 Did more response-distillation data, or a cheaper adapter, help?
+
+**Neither dense response distillation nor the LoRA run preserved the required capabilities; both stopped at retention checks despite improved fitting.**
 
 RKD1 ran dense response distillation and stopped permanently at update 77 of a planned 154 when the retention screen fired. Fitting improved on both splits (training NLL 2.0104 → 1.8384, held-out 1.8251 → 1.7159) while held-out joint success fell from 25/96 to 20/96 with 4 confirmed gains against 9 losses; the development total was *unchanged* at 487/512, concealing 13 gains and 13 losses (`C-RES-14`).
 
@@ -293,19 +296,23 @@ Neither result establishes that LoRA is better or worse than full fine-tuning: t
 
 ### 7.4 Was teacher-logit distillation involved at all?
 
-Not in the PetitGPT weight path. No run in the permitted source set computes or stores teacher logits for PetitGPT, and no KD loss term appears in any recorded PetitGPT objective. What did execute was teacher-authored or revised hard responses — DP0's 198 preference pairs, whose chosen sides are 177 reused source references plus 21 minimal corrections written by the agent conducting that experiment — and a standard DPO pilot. A teacher-authored chosen string is not a distilled model, and DPO is not divergence minimization to a teacher distribution (`C-RES-11`).
+**Teacher-logit distillation was not part of the PetitGPT weight path.** No run in the permitted source set computes or stores teacher logits for PetitGPT, and no KD loss term appears in any recorded PetitGPT objective. What did execute was teacher-authored or revised hard responses — DP0's 198 preference pairs, whose chosen sides are 177 reused source references plus 21 minimal corrections written by the agent conducting that experiment — and a standard DPO pilot. A teacher-authored chosen string is not a distilled model, and DPO is not divergence minimization to a teacher distribution (`C-RES-11`).
 
 The one genuine soft-logit experiment, KD2, ran on external SmolLM2 models sharing a tokenizer verified equal across all 49,152 token strings and IDs, which is what makes a clean method-learning and token-alignment comparison possible. Its numerical contrast worked as designed: cross-entropy fit the hard references more closely while CE + KD moved the student's temperature-2 distributions closer to the teacher. It produced no held-out generation improvement — joint successes were 3/29 → 2/29 → 2/29 on the held-out set and 22/34 → 22/34 → 21/34 on the additional untrained set for initial, CE and KD respectively. No PetitGPT retention gate was applied to it, and none should be.
 
 ### 7.5 Could loss re-allocation or weight interpolation buy back the trade-off?
 
-The matched A/B is the cleanest controlled comparison here. Both arms restored the *identical* saved step-403 model, AdamW moments, per-parameter counters, exposure ledger and RNG state, then ran 403 further updates differing only in how within-family loss was allocated, preserving both the main coefficient and the total family mass. Arm B gained 10 membership development passes (67 → 77) and 11 development points overall, but the gain is a polarity trade: development true positives rose 29 → 46 while true negatives fell 38 → 31. The *training* signal did not improve — membership training NLL rose from 0.2932 to 0.2982 and the training two-label argmax count fell from 20/32 to 19/32 — and the practical group score fell from 5/18 to 13/54. The frozen descriptive outcome is a development-only gain with mixed mechanism evidence, and the balanced-tradeoff signal is false (`C-RES-05`). The development gain therefore does **not** establish better training uptake.
+**Loss re-allocation gained development passes at a practical-score cost; none of the five subsequent blends met either selection criterion.**
+
+The matched A/B isolates the loss-allocation change. Both arms restored the *identical* saved step-403 model, AdamW moments, per-parameter counters, exposure ledger and RNG state, then ran 403 further updates differing only in how within-family loss was allocated, preserving both the main coefficient and the total family mass. Arm B gained 10 membership development passes (67 → 77) and 11 development points overall, but the gain is a polarity trade: development true positives rose 29 → 46 while true negatives fell 38 → 31. The *training* signal did not improve — membership training NLL rose from 0.2932 to 0.2982 and the training two-label argmax count fell from 20/32 to 19/32 — and the practical group score fell from 5/18 to 13/54. The frozen descriptive outcome is a development-only gain with mixed mechanism evidence, and the balanced-tradeoff signal is false (`C-RES-05`). The development gain therefore does **not** establish better training uptake.
 
 Interpolating between those arms was measured at five fixed coefficients. Development totals run 418, 420, 426, 430, 429 at `lambda_B` 0, 1/4, 1/2, 3/4, 1, and membership runs 67, 69, 75, 76, 77. From arm A to the 3/4 point the +12 total decomposes as COPY +1, FIELD +3, JSON −1, MEMBERSHIP +9 — membership dominates but is not the only family that moves. Neither frozen screen passed at either new point (`C-RES-06`). Each quarter point also reproduced its nearer parent's exact output text on the large majority of items, which is a decoding observation about this segment, not evidence of an internal parent-selection mechanism.
 
 Two interpretation limits are load-bearing. Five observed coefficients cannot show that a criterion is unreachable across a continuous segment; the supported statement is that **none of the five evaluated points met the envelope or the historical screen** (`C-RES-07`). And the selected model's recorded practical bounds `[22/81, 23/81] = [44/162, 46/162]` **overlap** arm A's `5/18 = 45/162`, so it is not established to beat arm A on that axis; its QA interval `[4, 7]/41` likewise overlaps every grid score of 6 or 7 (`C-RES-08`).
 
 ### 7.6 A measurement caveat that survives every comparison
+
+**Reference-token likelihood, generation accuracy and gradient contribution are different measurements.**
 
 `exp(−mean NLL)` is a teacher-forced geometric-mean probability of the reference token, not accuracy: at the unified 1,209-update snapshot the membership value is 0.5782 while greedy training accuracy is 20/32 = 0.625 and greedy development accuracy is 70/128 = 0.5469 (`C-RES-09`). Likewise token share, scalar loss share and gradient share are three different things: the P3 target share is 0.1088 while the P3 cumulative raw NLL share is 0.0075, and neither measures gradient contribution (`C-RES-10`).
 
@@ -336,7 +343,7 @@ Each cell is **acc / acc_norm, in percent**. Full-precision values, integer corr
 
 **Numerical protocol.** Both campaigns use FP32 parameters, forward computation, log-softmax and likelihood sums; autocast and TF32 are disabled. Attention uses PyTorch's **MATH scaled dot-product attention (SDPA)** backend. Batch size is 1 without padding, KV cache or compilation. The evaluator is a native implementation following **lm-evaluation-harness**, pinned at commit `b954108c9baaaa934b4ad842033b31a97ee30816`; a full installed-harness run is not claimed. Dataset and model revisions and task-specific settings are in [EVALUATION_PROTOCOLS.json](provenance/EVALUATION_PROTOCOLS.json) and the result CSV (`C-BENCH-04`, `C-BENCH-08`).
 
-The original ARC-Easy/PIQA campaign covered 4,214 documents per model, 12,642 document-model evaluations and 39,531 primary candidate sequences across the three models. These totals describe that campaign only (`C-BENCH-05`). Its earlier failed parity attempt retains null metrics and contributes no scores; §9.4 explains the numerical correction (`C-BENCH-06`).
+Original-campaign accounting is retained in the [protocol metadata](provenance/EVALUATION_PROTOCOLS.json) (`C-BENCH-05`). Section 9.4 explains the parity failure in the earlier attempt and the numerical correction used for the reported results (`C-BENCH-06`).
 
 ARC-Easy and PIQA were reused during development. The later extension does not establish that ARC-Challenge or HellaSwag were absent from training data; no contamination audit was performed. These are descriptive comparisons between differently trained models, and candidate selection accuracy does not establish free-generation reliability.
 
@@ -365,7 +372,7 @@ The practical figure is a group score, not a row rate. Its denominator is **27 e
 
 Two entries must be read as recorded rather than as results. The selected model's old-Python finite-execution field is `not_recorded` for all 14 items — unavailable in this imported view, **not** proof that no historical function test ever ran (`C-ASSIST-06`). And results where a legitimate builtin was unavailable in the restricted worker remain unknown rather than model failures.
 
-The Python picture is the sharpest single finding here: across the 46 Python prompts covered, the selected model produced a correct function **interface** in 42 and a correct whole answer in **0** (`C-ASSIST-07`). The model reliably writes a plausible function shell whose body or explanation is wrong. This does not establish that it can never write correct code, and it is measured on a small, repeatedly reused development set.
+The Python picture is the sharpest single finding here: across the 46 Python prompts covered, the selected model produced a correct function **interface** in 42 and a correct whole answer in **0** (`C-ASSIST-07`). Here, interface success means the requested function name and calling signature are present. Whole-answer review also checks implementation, required edge cases and explanatory text; **0/46 is not a training-set accuracy or a uniform unit-test pass rate**. Section 8.5 shows concrete examples. These results concern a small, repeatedly reused development set and do not establish that the model can never write correct code.
 
 ### 8.3 Review method and development-set reuse
 
@@ -379,7 +386,7 @@ One runtime caveat is load-bearing: the same P2 checkpoint, prompts and greedy s
 
 ### 8.4 IFEval instruction following
 
-**IFEval completion V2** is the completed three-model generation evaluation: 541 official prompts per model, containing 834 instructions across 25 instruction types. The recorded dataset split is `train`, pinned to a specific `google/IFEval` revision. All prompts were evaluated without dropping or truncating inputs (`C-IFEVAL-01`, `C-IFEVAL-02`).
+**IFEval completion V2** is the completed three-model generation evaluation: 541 official prompts per model, containing 834 instructions across 25 instruction types. The pinned `google/IFEval` release exposes its evaluation prompts in a single split named `train`; that dataset label does not mean these prompts were used to train PetitGPT. All prompts were evaluated without dropping or truncating inputs (`C-IFEVAL-01`, `C-IFEVAL-02`).
 
 | Model | Prompt strict | Prompt loose | Instruction strict | Instruction loose | Outputs hitting cap |
 |---|---:|---:|---:|---:|---:|
@@ -392,6 +399,48 @@ Prompt accuracy requires all applicable instructions in a prompt to pass; instru
 Each unchanged user prompt is encoded with the model's native chat template. SmolLM2's template inserts its default system text; PetitGPT has no default system text. Generation is greedy with a **1,280-new-token cap**, FP32 parameters and forward computation, MATH SDPA, batch size 1 and KV caching enabled. Autocast, TF32 and compilation are disabled; there is no repetition penalty or additional stop string (`C-IFEVAL-02`).
 
 Cap-hit responses were scored as generated. Their frequencies differ substantially across models; these measurements do not predict scores under a larger cap or a different template. The result applies to the [recorded protocol](provenance/EVALUATION_PROTOCOLS.json), and is separate from the historical full-answer review in §8.2.
+
+### 8.5 Qualitative cases: successes and failures
+
+These **seven hand-picked alpha075 answers** illustrate what the historical review measured. They use `assistant_review_fable_v1` labels, with no rescoring; they are not a random sample or an estimate of success rates. Complete prompts, stored answers and original review reasons are in the [case-study companion](examples/README.md), with [machine-readable records](examples/ASSISTANT_CASE_STUDIES.json) (`C-ASSIST-10`).
+
+**Summary and context-update tasks show both complete successes and failures.** Requests below are summarized; the model responses are quoted in full.
+
+| Case | Request (summary) | Complete alpha075 response | Historical outcome |
+|---|---|---|---|
+| `PRACTICAL_077_M2` | Reduce Emily's email proposing a phonics workshop and hands-on activities to one short sentence. | “Emily proposes a workshop on phonics instruction and suggests hands-on activities and resources.” | **Content and format pass:** retains the proposal and topic in one sentence. |
+| `R1DEV-REWRITE-008` | Summarize Victor's request that Uma finish weekday drilling by noon, after work continued until 1:30 pm on Tuesday and Wednesday. | “By 1:30 pm on weekdays, the drilling was completed.” | **Format pass, content fail:** one sentence, but the request and noon deadline are lost. |
+| `R1DEV-FOLLOWUP-001` | Update the balance after the fee changes to USD 240 and the deposit remains USD 60. | “The balance on the first evening is $180.” | **Content pass:** correctly uses the amended fee. |
+| `R1DEV-FOLLOWUP-007` | Give the new closure interval when lunch now starts at 1:30 pm and still lasts an hour. | “On weekdays, the receptionist says the lunch break now starts at 1:30 pm and still lasts an hour.” | **Content fail under the task criterion:** repeats the facts but does not state the requested 1:30–2:30 pm interval. |
+
+The last failure concerns completing the requested calculation: a reader can infer the interval from the answer, but the frozen criterion requires the model to state it. Both follow-up cases use an earlier assistant answer supplied as fixed context; they do not demonstrate free-running multi-turn dialogue.
+
+**Python shows useful partial implementation without a complete pass.** The following are exact code excerpts; accompanying prose is retained in the companion.
+
+`PYTHON_041_M1` asks for the **number** of regular-expression matches:
+
+```python
+import re
+
+def count_matches_regex(text, pattern):
+    matches = re.findall(pattern, text)
+    return matches
+```
+
+The function name, arguments and matching operation are correct. The return value is a list rather than its length: interface passes, content fails.
+
+`R1DEV-PYTHON-013` asks for the mean, returning the caller's `default` unchanged for an empty list:
+
+```python
+def average_or_default(numbers, default):
+    return sum(numbers) / len(numbers)
+```
+
+The non-empty calculation is correct, but the empty case divides by zero and never uses `default`. The model's accompanying claim, “The `default` value is returned when the list is empty,” contradicts its implementation. This also passes interface and fails content.
+
+For contrast, `PYTHON_035_M1` requires a zero-argument function producing 100 numbered lines. The response defines `generate_string_with_100_lines(lines)` and returns `f"python: {lines}"`. It fails both the calling interface and the requested behaviour; its full repetitive answer is preserved in the companion.
+
+These cases explain the distinction between the 42/46 interface count and the 0/46 whole-answer count. They also show why a one-sentence output or a plausible code block alone is insufficient evidence of task completion.
 
 ---
 
@@ -417,7 +466,7 @@ That establishes **local import closure on the measured environment**. It is not
 
 ### 9.4 A precision issue that was found and closed
 
-The public benchmark's first attempt failed its own likelihood-parity gate and remains blocked, with its original null metrics left unchanged rather than overwritten. The accepted second attempt amended only the numerical path — FP32 parameters and forward, autocast disabled, TF32 off, MATH SDPA, unpadded batch 1 — before any model output existed, and its FP32 validation summary records zero failed records per model with maximum per-token errors of 5.7e-06, 7.6e-06 and 1.3e-05. Four deliberately observational BF16 forwards on the already-failing fixture were kept as diagnostics and never gated or retried. The project's reading is appropriately narrow: stable FP32 witnesses are evidence compatible with reduced-precision or numerical-path sensitivity, not proof that a particular kernel is at fault (`C-BENCH-06`).
+The public benchmark's first attempt failed its likelihood-parity check and was excluded from the reported benchmark results. Its null metrics remain in the historical record. The second attempt amended only the numerical path — FP32 parameters and forward, autocast disabled, TF32 off, MATH SDPA, unpadded batch 1 — before any V2 model output was produced, and its FP32 validation summary records zero failed records per model with maximum per-token errors of 5.7e-06, 7.6e-06 and 1.3e-05. Four deliberately observational BF16 forwards on the already-failing fixture were kept as diagnostics and never gated or retried. The project's reading is appropriately narrow: stable FP32 witnesses are evidence compatible with reduced-precision or numerical-path sensitivity, not proof that a particular kernel is at fault (`C-BENCH-06`).
 
 ---
 
@@ -470,7 +519,7 @@ Nothing here supports: that all negative methods are generally ineffective; that
 | Item | Status |
 |---|---|
 | Exact upstream repository and revision for the seven post-training instruction subsets | **Collection established; components partly established.** The seven labels are row-level `source` values inside `HuggingFaceTB/smol-smoltalk` at revision `f73fe857d519ff6ac5af2ea67c4d3834da7b8bcc`, config `default`, train split, closed by digest joins through the census and cleanup records. Component correspondence is documented by the publisher's parent card, but it is a name correspondence, not a per-row join, and no component *revision* is established. |
-| Upstream licence text for those seven subsets | **Partly recorded, one conflict, one gap.** Four labels fall under the parent publisher's explicit Apache-2.0 grant for its newly generated subsets. Of the three incorporated components, one declares `apache-2.0`, one declares `odc-by` — which differs from the collection's flat badge — and one declares no licence in its card metadata. All component notices were read from current publisher pages, not from revisions contemporaneous with the P2 selection. |
+| Upstream licence text for those seven subsets | **Partly recorded, one conflict, one gap.** Four labels fall under the parent publisher's explicit Apache-2.0 grant for its newly generated subsets. Of the three incorporated components, one declares `apache-2.0`, one declares `odc-by` — which differs from the collection's flat badge — and one declares no licence in its card metadata. The pinned collection card carries an Apache-2.0 badge; its unpinned parent link was followed at the then-current head. Parent and component notices are later observations, not terms proven contemporaneous with P2 selection; details are retained in [SOURCE_NOTICE.md](SOURCE_NOTICE.md) (`C-SRC-02`). |
 | File-level linkage from the tokenizer-training corpus to the pinned corpus releases | **Established by digest.** The tokenizer release pins its corpus manifest by SHA-256; that manifest names each contributing release by path and records the source document digest, and those digests equal the ones the pretraining selection stage bound. Bucket-name matching was not relied on. The tokenizer corpus draws on six of the eight frozen releases: PES2O and StackExchange are in the pretraining mixture but not in the tokenizer corpus (`C-SRC-03`). |
 | Per-source *consumed* token counts | **Not a measured quantity.** Packing produces a continuous block stream; consumption is recorded at stream level only. Per-source figures are selected/retained counts. |
 | Split of the `structured_tutorial` node between its two upstream bindings | **Not recorded.** The selection node reports a combined 343,750,175 tokens. |
@@ -514,12 +563,15 @@ Model, archive and tokenizer identities are in [MODEL_PROVENANCE.json](MODEL_PRO
 
 - [Public evidence index](provenance/PUBLIC_EVIDENCE_INDEX.json): claim-to-record links.
 - [Likelihood results](tables/PUBLIC_BENCHMARK_RESULTS.csv), [IFEval results](tables/IFEVAL_RESULTS.csv), and [protocol metadata](provenance/EVALUATION_PROTOCOLS.json): versions, dataset revisions, denominators and numerical settings.
+- [Selected assistant cases](examples/README.md) and [machine-readable case records](examples/ASSISTANT_CASE_STUDIES.json): complete prompts and stored outputs with historical review labels.
 - [Versioned assistant results](tables/ASSISTANT_RESULTS_VERSIONED.csv), [experiment ledger](tables/RESEARCH_EXPERIMENT_LEDGER.csv), and [model lineage](tables/MODEL_LINEAGE.json): review versions and branch history.
 - [Pretraining mixture](tables/PRETRAIN_SOURCE_MIXTURE.csv), [per-source validation](tables/VAL_LOSS_BY_SOURCE.csv), [validation trajectory](tables/PRETRAIN_VALIDATION_CURVE.csv), and [post-training trade-off](tables/POSTTRAINING_TRADEOFF.csv): aggregate measurements used in the text and figures.
 - [Plotting script and instructions](figures/README.md), [data-source provenance](provenance/REPORT_DATA_PROVENANCE.json), [model card](MODEL_CARD.md), and [inference guide](RUN_GUIDE.md).
 
-The report grew from the original source-linkage review. Subsequent source checks established the actual training mixture and corrected P2 supervision to include every assistant turn. This revision adds existing benchmark-extension and IFEval completion-v2 results, the recorded P3 step-320 NLL, and figures drawn from existing aggregates. It does not introduce a new training or inference run. Historical research decisions and later publication decisions describe different dates; archived pending-release statuses are not current availability statements.
+The report grew from the original source-linkage review. Subsequent source checks established the actual training mixture and corrected P2 supervision to include every assistant turn. This revision adds existing benchmark-extension and IFEval completion-v2 results, the recorded P3 step-320 NLL, and figures drawn from existing aggregates. The case-study edition also adds seven selected stored answers with their original review labels. It does not introduce a new training or inference run. Historical research decisions and later publication decisions describe different dates; archived pending-release statuses are not current availability statements.
 
 ---
+
+Cite this research record using [CITATION.cff](../../CITATION.cff).
 
 *Author: Yang Qi. No affiliation or funding source is asserted.*
