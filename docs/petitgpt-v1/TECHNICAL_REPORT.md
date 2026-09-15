@@ -1,35 +1,44 @@
 # PetitGPT: Building and Evaluating a 124.6M-Parameter Language Model
 
-Yang Qi — petitgpt research v1. Release documentation prepared from the accepted V2 source-linkage report. Code/model/tokenizer: Apache-2.0 for author-controlled rights; author-written documentation: CC BY 4.0. See DOCUMENTATION_LICENSE.md and SOURCE_NOTICE.md.
+Yang Qi — PetitGPT research v1. Code/model/tokenizer: Apache-2.0 for author-controlled rights; author-written documentation: CC BY 4.0. See [documentation licence](DOCUMENTATION_LICENSE.md) and [source notice](SOURCE_NOTICE.md).
 
-Load-bearing numbers and identities carry a claim identifier such as `C-PT-03`. Public readers resolve these through [`provenance/PUBLIC_EVIDENCE_INDEX.json`](provenance/PUBLIC_EVIDENCE_INDEX.json), which names the originating artifact, its version and the relevant table. A private map holding absolute paths and file hashes is retained separately and is not part of any public bundle.
+## 1. Summary
 
----
+PetitGPT is a **124.6M-parameter** language model pretrained on **13.0B token positions using one RTX 4090**. A 32,000-token tokenizer, two-stage pretraining, instruction fine-tuning and fixed weight interpolation produced the released **alpha075** model. Pretraining reached reference validation loss **2.4702** (perplexity 11.83); the native export preserves the source weights exactly (`C-ARCH-03`, `C-PT-03`, `C-PT-07`, `C-PT-09`, `C-EXP-01`).
 
-## 1. What this report says, in four kinds of statement
+Under the project's zero-shot likelihood protocols, alpha075 scores **57.74% ARC-Easy**, **28.16% ARC-Challenge**, **63.49% PIQA** and **31.28% HellaSwag** accuracy. It leads the two evaluated SmolLM 135M instruct baselines on both ARC tasks and trails them on PIQA and HellaSwag. On IFEval it reaches **17.19% prompt-level strict accuracy**, between SmolLM and SmolLM2 (§8). All comparator scores were measured in this project (`C-BENCH-01`, `C-BENCH-07`, `C-IFEVAL-01`).
 
-This project built a small language model end to end on one consumer GPU and measured it. Four kinds of statement appear below, and they should not be read as if they were the same kind.
+**Reliable generation remains the unresolved problem.** Procedural instruction following improved, but later adaptation repeatedly traded natural-task retention for narrow gains. In the versioned full-answer review, alpha075 produced a correct Python interface on **42/46** prompts and a correct whole answer on **0/46**. The strongest outcome is a working, traceable training and export pipeline; lower loss and competitive multiple-choice scores did not establish a reliable assistant (`C-ASSIST-07`).
 
-**1. Work that completed and was measured.** A 32,000-token tokenizer was trained and validated over its whole corpus. A 124,635,456-parameter model was pretrained in two stages under a frozen plan, reaching a reference validation loss of **2.4702** (perplexity 11.83). Under a frozen zero-shot likelihood protocol the selected model scores **57.74% / 52.36%** on ARC-Easy test and **63.49% / 62.30%** on PIQA validation, measured alongside two external 135M comparators on an identical numerical path. The weights were exported to a self-contained native FP32 bundle in which every tensor equals its source exactly.
-
-**2. Research directions that did not work.** Preference optimization, chosen-answer cross-entropy, response distillation, LoRA response distillation, curriculum dosing, loss re-allocation and weight interpolation were each tried. Every one either failed a retention rule written down before the scores were seen, or improved one axis while losing another. None was promoted. Free-form generation quality stayed weak: under the current full-answer review the selected model passes 6 of 41 general-QA prompts with 2 unresolved, 3 of 64 natural prompts, and 0 of 46 Python prompts on whole-answer content — while producing a valid function interface in 42 of those 46.
-
-**3. Details that are still not established.** Some method and provenance details could not be closed from the records available, and are named as such rather than filled in. They are listed in §12; a more detailed open-item register is retained privately. The instruction-data origin, previously the largest of these, is now established at the collection level and partly at the component level (§5.1); what remains is which licence governs three incorporated components.
-
-**4. Publication decisions.** Yang Qi authorized the named GitHub and Hugging Face destinations and the scoped licences through the explicit release execution instruction. Historical pending-decision records remain unchanged. Publication receipts are separate from scientific evidence.
+Read [pretraining](#4-pretraining) for the data and loss curve, [post-training](#5-post-training-and-the-selected-weights) for the selection trade-off, and [evaluation](#8-evaluation) for protocols and results. The [training manual](../../TRAINING_AND_REPRODUCIBILITY.md) describes the public reproduction workflow.
 
 ---
 
-## 2. Scope
+## 2. Scope and terminology
 
-This revision was produced offline. It loaded no model, imported no machine-learning library, ran no inference, computed no likelihood, contacted no network, and hashed no weight file. Its inputs are the previous revision's byte-verified outputs plus sixteen additional read-only project records opened under a fixed lookup budget; the lookup record is retained privately. This paragraph describes the historical V2 preparation, not the subsequent release upload.
+This report combines recorded training runs, later research branches, and separate evaluation campaigns. Numbers carry claim identifiers such as `C-PT-03`, resolved through the [public evidence index](provenance/PUBLIC_EVIDENCE_INDEX.json). Aggregate tables and plotting data accompany the report; raw training data, evaluation texts and the full internal evidence collection are not distributed here.
 
 Four boundaries hold throughout:
 
-- **Two histories stay apart.** §6 separates the *parameter ancestry* of the selected weights from the later branches. Branch updates are never summed into a cumulative exposure figure for the selected model.
-- **Planned, retained and consumed quantities are distinct.** §4.2 states four different token numbers and reconciles them exactly.
-- **Score versions are never mixed.** Two named assistant-review versions exist; every table names the version it belongs to.
-- **Comparisons are protocol-bounded and descriptive.** The ARC/PIQA table below *is* a comparison, on one fixed protocol, on unmatched models. No significance test was run anywhere, and no claim is made that any evaluation set here is an untouched final test.
+- **Two histories stay apart.** §6 separates the parameter ancestry of the selected weights from later branches. Branch updates are never added to the selected model's cumulative exposure.
+- **Planned, retained and consumed quantities are distinct.** §4.2 reconciles the token counts exactly.
+- **Evaluation records retain their versions.** P3-era diagnostics (§5), historical research scores (§7), public likelihood campaigns (§8.1), two assistant-review versions (§8.2) and IFEval (§8.4) are identified separately. Later reviews do not retroactively change training gates.
+- **Comparisons are descriptive and tied to their protocols.** Models differ in training data, compute, tokenizer and architecture. No significance test was run. Reused development sets and benchmark results without a contamination audit do not establish performance on an untouched test set.
+
+### Terms used below
+
+| Term | Meaning in this report |
+|---|---|
+| NLL / cross-entropy loss | Average negative log-probability assigned to reference tokens; lower is better. It measures reference prediction, not whether a generated answer is correct. |
+| SFT / DPO / KD / LoRA | Supervised fine-tuning / direct preference optimization / knowledge distillation / low-rank trainable adapters. The experiment table in §6 distinguishes their actual uses. |
+| dev100 | A reused 100-prompt suite scored with narrow, strict generation checks. |
+| dev512 | A procedural development battery: exact copying (COPY), field lookup (FIELD), set membership (MEMBERSHIP) and structured output (JSON). Its 32 shared content groups × 4 families × 4 presentations produce 512 correlated rows. |
+| val500 | The original P2 validation conversations: 500 rows and 43,573 supervised assistant/EOS targets, also reused for P3 and interpolation diagnostics. |
+| old93 / new96 | QA41 + practical38 + Python14 / natural64 + Python32; two reused generation suites. |
+| Practical group score | Average correctness within each dialogue, then equal weighting of 27 dialogue groups covering 38 turns. Bounds retain unresolved labels; they are not confidence intervals. |
+| Joint success | Content success and, where the prompt requires an explicit format, format success. Unresolved judgments remain unresolved. |
+| Retention screen / gate | A predeclared threshold for preserving earlier capabilities during adaptation. A failed gate can stop a run or rule out promotion. |
+| Envelope / historical screen | Two predeclared multi-metric criteria used by the later A/B interpolation study; results refer only to the five coefficients tested (§7.5). |
 
 ---
 
@@ -37,7 +46,7 @@ Four boundaries hold throughout:
 
 ### 3.1 Architecture
 
-A pre-norm decoder-only Transformer in the deep-and-thin style: 30 blocks, model width 576, RMSNorm with epsilon 1e-6, a fused QKV projection producing 9 query heads and 3 key/value heads at head dimension 64, rotary position embeddings with theta 10000 over the full head, and a SwiGLU feed-forward block of width 1536 (about 2.67× the model width) (`C-ARCH-01`, `C-ARCH-02`). Input and output embeddings are tied, so the 18,432,000-parameter embedding matrix is counted once. Dropout is zero.
+A pre-norm decoder-only Transformer in the deep-and-thin style: 30 blocks, model width 576, RMSNorm with epsilon 1e-6, a fused QKV projection producing 9 query heads and 3 key/value heads at head dimension 64, rotary position embeddings with theta 10000 over the full head, and a SwiGLU feed-forward block of width 1536 (about 2.67× the model width) (`C-ARCH-01`, `C-ARCH-02`). Dropout is zero, and input/output embeddings are tied, so the 18,432,000-parameter embedding matrix is counted once.
 
 The parameter count is derived rather than rounded: applying the bias-free grouped-query formula to the recorded shape yields exactly **124,635,456**, matching the count recorded independently by the training contract, the export provenance and the export review (`C-ARCH-03`).
 
@@ -61,7 +70,7 @@ Chat encoding is token-level, not string-templated, and lives in one module. The
 
 Pretraining consumed two disjoint immutable releases built with the frozen tokenizer. Each document is packed as `[BOS] content [EOS]` with an empty textual separator, so boundary tokens are exactly two per document; across both stages 27,511,462 boundary tokens over 13,755,731 documents confirms that identity (`C-PT-04`). Storage is `uint16`, the contract is canonical, source exhaustion is fail-fast, and replay-on-exhaustion is disabled (`C-DATA-03`).
 
-The selection record for the accepted pretraining stream establishes the mixture directly, per source and per stage (`C-MIX-01`). This supersedes the previous revision, which could only name the seven *reference-validation* families and correctly declined to read them as training weights. The training mixture is not those seven families in equal standing: **Stage A drew on four sources; three further sources appear only in Stage B.**
+The selection record establishes the training mixture per source and stage: **Stage A drew on four sources; three further sources appear only in Stage B.** The seven-family reference validation set has different weights and should not be read as the training mixture (`C-MIX-01`).
 
 **Stage A — 10,000,003,234 selected serialized tokens over 9,989,324 documents:**
 
@@ -94,7 +103,7 @@ A single reference-reserve exclusion manifest of 172,483 cleaned-text hashes was
 
 ### 4.2 Four token quantities, reconciled
 
-The project's accounting keeps four boundaries apart, and the differences between them are recorded quantities rather than rounding (`C-PT-03`):
+The table reconciles four measured token quantities alongside the original planning target. Differences between the measured quantities are recorded, rather than rounding errors (`C-PT-03`):
 
 | Boundary | Stage A | Stage B | Total |
 |---|---:|---:|---:|
@@ -130,7 +139,11 @@ The Stage A validation trajectory, at the run's own evaluation milestones:
 |---|---:|---:|---:|---:|---:|
 | val loss | 5.0344 | 3.0812 | 2.8719 | 2.7896 | **2.7486** |
 
-Stage B continued to **2.4702483468921344** (perplexity 11.825383284191247) at step 49,590. The WSD decay tail alone accounts for 0.1280 of that, from 2.5983 at step 44,631.
+Stage B continued to **2.4702483468921344** (perplexity 11.825383284191247) at step 49,590. During the WSD decay interval, validation loss fell by 0.1280, from 2.5983 at step 44,631. This is the observed change over that interval, not an isolated causal effect of the schedule.
+
+![Reference validation loss across both pretraining stages, with a Stage B detail panel](figures/pretraining_validation.png)
+
+*Figure 1. All ten recorded reference-validation evaluations, with no smoothing or added points. Lines connect observations only. The A/B handover is at step 38,146; Stage B's first evaluation is one update later in a separate process. Shading marks the learning-rate decay interval. The right panel enlarges Stage B; its vertical scale differs from the left. [Full-precision data](tables/PRETRAIN_VALIDATION_CURVE.csv), [SVG](figures/pretraining_validation.svg), and [plotting script](figures/plot_report_figures.py) (`C-PT-13`).*
 
 Per-source reference validation, at the Stage A endpoint and at the final step (`C-PT-08`, `C-MIX-02`):
 
@@ -146,7 +159,7 @@ Per-source reference validation, at the Stage A endpoint and at the final step (
 
 Every source absent from the Stage A mixture improved more during Stage B than every source present in it (0.328–0.619 against 0.072–0.242). This is a descriptive ordering over seven recorded readouts on one run. These source families enter the recorded mixture in Stage B; that does not establish that their subject matter was absent from Stage A, whose web sources may cover overlapping topics. The ordering is not a controlled experiment and does not identify the effect of data mixture separately from additional training and the learning-rate schedule. It does, however, show why the Stage A mixture had to be established rather than assumed: reading the seven-family validation set as the training mixture would have hidden this structure entirely.
 
-**Throughput and duration.** Over the logged Stage B window the run covered 2,993,684,480 serialized positions in 32,403.5 seconds, an interval average of about **92,388 positions per second** on one RTX 4090 (`C-PT-09`). For Stage A, the logged train rows span 2026-09-01T17:29:56Z to 2026-09-02T23:19:41Z, an elapsed range of 107,384.6 seconds (≈29.8 hours). That is a timestamp span between logged rows, **not** certified uninterrupted GPU time and not a compute-cost figure; the governed Stage N sequence includes recorded verification and resume activity, and no attempt was made to reconstruct GPU time from throughput (`C-PT-12`).
+**Throughput and duration.** Over the logged Stage B window the run covered 2,993,684,480 serialized positions in 32,403.5 seconds, an interval average of about **92,388 positions per second** on one RTX 4090 (`C-PT-09`). For Stage A, the logged train rows span 2026-09-01T17:29:56Z to 2026-09-02T23:19:41Z, an elapsed range of 107,384.6 seconds (≈29.8 hours). That is a timestamp span between logged rows, **not** certified uninterrupted GPU time and not a compute-cost figure; the pretraining sequence includes recorded verification and resume activity, and no attempt was made to reconstruct GPU time from throughput (`C-PT-12`).
 
 The pretrained base's own generation behaviour is the starting point rather than a result: on the frozen 100-prompt development suite it recorded 0/100 strict passes with 100/100 generations hitting the length cap.
 
@@ -156,13 +169,13 @@ The pretrained base's own generation behaviour is the starting point rather than
 
 ### 5.1 P2 — concise-instruction supervised fine-tuning
 
-P2 initialized from the accepted base checkpoint through a weights-only stage initialization, not a resume, and ran exactly 750 AdamW updates at learning rate 5e-5, weight decay 0.1, warmup 38, micro-batch 2 × gradient accumulation 16, sequence length 2,048, bf16 forward with selected-position FP32 cross-entropy (`C-P2-01`).
+P2 initialized from the accepted base checkpoint through a weights-only stage initialization, not a resume, and ran exactly 750 AdamW updates at learning rate 5e-5, matrix weight decay 0.1, warmup 38, micro-batch 2 × gradient accumulation 16, sequence length 2,048, bf16 forward with selected-position FP32 cross-entropy (`C-P2-01`).
 
 The data are 12,000 training and 500 validation conversations with original messages preserved — no truncation, no injected system text. Supervised targets are 997,427 per exposure at two exposures per row, giving 1,994,854 supervised target observations and 24,000 row exposures; validation carries 43,573 targets (`C-P2-02`). The supervised-target mix is 44.99% general QA, 22.00% text transformation, 20.00% instruction constraints, 8.00% basic Python and 5.00% practical chat, drawn from seven instruction subsets (`C-P2-03`).
 
 **Instruction-data origin.** Those seven labels are values of a row-level `source` column inside a single pinned collection, `HuggingFaceTB/smol-smoltalk` at revision `f73fe857d519ff6ac5af2ea67c4d3834da7b8bcc`, config `default`, train split, not seven separate repositories and not repository configurations. Two independent project build records name that collection and revision, and the P2 frozen manifest binds both of their outputs by digest, so the chain from collection to P2 selection is closed by hashes rather than by names (`C-SRC-01`). The publisher's card at that exact pinned revision carries a flat Apache-2.0 badge and states that the collection is a subset of a parent collection. The parent card — read at its current head, because the pinned child card links the parent without a revision — limits its Apache-2.0 grant to four newly generated subsets and directs readers to the original dataset for each incorporated public dataset. Four of the seven labels correspond to those newly generated subsets; three correspond to incorporated public datasets, of which one declares `odc-by` (differing from the collection badge), one declares `apache-2.0`, and one declares no licence at all in its card metadata (`C-SRC-02`). A collection badge is therefore not treated here as resolving component licences, and no licence determination is made.
 
-**Supervision policy.** The previous revision asserted that only the final assistant turn was supervised. That was wrong, and the executed code says so. P2's frozen manifest pins its formatter by hash; the file carrying that exact hash implements the encoder used at training time, and it supervises **every assistant turn's content plus that turn's trailing EOS**, masking BOS, role tokens, and all system and user content (`C-P2-06`). The recorded 13,889 assistant turns across 12,000 conversations imply 1,889 assistant turns beyond a one-assistant-turn-per-conversation baseline. They do not determine how many conversations are multi-turn, because one conversation may contain several extra assistant turns. The all-assistant-turn supervision claim rests on the pinned encoder and its training call path; counts alone do not establish the masking policy. The run's execution-time preflight independently records 997,427 supervised tokens out of 2,403,722 encoded tokens across 12,000 records, with zero truncations (`C-P2-07`).
+**Supervision policy.** P2's frozen manifest pins its formatter by hash; the file carrying that exact hash implements the encoder used at training time, and it supervises **every assistant turn's content plus that turn's trailing EOS**, masking BOS, role tokens, and all system and user content (`C-P2-06`). The recorded 13,889 assistant turns across 12,000 conversations imply 1,889 assistant turns beyond a one-assistant-turn-per-conversation baseline. They do not determine how many conversations are multi-turn, because one conversation may contain several extra assistant turns. The all-assistant-turn supervision claim rests on the pinned encoder and its training call path; counts alone do not establish the masking policy. The run's execution-time preflight independently records 997,427 supervised tokens out of 2,403,722 encoded tokens across 12,000 records, with zero truncations (`C-P2-07`).
 
 This is a P2 fact only. Later branches describe their own data as final-answer-only; that is their recorded policy for their own rows and is not evidence about P2, nor is P2 evidence about them.
 
@@ -170,9 +183,11 @@ P2's terminal readouts are candid: validation token NLL **1.3221**, dev100 stric
 
 ### 5.2 P3 — basic-instruction adaptation
 
-P3 started from P2 step 750 with a fresh AdamW (cosine, peak 5e-5, weight decay 0.0, sequence length 512, 640 updates over two passes) (`C-P3-01`). Its data are 7,168 training rows carrying 44,544 shifted targets plus 3,072 replay rows carrying 216,932 targets (`C-P3-02`).
+P3 started from P2 step 750 with a fresh AdamW (cosine, peak 5e-5, weight decay 0.0, training sequence length 512, 640 updates over two passes); the model context remained 2,048 (`C-P3-01`). Its data are 7,168 training rows carrying 44,544 shifted targets plus 3,072 replay rows carrying 216,932 targets (`C-P3-02`).
 
-P3 produced the project's clearest measured trade-off. Controlled transfer improved sharply — the 512-item development battery moved from 4/512 under P2 to 484/512 at step 320 and 476/512 at step 640, including held-out templates. In the same run natural capability regressed: validation NLL rose from 1.3221 to 1.4393, ARC-Easy fell 58.46% → 56.36%, PIQA fell 64.04% → 63.33%, and some faithful rewrites added new facts. The run's own interpretation declines to call this a success (`C-P3-03`).
+P3 produced a clear trade-off. The development battery improved from 4/512 under P2 to 484/512 at step 320 and 476/512 at step 640, including held-out templates. On the same P2 val500 set, NLL rose from 1.322110 to **1.400923 at step 320** and **1.439334 at step 640** (`C-P3-04`). The P2 → P3 step-640 diagnostic comparison also recorded ARC-Easy falling 58.46% → 56.36% and PIQA 64.04% → 63.33%, while some faithful rewrites added facts (`C-P3-03`).
+
+These ARC/PIQA numbers belong to the **P3-era diagnostic evaluator**, not the later public FP32 campaign in §8.1. For example, the same alpha075 weights scored 57.66% / 63.66% on ARC-Easy / PIQA in the interpolation diagnostics, versus 57.74% / 63.49% in the public FP32 results. The [versioned diagnostic table](tables/POSTTRAINING_TRADEOFF.csv) preserves the earlier measurements. Numerical equivalence between those evaluation paths is not established; cross-campaign differences should not be interpreted as training gains or losses (`C-INT-03`).
 
 ### 5.3 The selected interpolation
 
@@ -182,9 +197,23 @@ The selected weights are not a training step. They are a parameter blend of two 
 
 Parent B is P3 **step 320**, not the step-640 endpoint (`C-INT-01`). The run executed zero optimizer constructions, zero backward passes and zero optimizer updates, and produced two inference-only artifacts at alpha 0.50 and 0.75. Blending was computed in FP32 on CPU tensor by tensor from the original parents, never recursively, with tied embeddings verified equal in both parents and preserved as a single shared object.
 
-The trade is measurable and modest: validation NLL recovered by 0.0740 relative to the P3 step-640 endpoint (1.4393 → 1.3653) at a cost of 0.0432 relative to P2 (1.3221), while the development battery reached **487/512**, its best recorded value there (`C-INT-02`). Alpha 0.50 sits at NLL 1.3402 with only 445/512, which is why 0.75 became the working reference.
+Relative to its actual P3 step-320 parent, alpha075 reduced val500 NLL by **0.035613** (1.400923 → 1.365311), while the development score rose from 484/512 to **487/512**. It remained 0.043201 worse in NLL than P2. Alpha 0.50 preserved more of P2's reference likelihood but reached 445/512, below the study's 90% development target; alpha075 cleared that target and became the working reference (`C-INT-03`).
 
-The research registry records the resulting status precisely: **working reference, not a proven best general assistant**, with no default model selected and no release status issued (`C-REG-01`). Being the fixed initialization and retention baseline of later runs is a role, not a quality claim.
+| Weights | val500 NLL ↓ | dev512 passes ↑ | Role |
+|---|---:|---:|---|
+| P2 step 750 | 1.322110 | 4/512 | First interpolation parent |
+| P3 step 320 | 1.400923 | 484/512 | Second interpolation parent |
+| P3 step 640 | 1.439334 | 476/512 | Contextual endpoint; not a blend parent |
+| alpha050 | 1.340176 | 445/512 | Fixed 0.50 blend |
+| alpha075 | 1.365311 | 487/512 | Fixed 0.75 blend; released working reference |
+
+![Reference NLL versus procedural development passes for the five post-training snapshots](figures/posttraining_tradeoff.png)
+
+*Figure 2. Five measured snapshots under the same P3/interpolation diagnostic comparison. Leftward means lower reference NLL; upward means more procedural passes. P3 step 640 is shown for context and did not contribute to either blend. The points describe different objectives, not a single quality ranking; dev512 contains correlated, repeatedly inspected items. [Full-precision data](tables/POSTTRAINING_TRADEOFF.csv), [SVG](figures/posttraining_tradeoff.svg) (`C-INT-03`).*
+
+For continuity with the earlier endpoint comparison, alpha075 is also 0.074023 lower in NLL than P3 step 640 (`C-INT-02`). That is a separate reference point. Even relative to step 320, the improvement is not universal: strict dev100 fell from 20/100 to 16/100 (`C-INT-03`).
+
+The historical registry designated alpha075 a **working reference, not a proven best general assistant**; it had not yet made a release decision (`C-REG-01`). The later research release distributes those weights. Serving as the initialization and retention baseline of later experiments does not establish best overall quality.
 
 ---
 
@@ -201,7 +230,7 @@ graph TD
   ALPHA["alpha075 = P2 + 0.75·(P3_320 − P2)<br/>0 optimizer updates · dev512 487/512"] --> EXPORT
   EXPORT["Native FP32 inference bundle<br/>numerically unchanged"]
 
-  ALPHA -.weights-only init.-> BR["R1 · DP1 · KD1 · RKD1 · RKD2<br/>(P4 micro, P4 QA, dose6: alpha075 line,<br/>exact init not stated in records)"]
+  ALPHA -.weights-only init.-> BR["Later adaptation studies<br/>See branch table below"]
   ALPHA -.generations only.-> DP0["DP0 preference-data build<br/>(no checkpoint produced)"]
   SB -.weights-only init.-> UB["Unified Base SFT · 1,209 updates"]
   UB -.identical restored state.-> AB["P3 loss-allocation A/B"] -.-> GRID["Five-point λ_B grid"]
@@ -210,6 +239,24 @@ graph TD
 
 Not every later experiment descends from the selected weights, and the dotted edges say which does what. R1, DP1, KD1, RKD1 and RKD2 each loaded the selected weights with a fresh optimizer, as their own run records state. P4 micro-calibration, the P4 QA increment and dose 6 belong to the same line, but their exact initialization checkpoint is not stated in the bound records and is not asserted here. DP0 produced *data* from the selected model's generations and trained nothing. The unified Base SFT curve started from the accepted pretrained Base, not from the selected weights; the loss-allocation A/B split from that curve's step 403; the quarter-point grid interpolated the A/B endpoints. KD2 ran entirely on external SmolLM2 models — the lab isolates method learning and token alignment on a matched-tokenizer pair, and no PetitGPT checkpoint was opened in it.
 
+### Research branch names
+
+The table summarizes initialization and outcome; full settings and score versions are in the [experiment ledger](tables/RESEARCH_EXPERIMENT_LEDGER.csv). None of these branches replaced alpha075 in the release.
+
+| Code | Method / question | Initialization | Recorded outcome |
+|---|---|---|---|
+| P4 micro / P4 QA / dose6 | Natural-task SFT, a QA increment, and repeated curriculum exposure | alpha075 line; exact checkpoints not stated | Completed; local gains and retention trade-offs, no promotion |
+| R1 | One pass over a mixed behaviour curriculum | alpha075 weights | Stopped at retention check after 96/192 planned updates |
+| DP0 | Build preference pairs from generated answers | alpha075 generations | Data only; no trained checkpoint |
+| DP1 | DPO preference fine-tuning | alpha075 policy and reference | Stopped after 20/40 updates; retention failed |
+| KD1 | Chosen-answer cross-entropy control for DP1 | alpha075 weights | 20 updates; retention failed |
+| RKD1 | Dense SFT on teacher-authored responses | alpha075 weights | Stopped after 77/154 updates; retention failed |
+| RKD2 | Response distillation with rank-16 LoRA | Frozen alpha075 plus adapters | Stopped after one pass; two retention scores below thresholds |
+| KD2 | Hard-answer CE versus soft-logit KD | External SmolLM2 models | Method-control experiment; no PetitGPT update |
+| Unified Base SFT | Three-pass MAIN + procedural curriculum | Pretrained Base | 1,209 updates; terminal screen failed |
+| Loss-allocation A/B | Token mean versus equal procedural-family means | Identical restored Unified Base SFT step 403 | Development gain with practical-score loss |
+| Five-point grid | Weight blends of the A/B endpoints | A/B endpoints | None of five evaluated coefficients met either screen |
+
 The selected weights contain no later response-KD, no unified Base-SFT, no DPO, no soft-KD and no LoRA update; the export provenance lists those five exclusions explicitly. Response-distillation data *were* consumed by later branches, which is a statement about downstream data flow, not about the selected weight path. Full parentage with per-branch evidence: [`tables/MODEL_LINEAGE.json`](tables/MODEL_LINEAGE.json).
 
 One naming collision is worth defusing: the `lambda_B` coefficient of the five-point grid interpolates two loss-allocation arms and is unrelated to the `alpha` that produced the selected weights, which appear there only as a read-only off-grid comparator.
@@ -217,6 +264,8 @@ One naming collision is worth defusing: the `lambda_B` coefficient of the five-p
 ---
 
 ## 7. Main experiments, organized by question
+
+**Score provenance.** This section reports each experiment's historical labels and stopping rules. The research-snapshot scorecard gives alpha075 QA bounds `[4, 7]/41` and practical bounds `[22/81, 23/81]`; later studies reused those baselines where stated. They differ from the two full-answer review versions in §8.2. Individual run reports remain the source for their own branch scores, as recorded in the ledger's `protocol_version_of_scores` column. Later relabeling does not revise an earlier retention decision (`C-RES-17`).
 
 ### 7.1 Did lower loss predict better generation?
 
@@ -238,13 +287,13 @@ This was a bounded 160-example, 20-update control. It neither establishes nor re
 
 RKD1 ran dense response distillation and stopped permanently at update 77 of a planned 154 when the retention screen fired. Fitting improved on both splits (training NLL 2.0104 → 1.8384, held-out 1.8251 → 1.7159) while held-out joint success fell from 25/96 to 20/96 with 4 confirmed gains against 9 losses; the development total was *unchanged* at 487/512, concealing 13 gains and 13 losses (`C-RES-14`).
 
-RKD2 repeated the idea through rank-16 LoRA adapters (4,331,520 trainable parameters across 150 wrapped modules), completing one full pass before a double-negative gate stopped it. Fitting improved further and the development score rose slightly to 489/512, but held-out fell to 18/96 and the practical group score collapsed to 1/6. Every original parameter was verified unchanged tensor by tensor, and disabling the adapters recovered the base function bit-exactly (`C-RES-15`).
+RKD2 repeated the idea through rank-16 LoRA adapters (4,331,520 trainable parameters across 150 wrapped modules), completing one full pass before a predeclared gate stopped it because both held-out and practical group scores fell below their thresholds. Fitting improved further and the development score rose slightly to 489/512, but held-out fell to 18/96 and the practical group score collapsed to 1/6. Every original parameter was verified unchanged tensor by tensor, and disabling the adapters recovered the base function bit-exactly (`C-RES-15`).
 
 Neither result establishes that LoRA is better or worse than full fine-tuning: the two runs differ in parameterization, schedule *and* exposure at once, so this is an adaptation/retention observation rather than a matched causal comparison.
 
 ### 7.4 Was teacher-logit distillation involved at all?
 
-Not in the PetitGPT weight path. No run in the permitted source set computes or stores teacher logits for PetitGPT, and no KD loss term appears in any recorded PetitGPT objective. What did execute was teacher-authored or revised hard responses — DP0's 198 preference pairs, whose chosen sides are 177 reused source references plus 21 executor-written minimal corrections — and a standard DPO pilot. A teacher-authored chosen string is not a distilled model, and DPO is not divergence minimization to a teacher distribution (`C-RES-11`).
+Not in the PetitGPT weight path. No run in the permitted source set computes or stores teacher logits for PetitGPT, and no KD loss term appears in any recorded PetitGPT objective. What did execute was teacher-authored or revised hard responses — DP0's 198 preference pairs, whose chosen sides are 177 reused source references plus 21 minimal corrections written by the agent conducting that experiment — and a standard DPO pilot. A teacher-authored chosen string is not a distilled model, and DPO is not divergence minimization to a teacher distribution (`C-RES-11`).
 
 The one genuine soft-logit experiment, KD2, ran on external SmolLM2 models sharing a tokenizer verified equal across all 49,152 token strings and IDs, which is what makes a clean method-learning and token-alignment comparison possible. Its numerical contrast worked as designed: cross-entropy fit the hard references more closely while CE + KD moved the student's temperature-2 distributions closer to the teacher. It produced no held-out generation improvement — joint successes were 3/29 → 2/29 → 2/29 on the held-out set and 22/34 → 22/34 → 21/34 on the additional untrained set for initial, CE and KD respectively. No PetitGPT retention gate was applied to it, and none should be.
 
@@ -266,28 +315,36 @@ Two interpretation limits are load-bearing. Five observed coefficients cannot sh
 
 ### 8.1 Public multiple-choice likelihood (frozen, FP32)
 
-Zero-shot candidate-likelihood measurement on ARC-Easy and PIQA. Prompts are raw completions of the form `Question: <unchanged question or goal>\nAnswer:`, each candidate being one ASCII space plus the unchanged official answer text. No chat template, no role tokens, no few-shot examples, no BOS insertion, no scored EOS, no generation, no cleanup. Each model uses its own tokenizer with `add_special_tokens=False`. The numerical path is FP32 parameters and FP32 logits with autocast explicitly disabled, TF32 off for both matmul and cuDNN, MATH SDPA, batch size 1 unpadded, no KV cache, no compile. `acc` is the first argmax of summed continuation log-likelihood; `acc_norm` divides by `len()` of the **original** choice text in Unicode characters — not tokenizer length — and ties take the first index (`C-BENCH-03`).
+The four tasks were measured in two campaigns: **FP32 V2** for ARC-Easy and PIQA, followed by **benchmark extension V1** for ARC-Challenge and HellaSwag. The table keeps their task results separate; there is no combined benchmark score.
 
-| Model | Task / split | N | acc | acc_norm |
-|---|---|---:|---:|---:|
-| **PetitGPT (selected)** | ARC-Easy / test | 2,376 | **1372/2376 = 57.74%** | **1244/2376 = 52.36%** |
-| **PetitGPT (selected)** | PIQA / validation | 1,838 | **1167/1838 = 63.49%** | **1145/1838 = 62.30%** |
-| SmolLM-135M-Instruct | ARC-Easy / test | 2,376 | 1170/2376 = 49.24% | 1033/2376 = 43.48% |
-| SmolLM-135M-Instruct | PIQA / validation | 1,838 | 1233/1838 = 67.08% | 1236/1838 = 67.25% |
-| SmolLM2-135M-Instruct | ARC-Easy / test | 2,376 | 1283/2376 = 54.00% | 1160/2376 = 48.82% |
-| SmolLM2-135M-Instruct | PIQA / validation | 1,838 | 1226/1838 = 66.70% | 1227/1838 = 66.76% |
+| Model | ARC-Easy | ARC-Challenge | PIQA | HellaSwag |
+|---|---:|---:|---:|---:|
+| **PetitGPT alpha075** | **57.74 / 52.36** | **28.16 / 32.68** | **63.49 / 62.30** | **31.28 / 35.60** |
+| SmolLM-135M-Instruct | 49.24 / 43.48 | 25.43 / 27.22 | 67.08 / 67.25 | 34.60 / 41.96 |
+| SmolLM2-135M-Instruct | 54.00 / 48.82 | 25.94 / 27.73 | 66.70 / 66.76 | 35.02 / 42.90 |
 
-At full recorded precision the selected model's four figures are ARC-Easy acc `0.5774410774410774` and acc_norm `0.5235690235690236`; PIQA acc `0.6349292709466812` and acc_norm `0.6229597388465724`. These are copied byte-identically from the frozen result file and were never recomputed. Machine-readable copy: [`tables/PUBLIC_BENCHMARK_RESULTS.csv`](tables/PUBLIC_BENCHMARK_RESULTS.csv) (`C-BENCH-01`, `C-BENCH-02`).
+Each cell is **acc / acc_norm, in percent**. Full-precision values, integer correct counts, dataset revisions and result versions are in [PUBLIC_BENCHMARK_RESULTS.csv](tables/PUBLIC_BENCHMARK_RESULTS.csv). The original six ARC-Easy/PIQA records are preserved unchanged (`C-BENCH-01`, `C-BENCH-02`, `C-BENCH-07`).
 
-Scope arithmetic checks out: 2,376 + 1,838 = 4,214 documents per model, 12,642 document-model evaluations and 39,531 unique primary candidate sequences, with ARC's 9,501 candidates reproducing from its choice distribution and PIQA's 3,676 from 1,838 × 2 (`C-BENCH-05`).
+| Task | Official split | Documents per model | Result collection |
+|---|---|---:|---|
+| ARC-Easy | test | 2,376 | FP32 V2 |
+| PIQA | validation | 1,838 | FP32 V2 |
+| ARC-Challenge | test | 1,172 | Benchmark extension V1 |
+| HellaSwag | validation | 10,042 | Benchmark extension V1 |
 
-Five qualifications are inseparable from these numbers. The evaluator is a **native protocol-compatible implementation** pinned to a specific lm-evaluation-harness commit; the harness package was not installed and a full installed-harness execution is not claimed (`C-BENCH-04`). Both datasets are prior project diagnostics with **no decontamination or training-overlap audit**, so they are not untouched final tests (`C-BENCH-06`). Training data, compute, tokenizers and architectures across the three models are unmatched. Multiple-choice accuracy does not establish free-generation reliability. And the earlier attempt at this measurement remains blocked on its own parity gate, with its original null metrics; it supplies no replacement scores.
+**Prompts and scoring.** These are zero-shot candidate-likelihood evaluations, with each model's own tokenizer and `add_special_tokens=False`. ARC and PIQA use `Question: <unchanged question or goal>\nAnswer:` and a continuation of one ASCII space plus the official answer text. HellaSwag uses the pinned task's `process_docs` query and preprocessed endings. No chat template, role tokens, few-shot examples, inserted BOS, scored EOS or text generation is used. `acc` selects the first maximum of summed continuation log-likelihood; `acc_norm` divides that sum by the candidate's Unicode character count, excluding the leading delimiter. This is the original choice text for ARC/PIQA and the task-preprocessed ending for HellaSwag (`C-BENCH-03`, `C-BENCH-08`).
+
+**Numerical protocol.** Both campaigns use FP32 parameters, forward computation, log-softmax and likelihood sums; autocast and TF32 are disabled. Attention uses PyTorch's **MATH scaled dot-product attention (SDPA)** backend. Batch size is 1 without padding, KV cache or compilation. The evaluator is a native implementation following **lm-evaluation-harness**, pinned at commit `b954108c9baaaa934b4ad842033b31a97ee30816`; a full installed-harness run is not claimed. Dataset and model revisions and task-specific settings are in [EVALUATION_PROTOCOLS.json](provenance/EVALUATION_PROTOCOLS.json) and the result CSV (`C-BENCH-04`, `C-BENCH-08`).
+
+The original ARC-Easy/PIQA campaign covered 4,214 documents per model, 12,642 document-model evaluations and 39,531 primary candidate sequences across the three models. These totals describe that campaign only (`C-BENCH-05`). Its earlier failed parity attempt retains null metrics and contributes no scores; §9.4 explains the numerical correction (`C-BENCH-06`).
+
+ARC-Easy and PIQA were reused during development. The later extension does not establish that ARC-Challenge or HellaSwag were absent from training data; no contamination audit was performed. These are descriptive comparisons between differently trained models, and candidate selection accuracy does not establish free-generation reliability.
 
 ### 8.2 Historical full-answer assistant review
 
 The second evaluation family is a full-answer review of generated text across 189 prompts per model — 93 from the older suite and 96 from the newer — over three models, giving 567 answers and 565 distinct prompt/output/contract units (`C-ASSIST-01`).
 
-Two named versions exist and must never be merged: `assistant_review_fable_v1`, the executor's original 567 final records, and `assistant_owner_clarification_4_v1`, which applies four explicit final-content decisions while preserving every other axis and every source data field. Exactly 18 of 284 leaf fields differ between them, and the practical group bounds are identical in both (`C-ASSIST-02`). The four amendments change two comparator content judgments to false, one selected-model item to unknown, and one selected-model item to true; derived unresolved content records rise from 7 to 8 (`C-ASSIST-05`).
+Two named versions exist and must never be merged: `assistant_review_fable_v1`, the reviewing model's original 567 final records, and `assistant_owner_clarification_4_v1`, which applies four explicit final-content decisions while preserving every other axis and every source data field. Exactly 18 of 284 leaf fields differ between them, and the practical group bounds are identical in both (`C-ASSIST-02`). The four amendments change two comparator content judgments to false, one selected-model item to unknown, and one selected-model item to true; derived unresolved content records rise from 7 to 8 (`C-ASSIST-05`).
 
 **Selected model under `assistant_owner_clarification_4_v1`** (true / false / unknown out of n):
 
@@ -310,15 +367,31 @@ Two entries must be read as recorded rather than as results. The selected model'
 
 The Python picture is the sharpest single finding here: across the 46 Python prompts covered, the selected model produced a correct function **interface** in 42 and a correct whole answer in **0** (`C-ASSIST-07`). The model reliably writes a plausible function shell whose body or explanation is wrong. This does not establish that it can never write correct code, and it is measured on a small, repeatedly reused development set.
 
-### 8.3 What the reviewing actually was
+### 8.3 Review method and development-set reuse
 
-The review has a chronology, and flattening it in either direction would misdescribe it. The initial pass over the 565 units was conducted with model metadata masked and with its own recorded limitations; a subsequent pass with the mapping visible produced 17 consistency edits; the four owner clarifications came later still and form a separate, separately named version (`C-ASSIST-08`). So this was neither strict blinding throughout nor all original labels visible throughout. It remains a model-assisted review rather than human adjudication, and no judgment was redone for this document.
+The source report identifies the reviewing model as **Claude Fable 5.1, run through Claude Code at high effort**. This is the recorded model designation; an exact API snapshot identifier is not established here (`C-ASSIST-09`). The review proceeded in three stages. The initial pass over the 565 units was conducted with model metadata masked and with its own recorded limitations; a subsequent pass with the mapping visible produced 17 consistency edits; the four owner clarifications came later still and form a separate, separately named version (`C-ASSIST-08`). So this was neither strict blinding throughout nor all original labels visible throughout. It remains a model-assisted review rather than human adjudication, and no judgment was redone for this document.
 
-Development sets — the 100-prompt suite, the 512-item battery, the older and newer suites, the terminal suite, and both public benchmarks — have been read and re-read across many runs and have not been untouched final tests for a long time. The 512-item battery factorizes as **32 shared content/value groups × 4 task families × 4 presentations = 512**, with 128 distinct family-group pairs at 4 rows each (`C-EVAL-P3`). Neither the 32 nor the 128 is a certified independent sampling unit; the safe reading is simply that these are correlated presentations rather than 512 independent observations.
+Development sets — the 100-prompt suite, the 512-item battery, the older and newer suites, the terminal suite, and the original ARC-Easy/PIQA benchmarks — have been read and re-read across many runs and have not been untouched final tests for a long time. The 512-item battery factorizes as **32 shared content/value groups × 4 task families × 4 presentations = 512**, with 128 distinct family-group pairs at 4 rows each (`C-EVAL-P3`). Neither the 32 nor the 128 is a certified independent sampling unit; the safe reading is simply that these are correlated presentations rather than 512 independent observations.
 
 Score revisions such as the four clarifications are re-interpretations of unchanged historical outputs. They are not parameter improvements and do not retroactively change any earlier training gate.
 
 One runtime caveat is load-bearing: the same P2 checkpoint, prompts and greedy settings produced **30 differing answers out of 96** between two torch versions, with exactly one label moving (`C-RES-12`). Identical scores would not have meant identical answers.
+
+### 8.4 IFEval instruction following
+
+**IFEval completion V2** is the completed three-model generation evaluation: 541 official prompts per model, containing 834 instructions across 25 instruction types. The recorded dataset split is `train`, pinned to a specific `google/IFEval` revision. All prompts were evaluated without dropping or truncating inputs (`C-IFEVAL-01`, `C-IFEVAL-02`).
+
+| Model | Prompt strict | Prompt loose | Instruction strict | Instruction loose | Outputs hitting cap |
+|---|---:|---:|---:|---:|---:|
+| **PetitGPT alpha075** | **93/541 (17.19%)** | **96/541 (17.74%)** | **238/834 (28.54%)** | **250/834 (29.98%)** | **40/541** |
+| SmolLM-135M-Instruct | 56/541 (10.35%) | 65/541 (12.01%) | 182/834 (21.82%) | 201/834 (24.10%) | 290/541 |
+| SmolLM2-135M-Instruct | 117/541 (21.63%) | 122/541 (22.55%) | 299/834 (35.85%) | 311/834 (37.29%) | 233/541 |
+
+Prompt accuracy requires all applicable instructions in a prompt to pass; instruction accuracy counts individual instructions. Strict and loose scores use the pinned task's respective **programmatic verifiers**. There is no reviewing language model in this evaluation. Full-precision results and stop counts are in [IFEVAL_RESULTS.csv](tables/IFEVAL_RESULTS.csv) (`C-IFEVAL-01`).
+
+Each unchanged user prompt is encoded with the model's native chat template. SmolLM2's template inserts its default system text; PetitGPT has no default system text. Generation is greedy with a **1,280-new-token cap**, FP32 parameters and forward computation, MATH SDPA, batch size 1 and KV caching enabled. Autocast, TF32 and compilation are disabled; there is no repetition penalty or additional stop string (`C-IFEVAL-02`).
+
+Cap-hit responses were scored as generated. Their frequencies differ substantially across models; these measurements do not predict scores under a larger cap or a different template. The result applies to the [recorded protocol](provenance/EVALUATION_PROTOCOLS.json), and is separate from the historical full-answer review in §8.2.
 
 ---
 
@@ -356,7 +429,7 @@ The public benchmark's first attempt failed its own likelihood-parity gate and r
 2. **Pretraining loss behaved as intended**, falling to 2.4702 with a clean decay tail, and the per-source decomposition separates sensibly by domain.
 3. **Provenance is now traceable end to end.** Every pretraining source resolves to an upstream dataset and revision, and each release's document hash matches the selection stage's binding digest for that source.
 4. **Instruction adaptation transferred on controlled tasks**, moving the 512-item battery from 4/512 to 484/512 and then 487/512 after interpolation.
-5. **Retention engineering worked as designed.** Weight interpolation recovered 0.074 of reference NLL from the P3 endpoint while keeping the development score — a measured trade rather than a guess.
+5. **Interpolation provided a measured compromise.** Alpha075 reduced reference NLL by 0.035613 relative to its P3 step-320 parent and gained three development passes, while remaining worse than P2 in reference NLL and losing four strict dev100 passes relative to step 320 (§5.3).
 6. **Predeclared guards actually fired.** R1, DP1, RKD1 and RKD2 all stopped themselves on retention screens, and no recipe was changed after scores were seen.
 7. **Ordinary QA and complete natural-task generation remained limited across the evaluated configurations**, while local successes and different label versions genuinely differ. Individual points, each with its own source and label version: the unified Base SFT terminal records 7/41 on the older QA suite under its own report; R1 step 96 records 6/41 with 1 unknown under the research-snapshot scorecard; the selected model records 6/41 with 2 unknown under `assistant_owner_clarification_4_v1` and 4/41 with 3 unknown under the scorecard row. On the newer natural suite, RKD1 step 77 records 5/64 under its own report, R1 step 96 records 4/64 with 1 unknown, and the selected model records 3/64. These come from different suites, protocols and label versions and are **not** combined into a cross-version maximum (`C-RES-16`).
 
@@ -370,7 +443,7 @@ Longer or differently scheduled instruction training; larger or more diverse ins
 
 ### 10.4 Non-inferences
 
-Nothing here supports: that all negative methods are generally ineffective; that 125M parameters constitute a capacity ceiling; that the architecture or tokenizer failed; that weight interpolation is universally unhelpful; or that the model lacks useful signal. What the record supports is narrower: *these particular configurations, at this scale, under these protocols, produced these results.*
+Nothing here supports: that all negative methods are generally ineffective; that 124.6M parameters constitute a capacity ceiling; that the architecture or tokenizer failed; that weight interpolation is universally unhelpful; or that the model lacks useful signal. What the record supports is narrower: *these particular configurations, at this scale, under these protocols, produced these results.*
 
 ---
 
@@ -378,7 +451,7 @@ Nothing here supports: that all negative methods are generally ineffective; that
 
 **Scale and compute.** One RTX 4090, one seed per comparison, 13.0B pretraining positions, and post-training runs measured in tens to low thousands of optimizer updates.
 
-**Repeated development exposure.** Every internal suite and both public benchmarks have been read and re-read across many runs. No decontamination or training-overlap audit was performed. Selection screening cannot exclude semantic overlap or pretraining contamination.
+**Evaluation exposure and contamination.** Internal suites and the original ARC-Easy/PIQA benchmarks were repeatedly inspected during development. ARC-Challenge, HellaSwag and IFEval were evaluated in the later extension; that timing does not establish absence from training data. No decontamination or training-overlap audit was performed. Selection screening cannot exclude semantic overlap or pretraining contamination.
 
 **Judge fallibility.** Semantic labels are model-assisted rather than human adjudication, with the mixed masking chronology described in §8.3. Contradiction lists are non-exhaustive. Unresolved judgments stay in their denominators.
 
@@ -403,18 +476,16 @@ Nothing here supports: that all negative methods are generally ineffective; that
 | Split of the `structured_tutorial` node between its two upstream bindings | **Not recorded.** The selection node reports a combined 343,750,175 tokens. |
 | Certified uninterrupted Stage A GPU time | **Not established.** Only an elapsed timestamp span between logged rows is available; it was not converted into GPU time. |
 | Exact initialization checkpoint for the P4 micro-calibration, P4 QA increment and dose-6 runs | **Not stated in the bound records.** They belong to the selected model's line; the precise parent is not asserted. |
-| Independent re-hash of any checkpoint | **Deliberately not performed.** Every checkpoint hash quoted anywhere is carried from the run record that declared it. |
-| Licence for PetitGPT code, weights and documents | **Authorized in the explicit release task.** Author-controlled code/model/tokenizer: Apache-2.0; author-written documentation: CC BY 4.0; third-party terms retained. |
 
 ---
 
-## 13. Conclusion and bounded future work
+## 13. Conclusion and future work
 
-PetitGPT shows that a complete, governed small-model pipeline — corpus gating with pinned upstream revisions, a tokenizer release validated over its whole corpus, immutable shard releases with propagated exclusion manifests, a frozen run plan, deterministic sampling, exact-state stage handoff, and an export with byte-level tensor parity — can be built and audited end to end on a single consumer GPU. On the one public likelihood comparison run under a frozen protocol, the resulting 124.6M-parameter model scores above both 135M comparators on ARC-Easy and below both on PIQA. On free-form generation, measured by full-answer review, it remains weak.
+PetitGPT demonstrates a complete small-model pipeline on one consumer GPU: a validated tokenizer, explicit data accounting, full-state pretraining handover, instruction adaptation, and an export with exact tensor parity. Under the recorded likelihood protocols, its 124.6M-parameter model leads both evaluated 135M instruct baselines on ARC-Easy and ARC-Challenge and trails both on PIQA and HellaSwag. On IFEval, alpha075 lies between SmolLM and SmolLM2.
 
-The honest summary is that the *infrastructure and its evidence discipline are the stronger result*, and the generation-quality problem is unsolved. Every attempted remedy in §7 was measured, bounded, and stopped by a rule written down before the scores were seen. That is a good outcome for the process even where it is a negative outcome for the model.
+The generation-quality problem remains unresolved. Procedural transfer and reference-token prediction improved, but later adaptation often reduced natural-task retention. The full-answer review's 42/46 correct Python interfaces versus 0/46 correct whole answers captures that gap particularly clearly. The evidence supports the reported comparisons and trade-offs, not a general claim that the tested adaptation methods cannot work.
 
-Bounded future work, stated as options rather than plans: an untouched held-out evaluation set built and frozen before any candidate exists; multi-seed replication of at least the loss-allocation A/B; an instruction-data scaling study varying exactly one factor; and a matched objective/retention control for the preference result. **None of this is authorization to restart a model search, resume interpolation, select another coefficient, or perform any publication beyond the separately authorized release.**
+Useful next experiments would include an evaluation set frozen before candidate selection, multi-seed replication of the loss-allocation A/B, an instruction-data scaling study varying one factor at a time, and a matched objective/retention control for preference training.
 
 ---
 
@@ -437,12 +508,18 @@ Bounded future work, stated as options rather than plans: an untouched held-out 
 | Final validation | loss 2.4702483468921344 / ppl 11.825383284191247 (step 49,590) |
 | Tested inference runtime | Python 3.10.12, torch 2.11.0+cu126, numpy 2.2.6, tokenizers 0.22.2, safetensors 0.8.0, RTX 4090 |
 
-Model, archive and tokenizer hashes are in MODEL_PROVENANCE.json. Private source locations remain in private evidence only. Recorded driver versions differ across phases — pretraining 580.126.20, post-training branches 580.159.04, export and grid 580.178.04 — which is a recorded difference rather than a resolved equivalence.
+Model, archive and tokenizer identities are in [MODEL_PROVENANCE.json](MODEL_PROVENANCE.json). Checkpoint identities quoted here are taken from the recorded runs; this editorial revision did not re-hash weights. Recorded driver versions differ across phases — pretraining 580.126.20, post-training branches 580.159.04, export and grid 580.178.04 — which is a recorded difference rather than a resolved equivalence.
 
-## Appendix B — Companion artifacts
+## Appendix B — Companion artifacts and editorial history
 
-Public-safe: [`provenance/PUBLIC_EVIDENCE_INDEX.json`](provenance/PUBLIC_EVIDENCE_INDEX.json), [`tables/PUBLIC_BENCHMARK_RESULTS.csv`](tables/PUBLIC_BENCHMARK_RESULTS.csv), [`tables/ASSISTANT_RESULTS_VERSIONED.csv`](tables/ASSISTANT_RESULTS_VERSIONED.csv), [`tables/RESEARCH_EXPERIMENT_LEDGER.csv`](tables/RESEARCH_EXPERIMENT_LEDGER.csv), [`tables/MODEL_LINEAGE.json`](tables/MODEL_LINEAGE.json), [`tables/PRETRAIN_SOURCE_MIXTURE.csv`](tables/PRETRAIN_SOURCE_MIXTURE.csv), [`tables/VAL_LOSS_BY_SOURCE.csv`](tables/VAL_LOSS_BY_SOURCE.csv), [`MODEL_CARD.md`](MODEL_CARD.md), [`RUN_GUIDE.md`](RUN_GUIDE.md).
+- [Public evidence index](provenance/PUBLIC_EVIDENCE_INDEX.json): claim-to-record links.
+- [Likelihood results](tables/PUBLIC_BENCHMARK_RESULTS.csv), [IFEval results](tables/IFEVAL_RESULTS.csv), and [protocol metadata](provenance/EVALUATION_PROTOCOLS.json): versions, dataset revisions, denominators and numerical settings.
+- [Versioned assistant results](tables/ASSISTANT_RESULTS_VERSIONED.csv), [experiment ledger](tables/RESEARCH_EXPERIMENT_LEDGER.csv), and [model lineage](tables/MODEL_LINEAGE.json): review versions and branch history.
+- [Pretraining mixture](tables/PRETRAIN_SOURCE_MIXTURE.csv), [per-source validation](tables/VAL_LOSS_BY_SOURCE.csv), [validation trajectory](tables/PRETRAIN_VALIDATION_CURVE.csv), and [post-training trade-off](tables/POSTTRAINING_TRADEOFF.csv): aggregate measurements used in the text and figures.
+- [Plotting script and instructions](figures/README.md), [data-source provenance](provenance/REPORT_DATA_PROVENANCE.json), [model card](MODEL_CARD.md), and [inference guide](RUN_GUIDE.md).
 
-Private only: the claim-to-evidence map with absolute paths and file hashes, input bindings, the source-notice inventory, the local lookup log, open items, document checks, and copied source excerpts.
+The report grew from the original source-linkage review. Subsequent source checks established the actual training mixture and corrected P2 supervision to include every assistant turn. This revision adds existing benchmark-extension and IFEval completion-v2 results, the recorded P3 step-320 NLL, and figures drawn from existing aggregates. It does not introduce a new training or inference run. Historical research decisions and later publication decisions describe different dates; archived pending-release statuses are not current availability statements.
 
-*Author: Yang Qi. No affiliation, funding source or legal clearance is asserted. No new experimental run was performed to produce it.*
+---
+
+*Author: Yang Qi. No affiliation or funding source is asserted.*
