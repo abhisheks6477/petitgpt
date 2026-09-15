@@ -84,7 +84,7 @@ hash, configuration, kind and step for downstream checks.
 
 | Input | Exact new-run requirement |
 |---|---|
-| Tokenizer | Canonical `tokenizer/releases/tokenizer_v1/tokenizer.json`, SHA256 `d8f84df58928023edebd809e152b3b38a0dac53b9f887bd2455f427661e9b9ce`; 32k vocabulary, IDs 0–6 PAD/UNK/BOS/EOS/system/user/assistant |
+| Tokenizer | Canonical `tokenizer/releases/tokenizer_v1/tokenizer.json`; 32k vocabulary, IDs 0–6 PAD/UNK/BOS/EOS/system/user/assistant |
 | Packed A/B/validation | Pass split directories: `$DATA/A/train`, `$DATA/B/train`, `$DATA/reference/val`. Each contains `*.bin` shards and has `meta.json` in its parent directory. Little-endian uint16, exact sorted shard inventory/hashes/counts and tokenizer identity; see prepared-input schema |
 | P2 | Original-sized default: 12,000 train and 500 validation message objects. Unique IDs, disjoint IDs/exact messages across splits, ≤ 2,048 encoded tokens and exact shifted assistant/EOS target counts |
 | P3 | 7,168 supplied procedural records (1,792 each COPY/FIELD/MEMBERSHIP/JSON) and 3,072 replay records; disjoint IDs/exact messages, ≤ 512 tokens. You supply task content; no private template bank or held-out labels needed |
