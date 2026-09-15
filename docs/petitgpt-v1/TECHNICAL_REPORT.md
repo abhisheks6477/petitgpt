@@ -178,7 +178,7 @@ The data are 12,000 training and 500 validation conversations with original mess
 
 **Supervision policy.** The pinned training encoder supervises **every assistant turn's content and trailing EOS**, masking BOS, role tokens, and system/user content (`C-P2-06`). Execution-time preflight records 997,427 supervised tokens out of 2,403,722 encoded tokens across 12,000 conversations, with zero truncations (`C-P2-07`). Later branches' supervision policies are recorded separately in the experiment ledger.
 
-P2's terminal readouts are candid: validation token NLL **1.3221**, dev100 strict **0/100**, and `quality_acceptance_demonstrated: false` (`C-P2-04`). Loss improved; usability did not.
+P2's final measurements were validation token NLL **1.3221**, dev100 strict **0/100**, and `quality_acceptance_demonstrated: false` (`C-P2-04`). Loss improved; usability did not.
 
 ### 5.2 P3 — basic-instruction adaptation
 
@@ -308,7 +308,7 @@ The matched A/B isolates the loss-allocation change. Both arms restored the *ide
 
 Interpolating between those arms was measured at five fixed coefficients. Development totals run 418, 420, 426, 430, 429 at `lambda_B` 0, 1/4, 1/2, 3/4, 1, and membership runs 67, 69, 75, 76, 77. From arm A to the 3/4 point the +12 total decomposes as COPY +1, FIELD +3, JSON −1, MEMBERSHIP +9 — membership dominates but is not the only family that moves. Neither frozen screen passed at either new point (`C-RES-06`). Each quarter point also reproduced its nearer parent's exact output text on the large majority of items, which is a decoding observation about this segment, not evidence of an internal parent-selection mechanism.
 
-Two interpretation limits are load-bearing. Five observed coefficients cannot show that a criterion is unreachable across a continuous segment; the supported statement is that **none of the five evaluated points met the envelope or the historical screen** (`C-RES-07`). And the selected model's recorded practical bounds `[22/81, 23/81] = [44/162, 46/162]` **overlap** arm A's `5/18 = 45/162`, so it is not established to beat arm A on that axis; its QA interval `[4, 7]/41` likewise overlaps every grid score of 6 or 7 (`C-RES-08`).
+Two limits constrain this comparison. Five observed coefficients cannot show that a criterion is unreachable across a continuous segment; the supported statement is that **none of the five evaluated points met the envelope or the historical screen** (`C-RES-07`). And the selected model's recorded practical bounds `[22/81, 23/81] = [44/162, 46/162]` **overlap** arm A's `5/18 = 45/162`, so it is not established to beat arm A on that axis; its QA interval `[4, 7]/41` likewise overlaps every grid score of 6 or 7 (`C-RES-08`).
 
 ### 7.6 A measurement caveat that survives every comparison
 
@@ -382,7 +382,7 @@ Development sets — the 100-prompt suite, the 512-item battery, the older and n
 
 Score revisions such as the four clarifications are re-interpretations of unchanged historical outputs. They are not parameter improvements and do not retroactively change any earlier training gate.
 
-One runtime caveat is load-bearing: the same P2 checkpoint, prompts and greedy settings produced **30 differing answers out of 96** between two torch versions, with exactly one label moving (`C-RES-12`). Identical scores would not have meant identical answers.
+Runtime also affected the outputs: the same P2 checkpoint, prompts and greedy settings produced **30 differing answers out of 96** between two torch versions, with exactly one label moving (`C-RES-12`). Identical scores would not have meant identical answers.
 
 ### 8.4 IFEval instruction following
 
@@ -402,7 +402,7 @@ Cap-hit responses were scored as generated. Their frequencies differ substantial
 
 ### 8.5 Qualitative cases: successes and failures
 
-These **seven hand-picked alpha075 answers** illustrate what the historical review measured. They use `assistant_review_fable_v1` labels, with no rescoring; they are not a random sample or an estimate of success rates. Complete prompts, stored answers and original review reasons are in the [case-study companion](examples/README.md), with [machine-readable records](examples/ASSISTANT_CASE_STUDIES.json) (`C-ASSIST-10`).
+These **seven hand-picked alpha075 answers** illustrate what the historical review measured. Original labels use `assistant_review_fable_v1`, with no rescoring. **One case, `R1DEV-FOLLOWUP-007`, was amended from content/joint false to true in `assistant_owner_clarification_4_v1`; the other six were unchanged** (`C-ASSIST-05`). The cases are not a random sample or an estimate of success rates. Complete prompts, stored answers and original review reasons are in the [case-study companion](examples/README.md), with [machine-readable records](examples/ASSISTANT_CASE_STUDIES.json) (`C-ASSIST-10`).
 
 **Summary and context-update tasks show both complete successes and failures.** Requests below are summarized; the model responses are quoted in full.
 
@@ -411,9 +411,9 @@ These **seven hand-picked alpha075 answers** illustrate what the historical revi
 | `PRACTICAL_077_M2` | Reduce Emily's email proposing a phonics workshop and hands-on activities to one short sentence. | “Emily proposes a workshop on phonics instruction and suggests hands-on activities and resources.” | **Content and format pass:** retains the proposal and topic in one sentence. |
 | `R1DEV-REWRITE-008` | Summarize Victor's request that Uma finish weekday drilling by noon, after work continued until 1:30 pm on Tuesday and Wednesday. | “By 1:30 pm on weekdays, the drilling was completed.” | **Format pass, content fail:** one sentence, but the request and noon deadline are lost. |
 | `R1DEV-FOLLOWUP-001` | Update the balance after the fee changes to USD 240 and the deposit remains USD 60. | “The balance on the first evening is $180.” | **Content pass:** correctly uses the amended fee. |
-| `R1DEV-FOLLOWUP-007` | Give the new closure interval when lunch now starts at 1:30 pm and still lasts an hour. | “On weekdays, the receptionist says the lunch break now starts at 1:30 pm and still lasts an hour.” | **Content fail under the task criterion:** repeats the facts but does not state the requested 1:30–2:30 pm interval. |
+| `R1DEV-FOLLOWUP-007` | Give the new closure interval when lunch now starts at 1:30 pm and still lasts an hour. | “On weekdays, the receptionist says the lunch break now starts at 1:30 pm and still lasts an hour.” | **Judgment changed:** original review fails content/joint for omitting the explicit 1:30–2:30 pm interval; owner clarification passes the same answer. |
 
-The last failure concerns completing the requested calculation: a reader can infer the interval from the answer, but the frozen criterion requires the model to state it. Both follow-up cases use an earlier assistant answer supplied as fixed context; they do not demonstrate free-running multi-turn dialogue.
+The last case illustrates a scoring boundary: the answer gives the new start and duration, from which the end time can be inferred. The original review required the explicit interval; the owner-clarification version accepts the unchanged answer. It is not a failure under the version used in §8.2. Both follow-up cases use an earlier assistant answer supplied as fixed context; they do not demonstrate free-running multi-turn dialogue.
 
 **Python shows useful partial implementation without a complete pass.** The following are exact code excerpts; accompanying prose is retained in the companion.
 
