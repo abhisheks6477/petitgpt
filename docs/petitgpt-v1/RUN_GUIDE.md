@@ -1,6 +1,20 @@
-# petitgpt native run guide
+# PetitGPT native run guide
 
-Author: Yang Qi. Documentation: CC BY 4.0. Download the loose model repository files together, preserving the src/ directory. The exact release file list and hashes are in SHA256SUMS. Model weights, tokenizer, config and executable code retain the accepted export bytes.
+Run the released **alpha075** checkpoint with the native PyTorch CLI or Python API. A CUDA GPU is required. For training your own model, see [Reproducibility](../../TRAINING_AND_REPRODUCIBILITY.md).
+
+## 1. Download the model
+
+With the Hugging Face CLI installed, download the complete bundle at the same fixed revision used by the project README:
+
+```sh
+hf download yqi0/petitgpt \
+    --revision 7bf3df96e6880b242b2907d1e68093435feacd75 \
+    --local-dir ./artifacts/petitgpt-research-v1
+
+(cd ./artifacts/petitgpt-research-v1 && sha256sum -c SHA256SUMS)
+```
+
+In the examples below, replace `/path/to/bundle` with the downloaded directory. Keep all files together, including `src/`: `inference.py` imports from it. The bundle's `SHA256SUMS` verifies its downloaded files; the [documentation manifest](SHA256SUMS) in this GitHub directory covers a different file set.
 
 ## 2. Requirements
 
@@ -13,18 +27,18 @@ tokenizers==0.22.2
 safetensors==0.8.0
 ```
 
-on an NVIDIA GeForce RTX 4090 (driver 580.178.04). Prepare the environment separately, from locally supplied wheels:
+on an NVIDIA GeForce RTX 4090 (driver 580.178.04). The bundle includes `requirements-inference-tested.txt` ([source copy](../../inference_native/requirements-inference-tested.txt)). Prepare this environment before inference. If you have a local wheelhouse containing the matching packages and their dependencies, an offline installation is:
 
 ```sh
 python -m pip install --no-index --find-links /path/to/local/wheelhouse \
     -r /path/to/bundle/requirements-inference-tested.txt
 ```
 
-No packages were installed during the export itself. Matching versions do not guarantee bit-identical results on arbitrary hardware or untested software.
+The wheelhouse path is a placeholder; the model download does not supply these packages. Matching versions do not guarantee bit-identical results on arbitrary hardware or untested software.
 
 ## 3. Command line
 
-Replace `/path/to/bundle` with the real extracted location.
+Choose either `--prompt` for one user message or `--messages-json` for a conversation:
 
 ```sh
 python /path/to/bundle/inference.py \
@@ -40,7 +54,7 @@ python /path/to/bundle/inference.py \
     --max-new-tokens 32
 ```
 
-A synthetic `messages.json`:
+For the second command, save this example as `/path/to/messages.json`:
 
 ```json
 [{"role":"system","content":"Use short sentences."},
@@ -49,16 +63,21 @@ A synthetic `messages.json`:
  {"role":"user","content":"What name did I give you?"}]
 ```
 
-> **Illustrative and unexecuted.** The greeting above is an authored example showing command syntax only. It was written for this guide, was not run, and is not a demonstration of model quality. Do not put frozen evaluation prompts or their outputs into a public demo.
+These prompts illustrate the input format. Recorded model outputs and their review labels are available in the report's [success and failure cases](TECHNICAL_REPORT.md#85-qualitative-cases-successes-and-failures).
 
 ## 4. Python API
 
-With the extracted bundle directory on `sys.path`:
+Add the downloaded bundle to Python's import path, then load the model and move it to CUDA:
 
 ```python
+import sys
+from pathlib import Path
+
+bundle = Path("/path/to/bundle").resolve()
+sys.path.insert(0, str(bundle))
 from inference import load_bundle, generate
 
-model, tokenizer = load_bundle("/path/to/bundle")
+model, tokenizer = load_bundle(bundle)
 model = model.to("cuda").eval()
 result = generate(
     model, tokenizer,
@@ -71,7 +90,7 @@ print(result["output_text_raw_including_terminal_eos"])
 
 ## 5. Input contract
 
-`messages` must be a JSON array of objects with **exactly** the fields `role` and `content`. A conversation is an optional initial system turn followed by alternating user/assistant turns, **ending in user**. A plain `--prompt` becomes one user message.
+`messages` must be a non-empty JSON array of objects with **exactly** the fields `role` and `content`. Each content value must be a string containing non-whitespace text. A conversation is an optional initial system turn followed by alternating user/assistant turns, **ending in user**. A plain `--prompt` becomes one user message.
 
 Rejected, by design, with an explicit error rather than a repair:
 
@@ -84,7 +103,7 @@ Rejected, by design, with an explicit error rather than a repair:
 | Prompt + budget over 2,048 | `Context overflow: prompt plus token budget exceeds 2048` |
 | `max_new_tokens` outside 1..384 | `max_new_tokens must be 1..384` |
 
-`default_system=None`: a supplied system turn and full history are retained, with **no injected default and no text normalization**. Literal special-token spellings inside content — for example the literal spelling `[EOS]` — are encoded as ordinary text and cannot inject control IDs.
+`default_system=None`: a supplied system turn and full history are retained, with **no injected default and no content-text normalization**. Role labels are stripped and lowercased before validation. Literal special-token spellings inside content — for example the literal spelling `[EOS]` — are encoded as ordinary text and cannot inject control IDs.
 
 Native token structure:
 
@@ -110,16 +129,37 @@ Both profiles store FP32 parameters. They differ only in the forward numerical p
 
 Greedy only: `temperature=0`, `top_k=0`, `top_p=1`, `EOS=3`. Default `max_new_tokens` is **384**; an explicit lower integer in `1..384` is supported. Prompt length plus budget must fit 2,048 — there is no cropping.
 
-Output JSON preserves the generated token IDs, the raw text **including the terminal EOS**, and a stop reason of `eos` or `max_new_tokens`. There is no answer cleanup, no fact fixing, no best-of-N, and no retry. A token cap can truncate an answer mid-sentence; that is the recorded behaviour, not a defect.
+The CLI prints a JSON object; the Python API returns the same fields as a dictionary. Key fields are:
+
+| Field | Meaning |
+|---|---|
+| `prompt_token_ids` | Full encoded conversation, including control tokens |
+| `generated_token_ids` | Newly generated tokens, including a terminal EOS when produced |
+| `output_text_raw_including_terminal_eos` | Decoded generated tokens with special tokens visible |
+| `output_text_for_scoring` | Decoded output with only the terminal EOS removed |
+| `stop_reason` | `eos` or `max_new_tokens` |
+| `generated_tokens_including_eos` | Number of newly generated tokens |
+
+Generation applies no answer cleanup or retries. Reaching the token cap can leave an answer unfinished. The IFEval results use a separate evaluation program with a 1,280-token generation cap; that is not a supported value for this CLI.
 
 ## 8. Format support and limits
 
 Native PyTorch CUDA inference only. There is **no implemented or tested** Transformers `AutoModel`, GGUF, ONNX, vLLM or llama.cpp path. `special_tokens_map.json` is descriptive native metadata, not a loader contract.
 
-Local import closure was demonstrated once, in a fresh process with a temporary working directory and an empty `PYTHONPATH`, under an audit hook that denied network access and out-of-bundle repository access; no denied access occurred. That establishes closure **on the measured environment only**. It is not a clean-machine test, not a CPU test, not a cross-hardware test, and not a fresh dependency-installation test.
+The recorded import check ran in a fresh process with network and out-of-bundle repository access denied, and completed without denied access. Eight source/export fixture pairs matched within their numerical profiles. These checks establish behavior in the measured environment; they do not establish portability to other hardware or a fresh installation. See [export validation](TECHNICAL_REPORT.md#9-reproducibility-and-export) for scope and evidence.
 
-The recorded export parity is likewise **profile-specific**: within each of the two profiles the export reproduced its source exactly, and no claim is made that the two profiles agree with each other, nor that any Transformers, GGUF, ONNX, vLLM or llama.cpp path exists.
+## 9. Troubleshooting
 
-## 9. Before you use output
+| Symptom | What to check |
+|---|---|
+| Missing `src` or model file | Download the complete bundle and preserve its directory layout. For the API, add that directory to `sys.path` as shown above. |
+| CUDA unavailable | Use a CUDA-enabled PyTorch installation and a visible compatible NVIDIA GPU; the released generator requires CUDA. |
+| Context overflow | Shorten the supplied conversation or lower the generation budget. Both together must fit 2,048 tokens. |
+| Invalid message fields, content, or role order | Follow the input contract in §5; history must end with a non-empty user turn. |
+| Answer stops mid-sentence | Inspect `stop_reason`. If it is `max_new_tokens`, increase the cap only within the CLI and context limits. |
 
-This is a research artifact, not a safety- or correctness-certified assistant. In the recorded Python diagnostics the model produced a valid function interface far more often than a correct whole answer. **Do not execute generated code without independent review.** Backend details and the bounded parity evidence live in a separate private evidence archive and are not part of this bundle.
+## 10. Interpreting output
+
+Factual answers and generated code require independent review. Correct formatting or a plausible function signature does not establish a correct answer; see the [model card](MODEL_CARD.md) for measured capabilities and limitations.
+
+Author: Yang Qi. Documentation: [CC BY 4.0](DOCUMENTATION_LICENSE.md).

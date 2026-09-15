@@ -1,23 +1,27 @@
-# petitgpt
+# PetitGPT model card
 
-Author: Yang Qi. Selected checkpoint: alpha075.
+**Author:** Yang Qi · **Checkpoint:** alpha075 · **Release:** research-v1
+
+PetitGPT is a 124.6M-parameter language model pretrained from scratch on one RTX 4090, then adapted for instruction following. The released weights interpolate two post-training checkpoints. Multiple-choice results are competitive on some tasks, while reliable factual answers, rewriting, and complete code generation remain limited.
+
+[Download the model](https://huggingface.co/yqi0/petitgpt) · [Run guide](RUN_GUIDE.md) · [Technical report](TECHNICAL_REPORT.md) · [Reproducibility](../../TRAINING_AND_REPRODUCIBILITY.md)
 
 ## Identity
 
 | Field | Value |
 |---|---|
-| Status | accepted native research inference artifact |
+| Status | released research-v1 checkpoint; native PyTorch CUDA inference |
 | Unique parameters | 124,635,456 (124.6M) |
-| Layers / width / FFN | 30 / 576 / 1536 |
+| Layers / width / FFN | 30 / 576 / 1,536 |
 | Attention | 9 query heads, 3 key/value heads (GQA), head dim 64 |
 | Vocabulary / context | 32,000 / 2,048 |
 | Embeddings | tied input/output |
 | Normalization | RMSNorm, epsilon 1e-6 |
-| Positions | RoPE, theta 10000, full head rotation |
+| Positions | RoPE, theta 10,000, full head rotation |
 | Dropout | 0.0 |
 | Stored weights | FP32 |
 
-Complete checkpoint-derived settings ship in the bundle's `config.json`. The three core modules (model, chat template, token contract) are byte-identical to the project originals. Checkpoint and archive hashes are in MODEL_PROVENANCE.json.
+Complete checkpoint-derived settings ship in the bundle's `config.json` ([source copy](../../inference_native/config.json)). Checkpoint, tokenizer, and archive hashes are in [MODEL_PROVENANCE.json](MODEL_PROVENANCE.json).
 
 ## Provenance
 
@@ -25,48 +29,69 @@ The selected weights are a **parameter interpolation**, not a training step:
 
 > `theta = theta_P2_step750 + 0.75 · (theta_P3_step320 − theta_P2_step750)`
 
-Ancestry: tokenizer release → Stage A pretraining (steps 0–38,146) → Stage B continued pretraining (steps 38,146–49,590, exact full-state resume, accepted as Base) → P2 concise-instruction SFT (750 updates, weights-only initialization from Base) → P3 basic-instruction adaptation (parent B is **step 320**, not the step-640 endpoint) → this interpolation, executed with **zero optimizer updates and zero backward passes** → a numerically unchanged FP32 export.
+The training path is Stage A pretraining (updates 1–38,146), Stage B continuation (38,147–49,590, with full optimizer state resumed), P2 concise-instruction SFT (750 updates, initialized from Base weights), then P3 basic-instruction adaptation with replay. The blend uses **P3 step 320**; step 640 is a later comparison point. Interpolation and export add no optimizer updates.
 
-This checkpoint **does not contain** later DeepSeek-response-KD, unified Base-SFT, DPO, soft-KD or LoRA branch updates. Several later branches were initialized *from* it (a one-pass behaviour mix, a DPO pilot, a chosen-answer CE control, and two response-distillation runs); others were not — a unified SFT curve started from the accepted pretrained Base, a loss-allocation A/B split from that curve's step 403, and a shared-tokenizer soft-KD lab ran entirely on external models. A preference-data build used this model's generations but produced no checkpoint. Branch exposures must not be summed into this model's training history.
+Later DPO, response-distillation, LoRA, and unified Base-SFT experiments are **not ancestors of these weights**. Some brought local gains alongside losses in other capabilities; none was selected to replace alpha075. The separate soft-logit distillation lab used external models. See the [branch map](TECHNICAL_REPORT.md#6-selected-ancestry-versus-research-branches) and [experiment ledger](tables/RESEARCH_EXPERIMENT_LEDGER.csv) for initialization and outcomes.
 
 ## Training data
 
-Pretraining consumed 13,000,005,634 retained packed tokens over 13,755,731 documents, of which the optimizer stepped over 12,999,720,960 model-input positions, one exposure per block, with no replay of the executed token-position traversal.
+The pretraining selection contained 13,755,731 documents. Packing retained 13,000,005,634 tokens; optimizer updates actually traversed 12,999,720,960 model-input positions, with one exposure per executed block. The [token accounting](TECHNICAL_REPORT.md#42-four-token-quantities-reconciled) explains the differences between selected, packed, and processed quantities.
 
 **Stage A (10,000,003,234 selected serialized tokens, 4 sources):** FineWeb-Edu dedup 71.11%, DCLM-Edu 20.32%, Wikipedia (FineWiki EN) 5.08%, Python-Edu 3.50%.
 
 **Stage B (3,000,004,240 selected serialized tokens, 7 sources):** FineWeb-Edu dedup 40.10%, DCLM-Edu 22.92%, structured tutorial content 11.46%, Python-Edu 8.33%, Wikipedia 5.73%, PES2O 5.73%, StackExchange 5.73%.
 
-Upstream datasets, pinned revisions and the licence string recorded at each pinned revision are in `tables/PRETRAIN_SOURCE_MIXTURE.csv`. Those recorded strings are evidence of what the builder captured at that revision; they are not a legal determination, are not asserted to be today's terms, and do not by themselves determine the licence of trained weights.
+Dataset revisions and recorded source notices are in the [mixture table](tables/PRETRAIN_SOURCE_MIXTURE.csv) and [source notice](SOURCE_NOTICE.md). Source shares describe selected serialized tokens, not separately measured per-source optimizer consumption.
 
-Post-training used seven instruction subsets. These are values of a row-level `source` column inside one pinned collection, `HuggingFaceTB/smol-smoltalk` at revision `f73fe857d519ff6ac5af2ea67c4d3834da7b8bcc`, config `default`, train split, established by digest joins through the project's own census and cleanup records. The publisher's card at that pinned revision carries a flat Apache-2.0 badge; its parent collection limits that grant to four newly generated subsets and refers readers to the original dataset for each incorporated public dataset. Four of the seven labels correspond to the newly generated subsets. Of the three incorporated components, one declares `apache-2.0`, one declares `odc-by`, and one declares no licence in its card metadata. Component notices were read from current publisher pages, not from revisions contemporaneous with this training run, and **no component revision is established**. No licence determination is made here.
+P2 used 12,000 selected conversations from seven row-level `source` subsets of `HuggingFaceTB/smol-smoltalk` at revision `f73fe857d519ff6ac5af2ea67c4d3834da7b8bcc`, config `default`, train split. Loss supervised every assistant turn's content and trailing EOS. P3 combined procedural instruction tasks with replay examples from the earlier instruction data. See [post-training](TECHNICAL_REPORT.md#5-post-training-and-the-selected-weights) for the training settings and selection trade-off. Component revisions and licence questions that remain unresolved are documented in the source notice.
 
 ## Intended use, and use it is not intended for
 
-**Intended:** research and engineering study of a small from-scratch language model — reproducing the recorded measurements, inspecting the pipeline, and analysing failure modes.
+**Intended:** research and experimentation with small language models, including reproducing measurements, inspecting the pipeline, and analysing failure modes.
 
-**Not intended:** a general assistant, a production system, anything safety- or correctness-certified, or a source of factual answers. Do not execute code it generates without independent review.
-
-**Not evaluated at all:** long-context work, multilingual behaviour, tool use, extended multi-turn dialogue, safety and refusal behaviour, factual currency, retrieval, and any public generative benchmark.
+Treat generated factual claims and code as unverified. The model has not been validated for production or high-stakes use, tool use, multilingual capability, long-context work, extended dialogue, or safety and refusal behavior. IFEval and the historical assistant review measure specific generation tasks; they do not establish broad assistant reliability.
 
 ## Evaluation — public multiple-choice likelihood
 
-Frozen FP32 results, copied byte-identically from the accepted measurement and **not recomputed**:
+The project measured all three models under the same task protocols. Alpha075 leads SmolLM-135M-Instruct and SmolLM2-135M-Instruct on ARC-Easy and ARC-Challenge, and trails both on PIQA and HellaSwag. Its results are:
 
 | Dataset | Split / documents | acc | acc_norm |
-|---|---|---|---|
-| ARC-Easy | test / 2,376 | 1372/2376 = 0.5774410774410774 | 1244/2376 = 0.5235690235690236 |
-| PIQA | validation / 1,838 | 1167/1838 = 0.6349292709466812 | 1145/1838 = 0.6229597388465724 |
+|---|---|---:|---:|
+| ARC-Easy | test / 2,376 | 57.74% | 52.36% |
+| ARC-Challenge | test / 1,172 | 28.16% | 32.68% |
+| PIQA | validation / 1,838 | 63.49% | 62.30% |
+| HellaSwag | validation / 10,042 | 31.28% | 35.60% |
 
-Protocol: zero-shot raw `Question: …\nAnswer:` completion scored by candidate-answer likelihood. No chat template, no role tokens, no few-shot examples, no BOS insertion, no scored EOS, no generation, no cleanup. FP32 parameters and forward with autocast disabled, TF32 off for matmul and cuDNN, MATH SDPA, batch size 1 unpadded, no KV cache, no compile. `acc` is the first argmax of summed continuation log-likelihood; `acc_norm` divides by `len()` of the **original** answer text in Unicode characters, not tokenizer length; ties take the first index.
+ARC-Easy and PIQA come from **FP32 V2**; ARC-Challenge and HellaSwag come from **benchmark extension V1**. Full-precision values, correct counts, revisions, and comparator results are in [PUBLIC_BENCHMARK_RESULTS.csv](tables/PUBLIC_BENCHMARK_RESULTS.csv) and the [report](TECHNICAL_REPORT.md#81-public-multiple-choice-likelihood-frozen-fp32).
 
-Comparators measured under the identical protocol on the same rows: SmolLM-135M-Instruct 0.4924 / 0.6708 and SmolLM2-135M-Instruct 0.5400 / 0.6670 (acc, ARC-Easy / PIQA).
+Each model uses its own tokenizer with no chat template, inserted BOS/EOS, or text generation. `acc` ranks candidates by summed continuation log-likelihood; `acc_norm` divides that sum by the candidate's Unicode character count, excluding the leading delimiter. This is the original answer text for ARC/PIQA and the pinned task-preprocessed ending for HellaSwag. It is character normalization, not token normalization, and may differ from externally reported `acc_norm` scores.
 
-**Qualifications.** The evaluator is a native protocol-compatible implementation pinned to a specific lm-evaluation-harness commit; the harness package was not installed and a full installed-harness run is not claimed. Both datasets are prior project diagnostics with no contamination audit — they are **not untouched final tests**. Training data, compute, tokenizers and architectures are unmatched across the three models. This is a protocol-bounded descriptive comparison; no significance test was run. Multiple-choice accuracy does not establish free-generation reliability.
+<details>
+<summary>Likelihood protocol and interpretation</summary>
+
+ARC and PIQA use raw `Question: …\nAnswer:` prompts; HellaSwag uses the pinned task's preprocessed context. Ties take the first candidate. Both campaigns use FP32 parameters, forward computation, log-softmax and sums, with autocast and TF32 disabled, MATH scaled dot-product attention, batch size 1, no padding, no KV cache, and no compilation. The evaluator follows pinned lm-evaluation-harness conventions; it is not a full installed-harness run. See [EVALUATION_PROTOCOLS.json](provenance/EVALUATION_PROTOCOLS.json).
+
+ARC-Easy and PIQA were reused during development. No contamination audit was performed for these benchmarks. Training data, compute, tokenizers, and architectures differ across the models, and no significance test was run. The scores describe these measurements and do not establish reliable free-form generation.
+
+</details>
+
+## Evaluation — IFEval instruction following
+
+**IFEval completion V2** evaluated 541 prompts containing 834 instructions across 25 instruction types. The dataset has a single split named `train`; that name does not mean the prompts were used to train PetitGPT.
+
+| Model | Prompt strict | Instruction strict | Prompt loose | Instruction loose | 1,280-token cap hits |
+|---|---:|---:|---:|---:|---:|
+| PetitGPT-alpha075 | 17.19% | 28.54% | 17.74% | 29.98% | 40/541 |
+| SmolLM-135M-Instruct | 10.35% | 21.82% | 12.01% | 24.10% | 290/541 |
+| SmolLM2-135M-Instruct | 21.63% | 35.85% | 22.55% | 37.29% | 233/541 |
+
+Each model received the same user prompts through its native chat formatter. SmolLM2's template inserts default system text; PetitGPT's does not. Generation was zero-shot and greedy with a 1,280-new-token cap, using a separate evaluator rather than the released CLI (whose cap is 384). Strict/loose scores use programmatic verifiers with no LLM judge. No input prompts were dropped or truncated; cap-hit responses were scored as generated.
+
+Prompt accuracy requires all instructions in a prompt to pass; instruction accuracy counts each instruction separately. Full-precision results and integer counts are in [IFEVAL_RESULTS.csv](tables/IFEVAL_RESULTS.csv); see the [report](TECHNICAL_REPORT.md#84-ifeval-instruction-following) for numerical settings and interpretation.
 
 ## Evaluation — historical full-answer assistant review
 
-A separate evaluation family scored generated text across 189 prompts per model (567 answers, 565 distinct prompt/output/contract units) over three models. **Two named versions exist and must not be combined in one table:** `assistant_review_fable_v1` (the original 567 final records) and `assistant_owner_clarification_4_v1` (four explicit final-content decisions, every other axis preserved). The version shown below is `assistant_owner_clarification_4_v1`.
+A separate evaluation family reviewed generated text across 189 prompts per model over three models. **Two named versions exist and must not be combined in one table:** `assistant_review_fable_v1` (the original 567 final records) and `assistant_owner_clarification_4_v1` (four explicit final-content decisions, every other axis preserved). The version shown below is `assistant_owner_clarification_4_v1`.
 
 | Slice | Content / joint (true / false / unknown) | Other axes |
 |---|---|---|
@@ -78,11 +103,13 @@ A separate evaluation family scored generated text across 189 prompts per model 
 
 Practical joint bounds: **26/81 .. 10/27** (= 52/162 .. 60/162). This denominator is **27 equally weighted dialogue groups over 38 scored turns** — rows are averaged inside a group first — not an ordinary row average. These are exact unknown-retention bounds, **not confidence intervals**.
 
-**Qualifications.** Judgments are model-assisted, not human adjudication. The chronology was: an initial pass over the 565 units with model metadata masked and its own recorded limitations; then a pass with the mapping visible that produced 17 consistency edits; then four owner clarifications forming a separate version. It was therefore neither strictly blinded throughout nor fully label-visible throughout. Development sets were reused across many runs. `not_recorded` means the field is unavailable in this imported view — it does not establish that no historical function test was ever run. Unsupported-builtin results stay unknown and are never converted into demonstrated failures.
+**Qualifications.** The recorded reviewing model was Claude Fable 5.1 through Claude Code at high effort; these are model-assisted judgments, not independent human gold labels. An initial pass masked model metadata; a later pass with the mapping visible produced 17 consistency edits, followed by four owner clarifications. Review was therefore only partly blinded, and the development sets were reused across many runs.
 
-In these specific Python diagnostics the model produced a correct function **interface** in 42 of 46 prompts and a correct **whole answer** in 0 of 46. This does not establish that it can never write correct code.
+`not_recorded` means the field is unavailable in this imported view, not proof that a test never ran. Results involving builtins unavailable in the restricted execution environment remain unknown rather than being counted as model failures.
 
-Ordinary QA and complete natural-task generation remained limited across the evaluated configurations. Individual results differ by suite and label version and are reported with their source rather than reduced to a cross-version maximum; see the technical report §10.1.
+In these specific Python diagnostics the model produced a correct function **interface** in 42 of 46 prompts and a correct **whole answer** in 0 of 46. The 0/46 figure is a full-answer review result, not training-set accuracy or a uniform unit-test pass rate. [Success and failure cases](TECHNICAL_REPORT.md#85-qualitative-cases-successes-and-failures) show Python outputs, summaries, rewrites, and dialogue responses with complete stored answers and score-version notes.
+
+Ordinary QA and complete natural-task generation remained limited across the evaluated configurations. Individual results differ by suite and label version and are reported with their source rather than reduced to a cross-version maximum; see the [versioned results](tables/ASSISTANT_RESULTS_VERSIONED.csv) and [review method](TECHNICAL_REPORT.md#83-review-method-and-development-set-reuse).
 
 ## Export parity
 
@@ -96,13 +123,9 @@ Native PyTorch CUDA inference only. **No** Transformers `AutoModel`, GGUF, ONNX,
 
 ## Licence and distribution
 
-Copyright 2026 Yang Qi. Owner-controlled code and the selected model/tokenizer are licensed under the standard Apache License 2.0 in LICENSE, only for rights Yang Qi is entitled to grant.
+Author-controlled code, the model weights, and the tokenizer are released under [Apache-2.0](LICENSE). Author-written documentation is licensed separately under [CC BY 4.0](DOCUMENTATION_LICENSE.md). Third-party content retains its own terms and notices; see the [source notice](SOURCE_NOTICE.md) and [third-party notices](THIRD_PARTY_NOTICES.md).
 
-As an explicit exception to the root code licence, author-written reports and documentation (including README, native run guide and versioned report) are licensed under Creative Commons Attribution 4.0 International (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/ and https://creativecommons.org/licenses/by/4.0/legalcode.en . Attribute Yang Qi and petitgpt, link the licence, and indicate changes. Existing third-party content and notices retain their applicable terms; they are not relicensed.
-
-Research describes intended use; it adds no noncommercial or research-only restriction to Apache-licensed artifacts. This grant was approved by the owner through the explicit research-release execution instruction. Earlier PENDING_OWNER_DECISION records remain historical evidence; this does not claim an earlier licence choice.
-
-Source metadata is not rights clearance. Weights are not the raw corpus; neither automatic inheritance nor automatic non-application of all dataset terms is asserted. No infringement guarantee or legal certification is given. A disclaimer does not replace applicable permission.
+The research-use description adds no noncommercial or research-only restriction to the Apache-licensed artifacts. Cite the project using [CITATION.cff](../../CITATION.cff).
 
 ## Recorded runtime
 
@@ -110,6 +133,6 @@ Python 3.10.12, torch 2.11.0+cu126, numpy 2.2.6, tokenizers 0.22.2, safetensors 
 
 ## Files and report
 
-See [native run guide](RUN_GUIDE.md), [source notice](SOURCE_NOTICE.md), [third-party notices](THIRD_PARTY_NOTICES.md) and [file manifest](SHA256SUMS).
+See [native run guide](RUN_GUIDE.md), [source notice](SOURCE_NOTICE.md), [third-party notices](THIRD_PARTY_NOTICES.md) and [documentation manifest](SHA256SUMS). The downloaded HF bundle has its own `SHA256SUMS` covering the model and runtime files.
 
 [Complete report](TECHNICAL_REPORT.md). Model destination: https://huggingface.co/yqi0/petitgpt .
