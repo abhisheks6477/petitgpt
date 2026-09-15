@@ -1,6 +1,6 @@
 # Train and evaluate PetitGPT from prepared inputs
 
-This manual describes how to **reproduce the research-v1 method from the beginning**
+If you are interested in the realization details, this manual describes how to **reproduce the research-v1 method from the beginning**
 with your own prepared local data. The `reader.py` command-line tool connects the
 recovered research-v1 trainers and fixed native model through this workflow:
 
