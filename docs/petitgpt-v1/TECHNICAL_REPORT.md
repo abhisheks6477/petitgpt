@@ -513,7 +513,7 @@ Nothing here supports: that all negative methods are generally ineffective; that
 
 ---
 
-## 13. Conclusion and future work
+## 12. Conclusion and future work
 
 PetitGPT demonstrates a complete small-model pipeline on one consumer GPU: a validated tokenizer, explicit data accounting, full-state pretraining handover, instruction adaptation, and an export with exact tensor parity. Under the recorded likelihood protocols, its 124.6M-parameter model leads both evaluated 135M instruct baselines on ARC-Easy and ARC-Challenge and trails both on PIQA and HellaSwag. On IFEval, alpha075 lies between SmolLM and SmolLM2.
 
