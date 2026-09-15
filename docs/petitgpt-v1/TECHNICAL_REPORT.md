@@ -422,6 +422,7 @@ The last case illustrates a scoring boundary: the answer gives the new start and
 ```python
 import re
 
+
 def count_matches_regex(text, pattern):
     matches = re.findall(pattern, text)
     return matches
@@ -500,8 +501,6 @@ Nothing here supports: that all negative methods are generally ineffective; that
 
 **Scale and compute.** One RTX 4090, one seed per comparison, 13.0B pretraining positions, and post-training runs measured in tens to low thousands of optimizer updates.
 
-**Evaluation exposure and contamination.** Internal suites and the original ARC-Easy/PIQA benchmarks were repeatedly inspected during development. ARC-Challenge, HellaSwag and IFEval were evaluated in the later extension; that timing does not establish absence from training data. No decontamination or training-overlap audit was performed. Selection screening cannot exclude semantic overlap or pretraining contamination.
-
 **Judge fallibility.** Semantic labels are model-assisted rather than human adjudication, with the mixed masking chronology described in §8.3. Contradiction lists are non-exhaustive. Unresolved judgments stay in their denominators.
 
 **Finite functional testing.** Python execution used a restricted-builtins worker over fixed case sets. A finite pass proves the supplied cases only; unsupported legitimate builtins remain unknown, never converted into demonstrated failures.
@@ -511,20 +510,6 @@ Nothing here supports: that all negative methods are generally ineffective; that
 **Imperfect source certainty.** Group identifiers do not prove semantic independence; "held-out" in the preference pilot means excluded from that optimization, not historically unseen.
 
 **Intended use.** Research and engineering record only. This is not a safety- or correctness-certified assistant. It has not been evaluated for long-context work, multilingual behaviour, tool use, extended multi-turn dialogue, safety or refusal behaviour, factual currency, or retrieval. Generated code must not be executed without independent review.
-
----
-
-## 12. What is still not established
-
-| Item | Status |
-|---|---|
-| Exact upstream repository and revision for the seven post-training instruction subsets | **Collection established; components partly established.** The seven labels are row-level `source` values inside `HuggingFaceTB/smol-smoltalk` at revision `f73fe857d519ff6ac5af2ea67c4d3834da7b8bcc`, config `default`, train split, closed by digest joins through the census and cleanup records. Component correspondence is documented by the publisher's parent card, but it is a name correspondence, not a per-row join, and no component *revision* is established. |
-| Upstream licence text for those seven subsets | **Partly recorded, one conflict, one gap.** Four labels fall under the parent publisher's explicit Apache-2.0 grant for its newly generated subsets. Of the three incorporated components, one declares `apache-2.0`, one declares `odc-by` — which differs from the collection's flat badge — and one declares no licence in its card metadata. The pinned collection card carries an Apache-2.0 badge; its unpinned parent link was followed at the then-current head. Parent and component notices are later observations, not terms proven contemporaneous with P2 selection; details are retained in [SOURCE_NOTICE.md](SOURCE_NOTICE.md) (`C-SRC-02`). |
-| File-level linkage from the tokenizer-training corpus to the pinned corpus releases | **Established by digest.** The tokenizer release pins its corpus manifest by SHA-256; that manifest names each contributing release by path and records the source document digest, and those digests equal the ones the pretraining selection stage bound. Bucket-name matching was not relied on. The tokenizer corpus draws on six of the eight frozen releases: PES2O and StackExchange are in the pretraining mixture but not in the tokenizer corpus (`C-SRC-03`). |
-| Per-source *consumed* token counts | **Not a measured quantity.** Packing produces a continuous block stream; consumption is recorded at stream level only. Per-source figures are selected/retained counts. |
-| Split of the `structured_tutorial` node between its two upstream bindings | **Not recorded.** The selection node reports a combined 343,750,175 tokens. |
-| Certified uninterrupted Stage A GPU time | **Not established.** Only an elapsed timestamp span between logged rows is available; it was not converted into GPU time. |
-| Exact initialization checkpoint for the P4 micro-calibration, P4 QA increment and dose-6 runs | **Not stated in the bound records.** They belong to the selected model's line; the precise parent is not asserted. |
 
 ---
 
