@@ -64,7 +64,9 @@ All three models are evaluated on the same rows using zero-shot completion likel
 
 ARC-Easy: 2,376 test rows; ARC-Challenge: 1,172 test rows; PIQA: 1,838 validation rows; HellaSwag: 10,042 validation rows. All four tasks score raw completion likelihood zero-shot on the same rows for all three models, with no chat template, no BOS/EOS insertion, FP32 parameters and forward, batch size 1, no sampling, and first-argmax tie-breaking.
 
-`acc_norm` is the project-protocol variant: the continuation likelihood divided by the Unicode-character length of the original candidate text (for HellaSwag, the pinned task-preprocessed ending without its leading delimiter), **not** its token count, so it is not necessarily identical to an externally reported `acc_norm`. The evaluator is protocol-compatible with pinned harness code rather than a full installed-harness run. ARC-Easy and PIQA were earlier project diagnostics rather than untouched final tests, and no contamination audit was performed.
+`acc_norm` is the project-protocol variant: the continuation likelihood divided by the Unicode-character length of the original candidate text (for HellaSwag, the pinned task-preprocessed ending without its leading delimiter), **not** its token count, so it is not necessarily identical to an externally reported `acc_norm`. The evaluator is protocol-compatible with pinned harness code rather than a full installed-harness run.
+
+<!-- ARC-Easy and PIQA were earlier project diagnostics rather than untouched final tests, and no contamination audit was performed. -->
 
 </details>
 
