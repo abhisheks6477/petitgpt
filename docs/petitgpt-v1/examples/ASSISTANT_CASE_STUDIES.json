@@ -1,0 +1,409 @@
+{
+  "purpose": "Selected qualitative cases accompanying Technical Report section 8.5; hand-picked illustrations, not a random sample or a new evaluation.",
+  "score_version": "assistant_review_fable_v1",
+  "selection_policy": "Two complete non-Python successes, one summary failure, one context-update case whose judgment changed between review versions, two Python partial implementations and one Python interface failure. These hand-picked cases explain score dimensions and do not estimate rates.",
+  "source_scope": "Original stored prompts and complete outputs for these seven cases only. Earlier assistant turns are fixed evaluation context. All labels and reviewer reasons are copied without rescoring.",
+  "sources": [
+    {
+      "artifact": "Final assistant three-model review evidence",
+      "member": "final_assistant_three_model_review_v1/judgments/FINAL_MODEL_ANSWERS_567.jsonl",
+      "sha256": "32c1c21343d1662626b833d33fa0b2911e75830c1e6f9cd464478563a4a394fc"
+    },
+    {
+      "artifact": "Final assistant review input package",
+      "member": "FINAL_ASSISTANT_REVIEW_PACKAGE/review_input/REVIEW_ITEMS_565.jsonl",
+      "sha256": "f8738ed3104ccf1235a6ea774968dfb33bb898b05c5f06dd6b0ba33eee711711"
+    }
+  ],
+  "cases": [
+    {
+      "eval_id": "PRACTICAL_077_M2",
+      "title": "One-sentence summary: complete pass",
+      "model": "PetitGPT-alpha075",
+      "score_version": "assistant_review_fable_v1",
+      "review_id": "FA-c41ee72d6f1c102a87a5",
+      "suite": "old93",
+      "prompt_messages": [
+        {
+          "content": "Extract and present the main key point of the input text in one very short sentence, including essential details like dates or locations if necessary.",
+          "role": "system"
+        },
+        {
+          "content": "Hi Rachel,\n\nI hope you're doing well! As we prepare for our upcoming presentation at the education conference, I wanted to reach out and brainstorm some ideas for our workshop. I was thinking we could focus on the importance of phonics instruction in early literacy development and share some practical strategies that we've found effective in our classrooms.\n\nI'd love to hear your thoughts on this topic and any specific activities or resources you think would be valuable to share with our audience. Maybe we could also include a hands-on component where participants get to try out some of the strategies we discuss?\n\nLet me know what you think and if you have any other ideas for our workshop. I'm excited to collaborate with you on this!\n\nBest regards,\nEmily",
+          "role": "user"
+        }
+      ],
+      "full_output": "Emily proposes a workshop on phonics instruction and suggests hands-on activities and resources.",
+      "output_sha256": "4a06463b4960177070040ac9f8436d7bcaaa1402468e0f6ddb6028bc1c298701",
+      "prompt_messages_sha256_in_source": "1b8a8d7e062e55aa76939e998c8fc770d3b5565695aabceed8c267003467e14a",
+      "contract_sha256_in_source": "f76880ced28cb4c94018e44ad514155ac7028cf4b2ea992d6e43e749ef04da1b",
+      "historical_labels": {
+        "content_success": true,
+        "explicit_format_applicable": true,
+        "explicit_format_success": true,
+        "interface_applicable": false,
+        "interface_success": null,
+        "joint_success": true,
+        "uncertainty_type": "none"
+      },
+      "historical_reason": "One sentence stating that Emily proposes a phonics-instruction workshop with hands-on activities and resources; no approval or topic change asserted.",
+      "editorial_reading": "The response keeps the proposed phonics workshop and practical activities in one sentence, without inventing approval.",
+      "source_family": "smol-summarize-20k",
+      "required_content": [
+        "Emily提出教育会议的phonics/自然拼读教学工作坊。"
+      ],
+      "owner_clarification": {
+        "score_version": "assistant_owner_clarification_4_v1",
+        "amended": false,
+        "labels": {
+          "content_success": true,
+          "explicit_format_applicable": true,
+          "explicit_format_success": true,
+          "interface_applicable": false,
+          "interface_success": null,
+          "joint_success": true,
+          "uncertainty_type": "none"
+        },
+        "source_claim_id": "C-ASSIST-05"
+      }
+    },
+    {
+      "eval_id": "R1DEV-REWRITE-008",
+      "title": "One-sentence summary: format pass, content failure",
+      "model": "PetitGPT-alpha075",
+      "score_version": "assistant_review_fable_v1",
+      "review_id": "FA-2e7f934521a13a8d2509",
+      "suite": "new96",
+      "prompt_messages": [
+        {
+          "content": "Extract and present the main key point of the input text in one very short sentence, including essential details like dates or locations if necessary.",
+          "role": "system"
+        },
+        {
+          "content": "Uma. I need you to finish the drilling by 12 pm on weekdays. It carried on until 1:30 pm on tuesday and again on wednesday. I'm happy to be flexible on saturdays. Reply by wednesday. Victor",
+          "role": "user"
+        }
+      ],
+      "full_output": "By 1:30 pm on weekdays, the drilling was completed.",
+      "output_sha256": "9cce667f7e2308b106142ffe1c9c052228585f505eecf4073cbba638a3e21d71",
+      "prompt_messages_sha256_in_source": "b9150e309755b205201f566d404fab73a36ed15113721e4eb8cf50fec9b547d8",
+      "contract_sha256_in_source": "48e4c10c55824d9ef8dba6cd0377c139bf6e64bd9df96220078c73dd95b4f8b9",
+      "historical_labels": {
+        "content_success": false,
+        "explicit_format_applicable": true,
+        "explicit_format_success": true,
+        "interface_applicable": false,
+        "interface_success": null,
+        "joint_success": false,
+        "uncertainty_type": "none"
+      },
+      "historical_reason": "One sentence, but it states the opposite of the text ('the drilling was completed' by 1:30 pm) and omits that Victor asks Uma to finish by 12 pm on weekdays.",
+      "editorial_reading": "The requested action is to finish drilling by noon on weekdays. The response instead reports completion by 1:30 pm; it loses the request and changes the relevant time.",
+      "source_family": "project-authored development task",
+      "required_content": [
+        "one sentence stating that Victor asks Uma to finish the drilling by 12 pm on weekdays",
+        "at least one essential detail: the late days (Tuesday/Wednesday) or the reply deadline (Wednesday)"
+      ],
+      "owner_clarification": {
+        "score_version": "assistant_owner_clarification_4_v1",
+        "amended": false,
+        "labels": {
+          "content_success": false,
+          "explicit_format_applicable": true,
+          "explicit_format_success": true,
+          "interface_applicable": false,
+          "interface_success": null,
+          "joint_success": false,
+          "uncertainty_type": "none"
+        },
+        "source_claim_id": "C-ASSIST-05"
+      }
+    },
+    {
+      "eval_id": "R1DEV-FOLLOWUP-001",
+      "title": "Context update: complete pass",
+      "model": "PetitGPT-alpha075",
+      "score_version": "assistant_review_fable_v1",
+      "review_id": "FA-a37a64810b132fce3e1e",
+      "suite": "new96",
+      "prompt_messages": [
+        {
+          "content": "Dear Lena,\n\nThank you for enrolling in Bread Baking. The course runs on Friday evenings at 7:30 pm for 6 weeks, starting on 11 October. The fee is $180; a deposit of $60 is due by 2 October and the balance on the first evening. Please note that all materials are included. The course only runs if at least 8 people enrol. The deposit is non-refundable.\n\nKind regards,\nAdult Learning Office\n\nHow much do I still owe on the first evening?",
+          "role": "user"
+        },
+        {
+          "content": "$120, on the first evening (11 October): the fee is $180 and the $60 deposit is due by 2 October.",
+          "role": "assistant"
+        },
+        {
+          "content": "Correction from the office: the fee is actually $240, deposit unchanged. What's the balance now?",
+          "role": "user"
+        }
+      ],
+      "full_output": "The balance on the first evening is $180.",
+      "output_sha256": "bc666172069317749e0a23b180a6ef96400ca5cae3105f18220a97fb094fcfd2",
+      "prompt_messages_sha256_in_source": "eca310f236ccab26e6398fce2f1abf8f80d9a970b00b6a66f47a3bd7fa9099ad",
+      "contract_sha256_in_source": "d77a6eb3a8747d1db9f66bcd93b70a8689fa803ec48a950fcc1cb959d8c7a28b",
+      "historical_labels": {
+        "content_success": true,
+        "explicit_format_applicable": false,
+        "explicit_format_success": null,
+        "interface_applicable": false,
+        "interface_success": null,
+        "joint_success": true,
+        "uncertainty_type": "none"
+      },
+      "historical_reason": "Gives the corrected balance of $180 ($240 minus the $60 deposit).",
+      "editorial_reading": "The fee changes to $240 while the $60 deposit stays fixed. The response gives the updated $180 balance. The earlier assistant turn is supplied context, not a new free-running model answer.",
+      "source_family": "project-authored development task",
+      "required_content": [
+        "new balance on the first evening is $180 (corrected fee $240 minus the unchanged $60 deposit)"
+      ],
+      "owner_clarification": {
+        "score_version": "assistant_owner_clarification_4_v1",
+        "amended": false,
+        "labels": {
+          "content_success": true,
+          "explicit_format_applicable": false,
+          "explicit_format_success": null,
+          "interface_applicable": false,
+          "interface_success": null,
+          "joint_success": true,
+          "uncertainty_type": "none"
+        },
+        "source_claim_id": "C-ASSIST-05"
+      }
+    },
+    {
+      "eval_id": "R1DEV-FOLLOWUP-007",
+      "title": "Context update: judgment changes between review versions",
+      "model": "PetitGPT-alpha075",
+      "score_version": "assistant_review_fable_v1",
+      "review_id": "FA-d113b756835afbd0a234",
+      "suite": "new96",
+      "prompt_messages": [
+        {
+          "content": "Kingsway Health Clinic: Monday to Friday 8:30 am to 6 pm, closed for lunch between 1 pm and 2 pm. Saturday 9 am to 1 pm. Closed on Sundays. Walk-in patients are seen in the mornings only. The clinic will be closed on Wednesday 19 October for a staff training day.\n\nWhen is the lunch closure?",
+          "role": "user"
+        },
+        {
+          "content": "Between 1 pm and 2 pm on weekdays, so 1 hour.",
+          "role": "assistant"
+        },
+        {
+          "content": "The receptionist says the lunch break now starts at 1:30 pm and still lasts an hour. When is the closure now?",
+          "role": "user"
+        }
+      ],
+      "full_output": "On weekdays, the receptionist says the lunch break now starts at 1:30 pm and still lasts an hour.",
+      "output_sha256": "0894c2c872e1ddf4924b7b411a9ef11dde99d034f1a88e26e6023b28359560ca",
+      "prompt_messages_sha256_in_source": "f6cdc9d58ce4c3299a36316e0941d518e9c52a4099cfde25da933009c784c7ad",
+      "contract_sha256_in_source": "bb7bbbae1eac11d9a7a2a3bd4d6685c032c360e28fa573fa95de7f329a4cdcce",
+      "historical_labels": {
+        "content_success": false,
+        "explicit_format_applicable": false,
+        "explicit_format_success": null,
+        "interface_applicable": false,
+        "interface_success": null,
+        "joint_success": false,
+        "uncertainty_type": "none"
+      },
+      "historical_reason": "Restates the receptionist's sentence without computing the new closure interval; the required 1:30 pm to 2:30 pm is not stated.",
+      "editorial_reading": "The response states the new starting time and one-hour duration without spelling out the end time. The original model-assisted review marked it false; the owner-clarification version accepts the unchanged answer as true. This illustrates a scoring boundary, rather than a stable failure across versions.",
+      "source_family": "project-authored development task",
+      "required_content": [
+        "new lunch closure is 1:30 pm to 2:30 pm (start moved 30 min later, still one hour)"
+      ],
+      "owner_clarification": {
+        "score_version": "assistant_owner_clarification_4_v1",
+        "amended": true,
+        "labels": {
+          "content_success": true,
+          "explicit_format_applicable": false,
+          "explicit_format_success": null,
+          "interface_applicable": false,
+          "interface_success": null,
+          "joint_success": true,
+          "uncertainty_type": "none"
+        },
+        "source_claim_id": "C-ASSIST-05"
+      }
+    },
+    {
+      "eval_id": "PYTHON_041_M1",
+      "title": "Python: correct matching operation, wrong return type",
+      "model": "PetitGPT-alpha075",
+      "score_version": "assistant_review_fable_v1",
+      "review_id": "FA-ff71cc6bbf1e08e278e8",
+      "suite": "old93",
+      "prompt_messages": [
+        {
+          "content": "Create a Python function `count_matches_regex` that takes a string `text` and a regular expression pattern `pattern` and returns the number of matches found in the string. Use the `re` module for regular expression matching.",
+          "role": "user"
+        }
+      ],
+      "full_output": "Here's how you can implement this:\n\n```python\nimport re\n\ndef count_matches_regex(text, pattern):\n    matches = re.findall(pattern, text)\n    return matches\n```",
+      "output_sha256": "f9430863ffb454032bd313e7ed79b7e9cd194b5a204cafe3e0bf5a764db7cd4c",
+      "prompt_messages_sha256_in_source": "90d13a9009f3481aba8cc2ee377aa4ebc572f182e916c51840ffef47e52fb3ce",
+      "contract_sha256_in_source": "c4d79a2cebedb7d75fdee058bf948439a7760c22f78893b7e559d15154eeb577",
+      "historical_labels": {
+        "content_success": false,
+        "explicit_format_applicable": true,
+        "explicit_format_success": true,
+        "interface_applicable": true,
+        "interface_success": true,
+        "joint_success": false,
+        "uncertainty_type": "none"
+      },
+      "historical_reason": "Name and (text, pattern) signature match and re is used, but the function returns the list from re.findall instead of its length; the requested count is never produced.",
+      "editorial_reading": "The name, parameters and use of re.findall match the request, but the function returns matches instead of their count.",
+      "source_family": "self-oss-instruct",
+      "required_content": [
+        "通过所附原契约有限功能测试及规定返回类型；测试通过不证明所有可能输入。"
+      ],
+      "owner_clarification": {
+        "score_version": "assistant_owner_clarification_4_v1",
+        "amended": false,
+        "labels": {
+          "content_success": false,
+          "explicit_format_applicable": true,
+          "explicit_format_success": true,
+          "interface_applicable": true,
+          "interface_success": true,
+          "joint_success": false,
+          "uncertainty_type": "none"
+        },
+        "source_claim_id": "C-ASSIST-05"
+      }
+    },
+    {
+      "eval_id": "R1DEV-PYTHON-013",
+      "title": "Python: correct non-empty mean, missing empty-list branch",
+      "model": "PetitGPT-alpha075",
+      "score_version": "assistant_review_fable_v1",
+      "review_id": "FA-b4b4ff959d520be8df0f",
+      "suite": "new96",
+      "prompt_messages": [
+        {
+          "content": "Write a Python function `average_or_default(numbers, default)` returning the arithmetic mean of the list, or the caller-supplied `default` value unchanged when the list is empty.",
+          "role": "user"
+        }
+      ],
+      "full_output": "Here's how you can implement this function:\n\n```python\ndef average_or_default(numbers, default):\n    return sum(numbers) / len(numbers)\n```\n\nThe `default` value is returned when the list is empty. If the list is empty, the `average_or_default` function returns the default value. Otherwise, it returns the sum of the numbers.",
+      "output_sha256": "1e1dc8b41dc1838e5f7450c6398863502fab9f67e81acfdee6227ef1beb22ee6",
+      "prompt_messages_sha256_in_source": "430e66f6495b71bc50bec4fb39e3974010d3aae668bc4785a50e1438ccd7fb87",
+      "contract_sha256_in_source": "8fd2ea13c76c1b44577a4a3c5e5aaa2593f0feaec6067c0a7533bf85941fb6e9",
+      "historical_labels": {
+        "content_success": false,
+        "explicit_format_applicable": false,
+        "explicit_format_success": null,
+        "interface_applicable": true,
+        "interface_success": true,
+        "joint_success": false,
+        "uncertainty_type": "none"
+      },
+      "historical_reason": "Never checks for an empty list; sum([])/len([]) raises ZeroDivisionError and default is never returned. The prose falsely claims the default is returned.",
+      "editorial_reading": "The expression computes the mean of ordinary non-empty numeric lists. For an empty list it divides by zero, never using default. The explanatory text incorrectly claims that default is returned.",
+      "source_family": "project-authored development task",
+      "required_content": [],
+      "owner_clarification": {
+        "score_version": "assistant_owner_clarification_4_v1",
+        "amended": false,
+        "labels": {
+          "content_success": false,
+          "explicit_format_applicable": false,
+          "explicit_format_success": null,
+          "interface_applicable": true,
+          "interface_success": true,
+          "joint_success": false,
+          "uncertainty_type": "none"
+        },
+        "source_claim_id": "C-ASSIST-05"
+      }
+    },
+    {
+      "eval_id": "PYTHON_035_M1",
+      "title": "Python: calling interface and implementation both fail",
+      "model": "PetitGPT-alpha075",
+      "score_version": "assistant_review_fable_v1",
+      "review_id": "FA-d4747e4b8b36756fd9c0",
+      "suite": "old93",
+      "prompt_messages": [
+        {
+          "content": "Write a Python function to generate the following string with 100 lines, each consisting of line number and the word \"Python\":\n\n```\n1 Python\n2 Python\n3 Python\n4 Python\n5 Python\n...\n```\n\nUse string formatting to achieve this.\n\nYour code should pass the following assertions:\n```python\nassert generate_string_with_100_lines().startswith(\"1 Python\\n\")\nassert generate_string_with_100_lines().endswith(\"100 Python\\n\")\nassert generate_string_with_100_lines().count(\"\\n\") == 100\nassert generate_string_with_100_lines().count(\"Python\") == 100\n```",
+          "role": "user"
+        }
+      ],
+      "full_output": "Here's a Python function that generates the given string with 100 lines:\n\n```python\ndef generate_string_with_100_lines(lines):\n    return f\"python: {lines}\"\n```\n\nThe function uses string formatting to generate the string. The word \"Python\" is formatted as \"Python\", and the word \"Python\" is formatted as \"Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python Python",
+      "output_sha256": "0a2e1ead4585cba32ff47513f266f4b52c32fbeaa3e92eaa6cae67c38b947e1e",
+      "prompt_messages_sha256_in_source": "f5c17da77151c85bdad8d959f7992a4a4d9ed6e55026f2eba43b3eb9e2dc3a9d",
+      "contract_sha256_in_source": "85aca51ed93c393c42544e479dd950d09ec201710c1b17442b5e8ad1eb372c55",
+      "historical_labels": {
+        "content_success": false,
+        "explicit_format_applicable": true,
+        "explicit_format_success": true,
+        "interface_applicable": true,
+        "interface_success": false,
+        "joint_success": false,
+        "uncertainty_type": "none"
+      },
+      "historical_reason": "Defines generate_string_with_100_lines(lines) with a required argument although the assertions call it with none, and returns f\"python: {lines}\", not 100 numbered lines.",
+      "editorial_reading": "The supplied assertions call a zero-argument function. The response requires a lines argument and returns a single formatted fragment rather than 100 numbered lines. The complete stored answer below retains its repetitive tail.",
+      "source_family": "self-oss-instruct",
+      "required_content": [
+        "通过所附原契约有限功能测试及规定返回类型；测试通过不证明所有可能输入。"
+      ],
+      "owner_clarification": {
+        "score_version": "assistant_owner_clarification_4_v1",
+        "amended": false,
+        "labels": {
+          "content_success": false,
+          "explicit_format_applicable": true,
+          "explicit_format_success": true,
+          "interface_applicable": true,
+          "interface_success": false,
+          "joint_success": false,
+          "uncertainty_type": "none"
+        },
+        "source_claim_id": "C-ASSIST-05"
+      }
+    }
+  ],
+  "version_comparison": {
+    "base_version": "assistant_review_fable_v1",
+    "comparison_version": "assistant_owner_clarification_4_v1",
+    "source_claim_id": "C-ASSIST-05",
+    "source_index": "../provenance/PUBLIC_EVIDENCE_INDEX.json",
+    "amendments": [
+      {
+        "model_key": "EXT-B",
+        "eval_id": "R1DEV-PYTHON-021",
+        "content_and_joint_before": true,
+        "content_and_joint_after": false
+      },
+      {
+        "model_key": "EXT-A",
+        "eval_id": "PYTHON_047_M1",
+        "content_and_joint_before": true,
+        "content_and_joint_after": false
+      },
+      {
+        "model_key": "alpha075",
+        "eval_id": "DOLLY_007_M1",
+        "content_and_joint_before": true,
+        "content_and_joint_after": null
+      },
+      {
+        "model_key": "alpha075",
+        "eval_id": "R1DEV-FOLLOWUP-007",
+        "content_and_joint_before": false,
+        "content_and_joint_after": true
+      }
+    ],
+    "selected_cases_amended": [
+      "R1DEV-FOLLOWUP-007"
+    ],
+    "selected_cases_unchanged": 6,
+    "policy": "Retain original historical_labels and historical_reason. Apply only the four recorded content/joint amendments to derive the separate owner_clarification labels; all other axes and stored outputs stay unchanged."
+  }
+}

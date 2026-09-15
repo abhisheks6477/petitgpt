@@ -1,0 +1,95 @@
+{
+  "purpose": "Sources for report aggregates, figures and selected qualitative cases. Absolute paths and the full evaluation collection are omitted. Source hashes bind supplied records, not a new model evaluation.",
+  "sources": [
+    {
+      "artifact": "arc_challenge complete likelihood results",
+      "version": "benchmark extension v1",
+      "member": "arc_challenge/RESULTS.json",
+      "sha256": "6257829c16cbf7d4a0a4b9370d6ce340148e7910a9ecb2457bb4f6d68b3c5107"
+    },
+    {
+      "artifact": "hellaswag complete likelihood results",
+      "version": "benchmark extension v1",
+      "member": "hellaswag/RESULTS.json",
+      "sha256": "8dc016c4519e59878c5a960a55afbd7461ac9b9131163ec31de7914e10a3f861"
+    },
+    {
+      "artifact": "IFEval complete generation and verifier results",
+      "version": "completion v2",
+      "member": "ifeval/completion_v2/RESULTS.json",
+      "sha256": "d3eaca3173273f68b335424af8276d571dbd1f2497bd99a861698a4108dec3bf"
+    },
+    {
+      "artifact": "Extension dataset identities",
+      "version": "v1, reused by IFEval completion v2",
+      "member": "protocol/DATA_IDENTITIES.json",
+      "sha256": "3e6e9fde443fc645d8fc9be06722ed7ead70bace585745c2f96e67e0a317aa0a"
+    },
+    {
+      "artifact": "Stage A original training metrics",
+      "version": "historical pretraining",
+      "sha256": "85a1dab0145dc7ad816bd5cde1134806803ca10523879784acb632ac4283203d",
+      "selected_rows": "all 5 kind=val rows"
+    },
+    {
+      "artifact": "Stage B original training metrics",
+      "version": "historical pretraining",
+      "sha256": "3a2e9c3ce048c05a1eabc8099434474892b19663804e79ef6d6ca2b8f6ab8811",
+      "selected_rows": "all 5 kind=val rows"
+    },
+    {
+      "artifact": "P2/P3 two-point interpolation comparison",
+      "version": "P3_INTERPOLATION_DIAGNOSTICS_V1",
+      "member": "report/TRADEOFF_COMPARISON.json",
+      "sha256": "33e7ff5eff0dee71a7ff8f07afc45aae8d1886b18275819a6c605d39ac058f32",
+      "selected_rows": "five model summaries; no prompt/output text"
+    },
+    {
+      "artifact": "Final assistant-response review, method and executor description",
+      "version": "FINAL_ASSISTANT_THREE_MODEL_REVIEW_V1",
+      "sha256": "797e265331a9a07fde6764084697cb60aed358a1e572e2265562cc9af11eca70"
+    },
+    {
+      "artifact": "Historical experiment scorecard",
+      "version": "post-training research snapshot v1",
+      "sha256": "d2e6a8707656da0db19785a40bd03fdf88b4e92d630a4b67a01357db86ce02e6"
+    },
+    {
+      "artifact": "Historical scorecard reading notes",
+      "version": "post-training research snapshot v1",
+      "sha256": "423937702cb3dc7795de3743a5c438ebecd39d2b28a6d58ab5511fa412b68fb0"
+    },
+    {
+      "artifact": "Extension likelihood protocol",
+      "version": "benchmark extension v1",
+      "member": "protocol/LIKELIHOOD_PROTOCOL.json",
+      "sha256": "84f585b07cd86b539a5aa9cd6f3a92d63404baf87ad166dbaead118506a8a992"
+    },
+    {
+      "artifact": "IFEval original generation protocol",
+      "version": "benchmark extension v1, retained settings",
+      "member": "protocol/IFEVAL_PROTOCOL.json",
+      "sha256": "df462527c30b2071e71bf59dcf3d6b99c62ed10818ac0a9f0565ec55be3336f3"
+    },
+    {
+      "artifact": "IFEval canonical-template resolution",
+      "version": "v1, retained by completion v2",
+      "member": "protocol/IFEVAL_TEMPLATE_RESOLUTION.json",
+      "sha256": "8a055cdf4ad6cb64c48af8128b09d4a20275f0b765f19c52e286247c132cfcb0"
+    },
+    {
+      "artifact": "Final assistant three-model review evidence",
+      "member": "final_assistant_three_model_review_v1/judgments/FINAL_MODEL_ANSWERS_567.jsonl",
+      "sha256": "32c1c21343d1662626b833d33fa0b2911e75830c1e6f9cd464478563a4a394fc",
+      "version": "assistant_review_fable_v1 / original review inputs",
+      "selected_rows": "seven alpha075 cases linked by review_id and output SHA-256"
+    },
+    {
+      "artifact": "Final assistant review input package",
+      "member": "FINAL_ASSISTANT_REVIEW_PACKAGE/review_input/REVIEW_ITEMS_565.jsonl",
+      "sha256": "f8738ed3104ccf1235a6ea774968dfb33bb898b05c5f06dd6b0ba33eee711711",
+      "version": "assistant_review_fable_v1 / original review inputs",
+      "selected_rows": "seven alpha075 cases linked by review_id and output SHA-256"
+    }
+  ]
+}

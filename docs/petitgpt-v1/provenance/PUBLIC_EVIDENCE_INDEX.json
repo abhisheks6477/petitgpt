@@ -6,21 +6,24 @@
     "absolute filesystem paths",
     "full file hashes (long digests appear only as a short identifying prefix)",
     "checkpoint identities",
-    "raw evaluation prompts, model outputs and benchmark rows",
+    "raw evaluation prompts, model outputs and benchmark rows within this index (seven selected assistant cases are shipped separately)",
     "private run-directory names and internal ledgers",
     "the full internal claim-to-evidence map"
   ],
-  "not_a_reproducibility_claim": "Naming an artifact here does not make it publicly available, and this index is not an independently reproducible audit of any answer label. The underlying raw evaluation texts are not published.",
+  "not_a_reproducibility_claim": "Naming an artifact here does not make the full artifact publicly available. Seven selected assistant cases include original prompts, stored outputs and review labels; the complete raw evaluation collection is not published, and labels are not an independently reproduced audit.",
   "public_tables_shipped_alongside": [
     "tables/PUBLIC_BENCHMARK_RESULTS.csv",
     "tables/ASSISTANT_RESULTS_VERSIONED.csv",
     "tables/RESEARCH_EXPERIMENT_LEDGER.csv",
     "tables/MODEL_LINEAGE.json",
     "tables/PRETRAIN_SOURCE_MIXTURE.csv",
-    "tables/VAL_LOSS_BY_SOURCE.csv"
+    "tables/VAL_LOSS_BY_SOURCE.csv",
+    "tables/IFEVAL_RESULTS.csv",
+    "tables/PRETRAIN_VALIDATION_CURVE.csv",
+    "tables/POSTTRAINING_TRADEOFF.csv"
   ],
   "counts": {
-    "claims": 92
+    "claims": 102
   },
   "claims": [
     {
@@ -1627,10 +1630,164 @@
           "version": "project record"
         }
       ]
+    },
+    {
+      "claim_id": "C-PT-13",
+      "topic": "Pretraining",
+      "claim": "The validation figure contains all five kind=val rows from each original Stage A/B metrics log, ten observations total. No smoothing or added evaluation points; stage handover 38,146 and learning-rate decay starts at 44,631. Close Stage B observations at 43,868 and 43,870 are both retained.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Stage A original training metrics",
+          "version": "historical pretraining"
+        },
+        {
+          "artifact": "Stage B original training metrics",
+          "version": "historical pretraining"
+        }
+      ],
+      "public_table": "tables/PRETRAIN_VALIDATION_CURVE.csv"
+    },
+    {
+      "claim_id": "C-P3-04",
+      "topic": "Post-training",
+      "claim": "On the same 500 validation rows with 43,573 supervised targets, P2 NLL is 1.3221096422969132, P3 step 320 is 1.400923154743602, and P3 step 640 is 1.4393337731032165. Development passes are 4, 484 and 476 out of 512 respectively.",
+      "evidence_artifacts": [
+        {
+          "artifact": "P2/P3 two-point interpolation comparison, five aggregate measurements",
+          "version": "P3_INTERPOLATION_DIAGNOSTICS_V1"
+        }
+      ],
+      "public_table": "tables/POSTTRAINING_TRADEOFF.csv"
+    },
+    {
+      "claim_id": "C-INT-03",
+      "topic": "Post-training",
+      "claim": "Alpha075 NLL 1.365310530149198 is 0.035612624594404 lower than its actual P3 step-320 parent, and 0.04320088785228471 higher than P2. It scores 487/512 versus 484/512 for step 320, but strict dev100 falls 20 to 16. Alpha050 scores 445/512 below the 90% development target. Historical alpha075 ARC/PIQA accuracy is 0.5765993265993266 / 0.6365614798694232; these diagnostics are separate from public FP32 V2.",
+      "evidence_artifacts": [
+        {
+          "artifact": "P2/P3 two-point interpolation comparison, five aggregate measurements",
+          "version": "P3_INTERPOLATION_DIAGNOSTICS_V1"
+        }
+      ],
+      "public_table": "tables/POSTTRAINING_TRADEOFF.csv"
+    },
+    {
+      "claim_id": "C-BENCH-07",
+      "topic": "Evaluation",
+      "claim": "Completed benchmark extension V1: ARC-Challenge test n=1172, acc/acc_norm correct counts PetitGPT 330/383, SmolLM 298/319, SmolLM2 304/325; HellaSwag validation n=10042, corresponding counts 3141/3575, 3475/4214, 3517/4308. Separate result collection from the original ARC-Easy/PIQA FP32 V2 campaign.",
+      "evidence_artifacts": [
+        {
+          "artifact": "ARC-Challenge complete likelihood results",
+          "version": "benchmark extension v1"
+        },
+        {
+          "artifact": "HellaSwag complete likelihood results",
+          "version": "benchmark extension v1"
+        }
+      ],
+      "public_table": "tables/PUBLIC_BENCHMARK_RESULTS.csv"
+    },
+    {
+      "claim_id": "C-BENCH-08",
+      "topic": "Evaluation",
+      "claim": "The extension uses zero-shot candidate likelihood with FP32 parameters/forward/log-softmax/sum, autocast and TF32 off, MATH SDPA, unpadded batch 1, no KV cache or compile. ARC uses Question/Answer completions; HellaSwag uses the pinned process_docs query and preprocessed endings. Character normalization excludes the leading delimiter. Native protocol-compatible evaluator; harness commit b954108c\u2026; no full installed-harness run.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Extension likelihood protocol",
+          "version": "benchmark extension v1"
+        }
+      ],
+      "public_table": "provenance/EVALUATION_PROTOCOLS.json"
+    },
+    {
+      "claim_id": "C-IFEVAL-01",
+      "topic": "Evaluation",
+      "claim": "IFEval completion V2 covers 541 prompts, 834 instructions and 25 instruction types per model. Strict/loose prompt passes: PetitGPT 93/96, SmolLM 56/65, SmolLM2 117/122. Strict/loose instruction passes: 238/250, 182/201, 299/311. Length-cap outputs: 40, 290, 233; EOS outputs: 501, 251, 308. All three models completed.",
+      "evidence_artifacts": [
+        {
+          "artifact": "IFEval complete generation and verifier results",
+          "version": "completion v2"
+        }
+      ],
+      "public_table": "tables/IFEVAL_RESULTS.csv"
+    },
+    {
+      "claim_id": "C-IFEVAL-02",
+      "topic": "Evaluation",
+      "claim": "IFEval uses the pinned google/IFEval train split, one unchanged user prompt with each native chat template, retaining SmolLM2 template-inserted system text and no PetitGPT default system. Greedy FP32 generation, MATH SDPA, batch 1, KV cache enabled, 1280 new-token cap, no repetition penalty or extra stop strings; autocast, TF32 and compile off. No input rows dropped/truncated. Pinned strict/loose programmatic verifiers, no LLM judge; cap-hit answers scored as generated.",
+      "evidence_artifacts": [
+        {
+          "artifact": "IFEval original generation protocol",
+          "version": "benchmark extension v1, retained settings"
+        },
+        {
+          "artifact": "IFEval canonical-template resolution",
+          "version": "v1, retained by completion v2"
+        },
+        {
+          "artifact": "IFEval complete generation and verifier results",
+          "version": "completion v2"
+        }
+      ],
+      "public_table": "provenance/EVALUATION_PROTOCOLS.json"
+    },
+    {
+      "claim_id": "C-ASSIST-09",
+      "topic": "Evaluation",
+      "claim": "The full-answer review source names Claude Fable 5.1 through Claude Code at high effort as its model-assisted reviewer. This is the recorded designation, not an independently established API snapshot identity. Owner clarifications are a later, separate version.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Final assistant-response review, method and executor description",
+          "version": "FINAL_ASSISTANT_THREE_MODEL_REVIEW_V1"
+        }
+      ]
+    },
+    {
+      "claim_id": "C-RES-17",
+      "topic": "Research findings",
+      "claim": "The research-snapshot scorecard records alpha075 QA 4/41 with 3 unknowns and practical group bounds [22/81,23/81]. Those historical labels and run-specific retention gates differ from the later full-answer assistant-review versions. Each branch retains its own source/score version; later reviews do not revise past stopping decisions.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Experiment scorecard and reading notes",
+          "version": "post-training research snapshot v1"
+        },
+        {
+          "artifact": "Versioned full-answer assistant results",
+          "version": "assistant_review_fable_v1 and assistant_owner_clarification_4_v1"
+        }
+      ],
+      "public_table": "tables/RESEARCH_EXPERIMENT_LEDGER.csv"
+    },
+    {
+      "claim_id": "C-ASSIST-10",
+      "topic": "Qualitative evaluation",
+      "claim": "Seven selected alpha075 cases illustrate historical full-answer scores under assistant_review_fable_v1. PRACTICAL_077_M2 and R1DEV-FOLLOWUP-001 pass content and joint review; R1DEV-REWRITE-008 passes its one-sentence format but fails content; R1DEV-FOLLOWUP-007 omits the requested interval; PYTHON_041_M1 and R1DEV-PYTHON-013 pass interface but fail content; PYTHON_035_M1 fails both interface and content. Complete prompts, stored outputs and original labels are retained. Hand-picked examples do not estimate success rates. Version comparison against C-ASSIST-05 identifies exactly one amended case among the seven: alpha075 R1DEV-FOLLOWUP-007 content/joint false->true under assistant_owner_clarification_4_v1; the other six remain unchanged. The case study now presents both versions explicitly.",
+      "evidence_artifacts": [
+        {
+          "artifact": "Final assistant review input package, REVIEW_ITEMS_565.jsonl",
+          "version": "original review inputs"
+        },
+        {
+          "artifact": "Final assistant three-model review, FINAL_MODEL_ANSWERS_567.jsonl",
+          "version": "assistant_review_fable_v1"
+        },
+        {
+          "artifact": "Four owner content/joint amendments recorded in C-ASSIST-05",
+          "version": "assistant_owner_clarification_4_v1"
+        }
+      ],
+      "public_table": "examples/ASSISTANT_CASE_STUDIES.json"
     }
   ],
   "amendments": [
-    "Source-linkage revision: added C-SRC-01..03 so the updated provenance paragraphs resolve publicly. No existing entry was altered."
+    "Source-linkage revision: added C-SRC-01..03 so the updated provenance paragraphs resolve publicly. No existing entry was altered.",
+    "2026-09-15 report revision: added nine claims for the original validation trajectory, step-320/interpolation diagnostics, benchmark extension, IFEval completion v2, named review model and historical score provenance. Added aggregate tables, protocol/source metadata and redrawable figures. Corrected the P2 ledger supervision description; retained existing benchmark and assistant-review records. No new model run.",
+    "Qualitative-case edition: added C-ASSIST-10 and seven stored assistant-response cases with original review labels; clarified publication scope and shortened repeated prose. No inference, generated-code execution or rescoring.",
+    "Case-version clarification: R1DEV-FOLLOWUP-007 is one of the four owner amendments. Added the explicit false-to-true comparison alongside the preserved original labels in section 8.5 and case-study files; six other selected cases are unchanged. No answer or evaluation score was recomputed."
   ],
-  "release_edition_note": "Entries describe historical source records, including historical pending licence decisions. The owner approved the scoped research-v1 licence in the separate execution task; historical claims are preserved."
+  "release_edition_note": "Entries describe historical source records, including pending licence and release decisions at the time. The research-v1 release carries the scoped licences stated in the current report; historical claims are preserved.",
+  "public_case_studies_shipped_alongside": [
+    "examples/README.md",
+    "examples/ASSISTANT_CASE_STUDIES.json"
+  ]
 }

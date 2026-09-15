@@ -1,0 +1,157 @@
+{
+  "description": "Aggregate protocol metadata for the report. Version labels below identify separate result collections; no cross-task score is computed. P3_INTERPOLATION_DIAGNOSTICS_V1, FP32_EXTENSION_V1 and IFEVAL_COMPLETION_V2 are public collection labels for the named source records.",
+  "models": [
+    {
+      "id": "PetitGPT-alpha075",
+      "identity_record": "../MODEL_PROVENANCE.json"
+    },
+    {
+      "id": "SmolLM-135M-Instruct",
+      "repo_id": "HuggingFaceTB/SmolLM-135M-Instruct",
+      "revision": "fcc320f490e08fdb4b99d935b2c58d40bf35b0d0"
+    },
+    {
+      "id": "SmolLM2-135M-Instruct",
+      "repo_id": "HuggingFaceTB/SmolLM2-135M-Instruct",
+      "revision": "12fd25f77366fa6b3b4b768ec3050bf629380bac"
+    }
+  ],
+  "datasets": {
+    "arc_challenge": {
+      "repo": "allenai/ai2_arc",
+      "revision": "210d026faf9955653af8916fad021475a3f00453",
+      "split": "test",
+      "rows": 1172,
+      "source_sha256": "62f03257e737aed263f55c6abf87c7bb0028a44a6bdd2a26eb1279eb42c1d1e9",
+      "canonical_rows_sha256": "9b4f0f4d13a728ea9ff976368016136b6ff00b0a642e96ad308b7e331dcc78f5",
+      "row_order_sha256": "8113220fe34920830fcedf6381cf9c3d427fe07927259854ace049b0708cc8bb"
+    },
+    "hellaswag": {
+      "repo": "Rowan/hellaswag",
+      "revision": "218ec52e09a7e7462a5400043bb9a69a41d06b76",
+      "split": "validation",
+      "rows": 10042,
+      "source_sha256": "899813071e1e95efafec90f856e1987d2150fa4d020fc005df6962c259f660cd",
+      "canonical_rows_sha256": "b807c1435cfd3e79a07c86103bb5cb637126887026ba647654e498b1f636db5a",
+      "row_order_sha256": "aa3a2d85f809b69b7aaaadbab645bffcdf3596698c5af44d444a19e7e90764c1"
+    },
+    "ifeval": {
+      "repo": "google/IFEval",
+      "revision": "966cd89545d6b6acfd7638bc708b98261ca58e84",
+      "split": "train",
+      "rows": 541,
+      "source_sha256": "6a85310ca8ce15eff755aa08a3a4ff931c7e273e7515ebb3c492ea85fd8288f2",
+      "canonical_rows_sha256": "db3afa8668a594a24d12f5c2c17ef5743b8e5e3bd0ab8790507c47774989cfe9",
+      "row_order_sha256": "608f0f28c87981be16c3808d5aaf2660b784aebe71e20d038f0a9f9576e3d16f",
+      "total_instructions": 834
+    },
+    "arc_easy": {
+      "repo": "allenai/ai2_arc",
+      "revision": "210d026faf9955653af8916fad021475a3f00453",
+      "split": "test",
+      "rows": 2376,
+      "source_sha256": "4160597d618ae851c7eb04e281574f3f654776216ac6b6641588d64527b47177",
+      "canonical_rows_sha256": "76c0b01b3280b968e3f0718b7dd04ddb07f4eb18dbee11c8ebe3f5af7c431065"
+    },
+    "piqa": {
+      "repo": "baber/piqa",
+      "revision": "142f6d7367fd9877f0fb3b5734ea6a545f54cdd1",
+      "split": "validation",
+      "rows": 1838,
+      "source_sha256": "2b17ee1215b1ceb2ddabf4c90a05c5a8b833bef9d207960f57d111c43a2080f3",
+      "canonical_rows_sha256": "9a7f72f9637da4ee27bcd4d90f783116a9cc9a4a37c9792d463313d7e5c7bc9e"
+    }
+  },
+  "harness_commit": "b954108c9baaaa934b4ad842033b31a97ee30816",
+  "likelihood": {
+    "FP32_V2": [
+      "arc_easy",
+      "piqa"
+    ],
+    "FP32_EXTENSION_V1": [
+      "arc_challenge",
+      "hellaswag"
+    ],
+    "fewshot": 0,
+    "chat_template": false,
+    "inserted_bos_eos": false,
+    "parameters_forward_logsoftmax_sum": "FP32",
+    "autocast": false,
+    "tf32": false,
+    "sdpa": "MATH",
+    "batch_size": 1,
+    "padding": false,
+    "kv_cache": false,
+    "compile": false,
+    "prompt_arc_piqa": "Question: <official question or goal>\nAnswer:",
+    "prompt_hellaswag": "pinned HellaSwag process_docs query",
+    "continuation": "one ASCII space plus task-defined candidate",
+    "acc": "first argmax of complete continuation log-likelihood sum",
+    "acc_norm": "sum divided by Unicode character length of candidate excluding leading delimiter; HellaSwag uses the task-preprocessed ending",
+    "runner": "native protocol-compatible evaluator; not a full installed-harness run",
+    "token_boundary": "AST-extracted unchanged TemplateLM._encode_pair: move trailing context whitespace to continuation; tokenize context+continuation and context; split by context length; no independently tokenized continuation",
+    "max_total_tokens": 2048,
+    "original_campaign_accounting": {
+      "protocol_version": "FP32_V2",
+      "tasks": [
+        "arc_easy",
+        "piqa"
+      ],
+      "documents_per_model": 4214,
+      "models": 3,
+      "document_model_evaluations": 12642,
+      "candidate_sequences_per_model": {
+        "arc_easy": 9501,
+        "piqa": 3676
+      },
+      "primary_candidate_sequences_all_models": 39531,
+      "claim_id": "C-BENCH-05"
+    }
+  },
+  "ifeval": {
+    "result_version": "IFEVAL_COMPLETION_V2",
+    "rows_per_model": 541,
+    "instructions_per_model": 834,
+    "instruction_types": 25,
+    "messages": "one unchanged official user prompt",
+    "format": "per-model native chat template; SmolLM2 retains template-inserted default system text; PetitGPT has no default system",
+    "parameters_and_forward": "FP32",
+    "autocast": false,
+    "tf32": false,
+    "sdpa": "MATH",
+    "batch_size": 1,
+    "kv_cache": true,
+    "compile": false,
+    "do_sample": false,
+    "num_beams": 1,
+    "max_new_tokens": 1280,
+    "repetition_penalty": 1.0,
+    "extra_stop_strings": [],
+    "dropped_or_truncated_prompts": 0,
+    "cap_hit_outputs": "scored as generated",
+    "judge": "pinned programmatic strict/loose verifier; no LLM judge",
+    "prompt_metric": "all applicable instructions in a prompt pass",
+    "instruction_metric": "individual instruction pass fraction"
+  },
+  "historical_p3_diagnostics": {
+    "result_version": "P3_INTERPOLATION_DIAGNOSTICS_V1",
+    "scope": "P2, P3 and interpolation-era diagnostics; distinct from public FP32_V2 results",
+    "val500_rows": 500,
+    "assistant_eos_targets": 43573,
+    "validation_sequence_length": 2048,
+    "val_forward": "BF16",
+    "val_ce": "selected FP32 logits, FP64 scalar aggregation",
+    "dev512": "32 content groups x 4 families x 4 presentations; correlated development items",
+    "historical_arc_piqa": "scores copied from interpolation comparison; numerical equivalence to public FP32_V2 is not established"
+  },
+  "historical_assistant_review": {
+    "result_versions": [
+      "assistant_review_fable_v1",
+      "assistant_owner_clarification_4_v1"
+    ],
+    "recorded_reviewer": "Claude Fable 5.1 (Claude Code), high effort",
+    "exact_api_snapshot": "not established",
+    "owner_clarifications": "four subsequent final-content decisions, kept as a separate version",
+    "separate_from": "programmatic IFEval strict/loose verification"
+  }
+}
