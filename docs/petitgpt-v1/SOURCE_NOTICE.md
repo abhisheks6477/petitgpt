@@ -1,6 +1,6 @@
 # Source notice
 
-petitgpt by Yang Qi; selected checkpoint alpha075. Parameter lineage: Base -> P2 step750 -> P3 step320 -> interpolation (0.75 toward P3). Later DeepSeek-response-KD, unified Base-SFT, DPO, soft-KD and LoRA updates are absent.
+PetitGPT by Yang Qi; selected checkpoint alpha075. Parameter lineage: Base -> P2 step750 -> P3 step320 -> interpolation (0.75 toward P3). Later DeepSeek-response-KD, unified Base-SFT, DPO, soft-KD and LoRA updates are absent.
 
 Pretraining source and tokenizer linkage have been established by the existing digest records. The tokenizer corpus uses six of the eight frozen releases; PES2O and StackExchange occur in pretraining, not tokenizer training. Selected source counts are not per-source consumed-token measurements. No new corpus audit is claimed.
 
@@ -36,4 +36,4 @@ The parent publisher limits its Apache grant to its newly generated subsets and 
 
 Sources: https://huggingface.co/datasets/HuggingFaceTB/smol-smoltalk/tree/f73fe857d519ff6ac5af2ea67c4d3834da7b8bcc ; https://huggingface.co/datasets/HuggingFaceTB/smoltalk ; https://huggingface.co/datasets/teknium/OpenHermes-2.5 ; https://huggingface.co/datasets/bigcode/self-oss-instruct-sc2-exec-filter-50k ; https://huggingface.co/datasets/HuggingFaceTB/everyday-conversations-llama3.1-2k .
 
-No raw corpus, frozen evaluation prompts or model answers are distributed. Author licensing does not relicense upstream datasets or clear third-party rights. See DOCUMENTATION_LICENSE.md for the scoped grant.
+Seven selected assistant-evaluation prompts and stored model answers are quoted in [the case studies](examples/README.md), with task-source labels and historical review records. The raw corpus and complete evaluation collection are not distributed. Author licensing does not relicense upstream datasets or clear third-party rights. See DOCUMENTATION_LICENSE.md for the scoped grant.
