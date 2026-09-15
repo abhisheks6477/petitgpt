@@ -1,8 +1,15 @@
 # Train and evaluate PetitGPT from prepared inputs
 
-If you are interested in the realization details, this manual describes how to **reproduce the research-v1 method from the beginning**
-with your own prepared local data. The `reader.py` command-line tool connects the
-recovered research-v1 trainers and fixed native model through this workflow:
+This manual describes how to **reproduce the research-v1 method from the beginning**
+with your own prepared local data. **`reader.py` and `reader_prepare.py` are public
+reproduction entrypoints added after the reported runs; they were not the launch
+scripts used for those runs.** They prepare inputs and call recovered stage-specific
+training code. The [recovered sources](recipes/research-v1/sources/) and
+[historical execution records](configs/research-v1/README.md) document the original
+implementation and launches.
+
+The `reader.py` tool connects the recovered trainers and fixed native model through
+this workflow:
 
 | Stage | Purpose |
 |---|---|
@@ -15,18 +22,26 @@ recovered research-v1 trainers and fixed native model through this workflow:
 New data/checkpoints have new hashes and results. Published measurements for the
 released alpha075 remain in the [technical report](docs/petitgpt-v1/TECHNICAL_REPORT.md).
 
-Read [model/tokenizer](tokenizer/README.md) → [prepared input schemas](recipes/research-v1/PREPARED_INPUTS.md)
+Read [tokenizer](tokenizer/README.md) → [prepared input schemas](recipes/research-v1/PREPARED_INPUTS.md)
 → [pretrain](#pretrain-ab) → [posttrain](#posttraining) → [likelihood evaluation](#export-and-evaluate). The shared `pretrain/train_pretrain.py`
-is useful research tooling but is not the trainer used by this route.
+is useful research tooling but is not the trainer used by this workflow.
 
 ## Setup and conventions
 
-The execution reference is Python 3.10.12, torch 2.11.0+cu126, NumPy 2.2.6,
-tokenizers 0.22.2 and safetensors 0.8.0. Training and the recorded likelihood profile
-require a BF16-capable CUDA GPU. See
+The historical execution reference is Python 3.10.12, torch 2.11.0+cu126,
+NumPy 2.2.6, tokenizers 0.22.2 and safetensors 0.8.0. See
 [recorded requirements](recipes/research-v1/runtime-support-v2/frozen_native/requirements-inference-tested.txt).
 
 ### Resource scale
+
+For the `--policy new-run` workflow described here:
+
+| Operation | Compute requirement |
+|---|---|
+| Input preparation and all `--validate-only` checks | CPU; no GPU required |
+| A/B, P2 and P3 training (`--execute`) | BF16-capable CUDA GPU |
+| Interpolation and export (`--execute`) | CPU; no GPU required |
+| Likelihood evaluation (`evaluate --execute`) | CUDA GPU; scoring uses FP32 |
 
 The historical run used one RTX 4090. Its recorded Stage A log span was about
 29.8 hours; a Stage B window covered 2.994 billion positions in 32,403.5 seconds
@@ -65,10 +80,12 @@ weights or creating the requested output directory. To run a stage, use its same
 arguments with `--execute` instead, then proceed to the next stage. A downstream
 validation needs the checkpoint and metadata actually produced by its predecessor;
 running all examples with `--validate-only` cannot create that chain.
+
 Each stage output directory must be nonexistent, even for validation.
 If you see `Requires a fresh nonexistent output directory`, choose a new stage
 directory (and update downstream paths), or a new `OUT` for a complete rerun.
 Do not pre-create the per-stage directories; their parent may already exist.
+
 `reader_prepare.py --write` creates prepared files only; it does not train.
 No command downloads data/models or calls a teacher/API.
 
@@ -95,7 +112,7 @@ P2 derives a two-pass plan: concatenate two deterministic shuffled passes throug
 the supplied rows, group them into 32-row updates, and cap the run at 1,000 updates.
 Thus 12,000 rows give 750 updates and 38 warmup updates; other valid populations
 can produce a different-length run. The P3/interpolation workflow below requires
-**P2 step 750**, so use 12,000 training rows for this route.
+**P2 step 750**, so use 12,000 training rows for this workflow.
 P3 retains 640 updates and fixed population/batch geometry. These size requirements
 are public method settings. The 500-row P2 validation split matches the original
 size; the new-run validator accepts other nonempty validation sizes.
@@ -129,9 +146,10 @@ python -B "$REPO/recipes/research-v1/reader_prepare.py" p3-plan \
   --tokenizer "$TOK" --out-dir "$OUT/p3-plan" --write
 ```
 
-Separate plan preparation is optional: training derives and checks its plan
-automatically. This example prepares P3's plan explicitly and passes it with
-`--plan` below to require exact equality.
+Separate plan preparation is optional for both P2 and P3: training derives and
+checks its plan automatically. The P2 example below uses that automatic plan;
+P3 demonstrates preparing a plan explicitly and passing it with `--plan` to require
+exact equality. The same option is available for P2 via `reader_prepare.py p2-plan`.
 
 For A/B inputs starting from selected text JSONL, use `reader_prepare.py packed
 --split train`; use `--split val` for validation. Its `--out-dir` is the release
@@ -165,8 +183,9 @@ sampler commitments and exact stage boundary. New-run plan validation substitute
 only the old private provenance/approval layer. Its separate schema binds both
 stage inventories and shared validation; the sampler-seed change is allowed only
 from A's seed 20260832 to B's seed 20260833 at step 38,146. Same-stage restart uses
-`--resume` and a fresh output directory, with unchanged data/plan/environment. Checkpoints get adjacent
-receipts when actually saved, so completed checkpoints survive a later interruption.
+`--resume` and a fresh output directory, with unchanged data/plan/environment.
+Checkpoints get adjacent receipts when actually saved, so completed checkpoints
+survive a later interruption.
 The recovered data contract also records file mtimes: preserve the prepared data
 files when resuming; relocation that changes this fingerprint is rejected.
 
@@ -177,15 +196,21 @@ files when resuming; relocation that changes this fingerprint is rejected.
 | Batch | Microbatch 8 × gradient accumulation 16 = 128 sequences/update |
 | Seeds | Model 20260831; validation 20260834; samplers A 20260832 / B 20260833 |
 | Optimizer | Fresh Muon plus the source's AdamW groups at A initialization; full state carried into B |
-| Peak learning rate / weight decay / gradient clip | 0.0006 / 0.1 / 1 |
+| Peak learning rate / gradient clip | 0.0006 / 1 |
+| Weight decay | 0.1 for matrices (including embeddings); 0 for norms/biases |
 | Precision / compilation | BF16 / enabled |
 | Warmup–stable–decay (WSD) schedule | Absolute horizon 49,590; warmup 500; stable through 44,631; decay to 49,590; floor 0.1 × peak learning rate |
 | Minimum unique blocks | A: 4,882,688; B: 1,464,832; validation: at least 1 |
 
-The source dataset traverses global contiguous
-2,049-token windows at stride 2,048, across shard boundaries. BOS and repeated EOS
-masking, final-label coverage, position-weighted loss and no-replacement sampler
-are source-derived. Incomplete tails are unused.
+The dataset reads contiguous 2,049-token windows at stride 2,048, across shard
+boundaries. Each window supplies 2,048 inputs (`tokens[:-1]`) and 2,048 next-token
+labels (`tokens[1:]`), so adjacent windows overlap by one token.
+
+The recovered trainer excludes document-start (BOS) targets and repeated
+document-end (EOS) targets from the loss. The last label in a window remains
+eligible under those rules. Loss is averaged over unmasked target positions in
+each microbatch, and the sampler selects each block at most once per stage.
+Incomplete tails are unused. See the [dataset and sampler implementation](recipes/research-v1/sources/pretrain_stage_a/pretrain/dataset_pretrain.py).
 
 Optional in-run validation/generation hooks are disabled in this workflow and
 recorded as omitted. Explicit checkpoint milestones and final checkpoint retention
@@ -221,12 +246,14 @@ The extra `train/` in the interpolation command is intentional.
 |---|---|---|
 | Initialization | B step 49,590 weights | P2 step 750 weights |
 | Updates / passes | 750 / 2 | 640 / 2 |
-| Context | 2,048 tokens | 512 tokens |
+| Training sequence length | Up to 2,048 tokens | Up to 512 tokens |
+| Model context limit | 2,048 tokens | 2,048 tokens |
 | Microbatch × gradient accumulation | 2 × 16 = 32 rows/update | 2 × 16 = 32 rows/update |
 | Seed | 20260906 | 20260907 |
 | Optimizer | Fresh AdamW; betas 0.9/0.95; epsilon 1e-8 | Fresh AdamW; betas 0.9/0.95; epsilon 1e-8 |
 | Peak learning rate | 5e-5 | 5e-5 |
-| Weight decay / gradient clip | 0.1 (matrix parameters) / 1 | 0 / 1 |
+| Weight decay | 0.1 for matrices (including embeddings); 0 for norms/biases | 0 |
+| Gradient clip | 1 | 1 |
 | Warmup updates | 38 | 32 |
 | Checkpoints | Steps 375 and 750 | Steps 320 and 640 |
 
@@ -240,10 +267,11 @@ target count. Both stages check the actual loaded architecture,
 state keys/shapes/FP32 values, tied aliases and parent step before training.
 
 The interpolation workflow selects **P3 step 320 of the 640-update schedule**;
-rescheduling cosine to end at 320 changes the method. New-run P3 omits the private
-baseline, development, 500-row validation and final evaluation hooks.
-P2 retains evaluation on the supplied public-format validation split. Materialized
-P2 and P3 do not expose resume; start a fresh run if interrupted.
+rescheduling cosine to end at 320 changes the method. P2 evaluates your supplied
+validation split. New-run P3 omits the historical baseline, development and final
+evaluation hooks, along with the `val500` hook that evaluated the original P2
+500-row validation set. P2 and P3 do not expose resume; start a fresh run if
+interrupted.
 
 New-run P3 writes each adjacent `.reader.json` immediately after that checkpoint's
 finalized save. Step 320 can therefore pass downstream metadata validation even if
@@ -280,14 +308,18 @@ every source/output dtype/shape/value. Frozen inference assets and the canonical
 tokenizer are copied byte-for-byte. Outputs:
 `bundle/`, new provenance/evaluation index/manifest, verified tar.gz and checksum.
 
-Likelihood uses the pinned harness `_encode_pair` method, raw
-`Question: ...\nAnswer:` plus one leading space before each exact candidate,
-no chat/BOS/EOS insertion, complete causal continuation alignment, FP32
-parameters/forward/logsoftmax/sum, MATH SDPA and unpadded batch 1. `acc` selects the
-candidate with the highest summed log-likelihood; `acc_norm` selects using that
-score divided by Python Unicode-character length of the original answer (excluding
-the delimiter). Ties select the first candidate. The evaluator accepts local
-checkpoint files or native bundles.
+Likelihood uses the `_encode_pair` method from the pinned
+[lm-evaluation-harness snapshot](recipes/research-v1/sources/benchmark/runs/petitgpt_frozen_reference_public_benchmark_fp32_v2/source/harness/lm_eval/api/model.py).
+Prompts use raw `Question: ...\nAnswer:` with one leading space before each exact
+candidate, without chat formatting or inserted BOS/EOS tokens. Scoring covers the
+complete continuation with causal alignment, FP32 parameters/forward/logsoftmax/sum
+and unpadded batch 1. Attention uses PyTorch's
+`SDPBackend.MATH`, the math implementation of scaled dot-product attention (SDPA).
+
+`acc` selects the candidate with the highest summed log-likelihood; `acc_norm`
+selects using that score divided by Python Unicode-character length of the original
+answer (excluding the delimiter). Ties select the first candidate. The evaluator
+accepts local checkpoint files or native bundles.
 Outputs: `INPUTS.json`, per-row `ROWS.jsonl` scores/predictions and per-task
 `RESULTS.json`. Revisions, original file hashes, normalized row identities and
 scope are recorded. `full-local` means all supplied rows.
@@ -301,52 +333,23 @@ outputs already include this sidecar.
 
 ## Validation status and interpretation
 
-<!-- The new interfaces are implemented.  -->
-Targeted CLI/import/schema/encoding/plan and small synthetic CPU tensor/serialization
-tests have run; see the [input and stage tests](tests/test_reader_v3.py),
+Validation so far covers input contracts and CPU checkpoint handling. Tests check
+command-line entrypoints, imports, schemas, encoding, plans, and small synthetic
+CPU tensors and serialization; see the [input and stage tests](tests/test_reader_v3.py),
 [P3 boundary tests](tests/test_p3_reader_boundary.py) and
 [checkpoint loader tests](tests/test_reader_numpy_loader.py).
 
-<!-- The subsequent loader repair passed 13 synthetic regression cases plus the 40
-accepted reader/P3 boundary cases. These include both fixed NumPy reconstruction
-pickle names, restricted-object rejection and unchanged schema/step checks. -->
+On 2026-09-12, after an initial loader failure and its repair, a CPU re-export of
+the existing historical alpha075 passed through `export --policy new-run --execute`.
+The tested environment was Linux x86_64, Python 3.11.7, torch 2.11.0+cu130,
+NumPy 1.26.4, tokenizers 0.22.1 and safetensors 0.6.2, with two CPU threads.
+This differs from the historical execution reference above; the loader repair was
+tested with NumPy 1.26.4, without a NumPy 2.x environment test.
 
-<!-- Only NumPy 1.26.4 was actually tested for this repair; simulated serialized names
-do not establish a NumPy 2.x environment test or universal version support.
-
-The accepted RunPod P2 validation PASS and P3 original data/640-plan checks are
-supplied historical input evidence. They are not this new-run implementation's
-training results. The published negative/retention findings remain unchanged.
-The new local likelihood interface closes the missing public callable entrypoint;
-full historical benchmark/private-answer-review orchestration remains separate. -->
-
-<!-- On 2026-09-12 the first bounded CPU export attempt failed before `torch.load`
-because the loader accessed an unloaded NumPy compatibility submodule. After the
-explicit-import/scoped-allowlist repair, one separately authorized additional
-attempt passed through the public `export --policy new-run --execute` entrypoint.
-It used the existing 498,608,319-byte historical alpha075, not a new reader-trained
-blend. The prior failure remains a separate result. The staged blend's step0 is
-the model-only container convention, not zero historical training updates. -->
-
-<!-- The tested stack was Linux x86_64, Python 3.11.7, torch 2.11.0+cu130, NumPy 1.26.4,
-tokenizers 0.22.1 and safetensors 0.6.2, with two CPU threads and no dependency
-changes.  -->
-
-<!-- This differs from the historical execution reference above. The successful
-attempt took 36.49 seconds; measured peak RSS was 1,838,408 KiB. Limits were
-180 seconds, 8 GiB virtual memory and less than 4 GiB of new working files. -->
-
-In a CPU re-export of the existing historical alpha075, the source passed complete
-native config and 213 FP32 state-entry checks.
+That checkpoint passed complete native config and 213 FP32 state-entry checks.
 The exporter stored 212 entries plus tied-alias metadata, reloaded its own output,
 and compared source/output dtypes, shapes and values. Tokenizer/frozen asset hashes,
 all 17 bundle-manifest entries and all 18 native archive members also matched.
-
-<!-- This verifies a temporary re-export of existing alpha075 in this environment;
-it does not replace the release or claim historical safetensors file-byte equality.
-No full GPT was constructed. Reader training, P3 real runtime, forward/backward,
-optimization, inference/generation parity, scoring and GPU work were not run.
-CPU conversion is not CPU inference support or end-to-end training validation. -->
 
 This verifies source-to-export tensor equality for that existing checkpoint.
 End-to-end new-run training, real P3 execution, GPU scoring and generation parity
