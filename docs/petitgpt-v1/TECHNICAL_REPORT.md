@@ -324,6 +324,8 @@ Two limits constrain this comparison. Five observed coefficients cannot show tha
 
 The four tasks were measured in two campaigns: **FP32 V2** for ARC-Easy and PIQA, followed by **benchmark extension V1** for ARC-Challenge and HellaSwag. The table keeps their task results separate; there is no combined benchmark score.
 
+The [archived evaluation source](../../recipes/research-v1/sources/benchmark_extension/README.md) links the actual programs for both likelihood campaigns and final IFEval completion V2, with source hashes and execution prerequisites. The source publication does not include the complete runtime data and evidence needed for replay.
+
 | Model | ARC-Easy | ARC-Challenge | PIQA | HellaSwag |
 |---|---:|---:|---:|---:|
 | **PetitGPT alpha075** | **57.74 / 52.36** | **28.16 / 32.68** | **63.49 / 62.30** | **31.28 / 35.60** |

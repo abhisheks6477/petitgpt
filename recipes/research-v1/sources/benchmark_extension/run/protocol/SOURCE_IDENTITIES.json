@@ -1,0 +1,53 @@
+{
+  "public_commit": "b82ede26bff93423bd05fa08b8cae6ebd62d1dee",
+  "harness_commit": "b954108c9baaaa934b4ad842033b31a97ee30816",
+  "files": [
+    {
+      "file": "upstream/lm_eval/tasks/ifeval/ifeval.yaml",
+      "url": "https://raw.githubusercontent.com/EleutherAI/lm-evaluation-harness/b954108c9baaaa934b4ad842033b31a97ee30816/lm_eval/tasks/ifeval/ifeval.yaml",
+      "sha256": "3d8a3eb32de03f6a23ac87b46951d972a4ec7cb137e753365c0271594e38f84b"
+    },
+    {
+      "file": "upstream/lm_eval/tasks/ifeval/utils.py",
+      "url": "https://raw.githubusercontent.com/EleutherAI/lm-evaluation-harness/b954108c9baaaa934b4ad842033b31a97ee30816/lm_eval/tasks/ifeval/utils.py",
+      "sha256": "1ab8f14808c826f93f2364883487ed63cf4267980bf4761fda8053899c013632"
+    },
+    {
+      "file": "upstream/lm_eval/tasks/ifeval/instructions.py",
+      "url": "https://raw.githubusercontent.com/EleutherAI/lm-evaluation-harness/b954108c9baaaa934b4ad842033b31a97ee30816/lm_eval/tasks/ifeval/instructions.py",
+      "sha256": "511cc41a53787d818c292d8335c8e98aa833296a0789ac470db56bcd6496345e"
+    },
+    {
+      "file": "upstream/lm_eval/tasks/ifeval/instructions_registry.py",
+      "url": "https://raw.githubusercontent.com/EleutherAI/lm-evaluation-harness/b954108c9baaaa934b4ad842033b31a97ee30816/lm_eval/tasks/ifeval/instructions_registry.py",
+      "sha256": "9db1c062cdb70a91420d3789a588235a1064c2b9a1a66e09e5fb9df9e7584a6c"
+    },
+    {
+      "file": "upstream/lm_eval/tasks/ifeval/instructions_util.py",
+      "url": "https://raw.githubusercontent.com/EleutherAI/lm-evaluation-harness/b954108c9baaaa934b4ad842033b31a97ee30816/lm_eval/tasks/ifeval/instructions_util.py",
+      "sha256": "e8c4d9187bac1482d93941fb46469609c3ae78d896195bfcb300a0707d492567"
+    },
+    {
+      "file": "upstream/lm_eval/tasks/hellaswag/hellaswag.yaml",
+      "url": "https://raw.githubusercontent.com/EleutherAI/lm-evaluation-harness/b954108c9baaaa934b4ad842033b31a97ee30816/lm_eval/tasks/hellaswag/hellaswag.yaml",
+      "sha256": "e9ef8ac3fed02bf283777d946ae76cbf906152e9c92533c9794e5a9dad78d1cf"
+    },
+    {
+      "file": "upstream/lm_eval/tasks/hellaswag/utils.py",
+      "url": "https://raw.githubusercontent.com/EleutherAI/lm-evaluation-harness/b954108c9baaaa934b4ad842033b31a97ee30816/lm_eval/tasks/hellaswag/utils.py",
+      "sha256": "07d23b60b28f2a4f658dcf8440623a63fe6644854ce9b846a114dde980dc1214"
+    },
+    {
+      "file": "upstream/lm_eval/tasks/arc/arc_challenge.yaml",
+      "url": "https://raw.githubusercontent.com/EleutherAI/lm-evaluation-harness/b954108c9baaaa934b4ad842033b31a97ee30816/lm_eval/tasks/arc/arc_challenge.yaml",
+      "sha256": "682621c26ae24b1065a2d732460a55a8ef2b9f2544574431666c9309a9efd7bd"
+    },
+    {
+      "file": "upstream/lm_eval/tasks/arc/arc_easy.yaml",
+      "url": "https://raw.githubusercontent.com/EleutherAI/lm-evaluation-harness/b954108c9baaaa934b4ad842033b31a97ee30816/lm_eval/tasks/arc/arc_easy.yaml",
+      "sha256": "96da1d9efe1df88659481cedc13985cb347dc068554a2eae561303fa39bfab3f"
+    }
+  ],
+  "network_downloads": true,
+  "time": "2026-09-12T21:01:03.174444+00:00"
+}

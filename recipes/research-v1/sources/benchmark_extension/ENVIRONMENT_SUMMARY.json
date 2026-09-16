@@ -1,0 +1,33 @@
+{
+  "scope": "Selected recorded environment fields; not a new installation or execution check.",
+  "python": "3.10.12",
+  "cuda": "12.6",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "inference_packages": {
+    "torch": "2.11.0+cu126",
+    "numpy": "2.2.6",
+    "tokenizers": "0.22.2",
+    "transformers": "5.15.0",
+    "datasets": "5.0.1",
+    "huggingface_hub": "1.27.0",
+    "safetensors": "0.8.0",
+    "pyarrow": "25.0.1"
+  },
+  "isolated_verifier_packages": {
+    "langdetect": "1.0.9",
+    "nltk": "3.9.1",
+    "immutabledict": "4.2.1",
+    "wheel": "0.45.1",
+    "packaging": "26.3",
+    "six": "1.17.0",
+    "click": "8.4.2",
+    "joblib": "1.5.3",
+    "regex": "2026.7.19",
+    "tqdm": "4.70.0"
+  },
+  "verifier_resources": "Original evaluator_deps and nltk_data directories are external prerequisites.",
+  "source_members": {
+    "protocol/ENVIRONMENT.json": "8e46afa8534153c82e0f434a547fa25c7e5fb9566601bdcab2523ed924eedb3d",
+    "protocol/EVALUATOR_ENVIRONMENT.json": "cc5854cec931bcb6220120767ddff9e709e1573f7d94660ab09466380df89bd1"
+  }
+}

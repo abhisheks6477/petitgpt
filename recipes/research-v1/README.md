@@ -7,6 +7,7 @@ Start with [the practical manual](../../TRAINING_AND_REPRODUCIBILITY.md).
 - [PREPARED_INPUTS.md](PREPARED_INPUTS.md): exact supplied-input schemas and preparation coverage.
 - [POSTTRAINING.md](POSTTRAINING.md): advanced historical adapters and immutable original identities.
 - [sources/](sources/): recovered stage-specific source closures used by these adapters, separate from the shared trainer.
+- [Historical benchmark source](sources/benchmark_extension/README.md): actual ARC-Challenge/HellaSwag and final IFEval V2 execution programs, with archive hashes and runtime requirements.
 - [provenance/READER_V3.json](provenance/READER_V3.json): current reader source identities and explicit adaptations.
 - [validate.py](validate.py): original snapshot/tokenizer checks with optional synthetic messages.
 

@@ -91,6 +91,8 @@ Generation was zero-shot and greedy with no sampling and `max_new_tokens=1280`, 
 
 **Benchmark scores are not chat reliability.** In the separate, versioned full-answer review, alpha075 produced a correct Python interface on 42/46 prompts but a correct complete answer on 0/46. Ordinary QA, faithful rewriting, and context-dependent instructions also remain limited. The report's [success, failure, and scoring-boundary cases](docs/petitgpt-v1/TECHNICAL_REPORT.md#85-qualitative-cases-successes-and-failures) show what these judgments mean, with content, format, interface, and finite test evidence kept separate.
 
+The actual ARC-Challenge/HellaSwag and final IFEval V2 programs are available in the [historical benchmark source directory](recipes/research-v1/sources/benchmark_extension/README.md), with provenance and documentation of the required runtime inputs.
+
 ## Run the released model
 
 **A CUDA GPU is required by the released CLI.** Use an environment compatible with the [tested dependencies and run guide](docs/petitgpt-v1/RUN_GUIDE.md). The commands below assume the Hugging Face CLI is already available.

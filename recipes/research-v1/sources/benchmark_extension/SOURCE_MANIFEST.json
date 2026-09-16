@@ -1,0 +1,314 @@
+{
+  "schema": "petitgpt-benchmark-extension-source-v1",
+  "scope": "Historical source publication; no evaluation rerun. All archive members listed below are byte-for-byte copies.",
+  "layout": "Original run-relative paths retained. Later archive versions replace earlier versions of the same member; the initial generator is retained as run/ifeval/completion_v1/generate_ifeval_pre_continuation.py.",
+  "archives": [
+    {
+      "name": "PETITGPT_THREE_TASK_BENCHMARK_EXTENSION_V1_EVIDENCE.tar.gz",
+      "sha256": "87b730e003ca6f1c2a14487e90f193ae1ee7f313306f43f8efc7db3c548d802f"
+    },
+    {
+      "name": "PETITGPT_IFEVAL_CANONICAL_TEMPLATE_CONTINUE_V1_COMPLETION_EVIDENCE.tar.gz",
+      "sha256": "2fd3f17b9cb9407bc6946fd0df4c1036651f971b646e90aca6fdbf93bb3a5a6a"
+    },
+    {
+      "name": "PETITGPT_IFEVAL_EFFECTIVE_CONFIG_FIX_V2_COMPLETION_EVIDENCE.tar.gz",
+      "sha256": "ef1469e505c8f5e26883fdbb87aded867986ead8da194d90e61a87eef64ae915"
+    }
+  ],
+  "files": [
+    {
+      "path": "run/ifeval/completion_v1/check_environment.py",
+      "archive": "PETITGPT_IFEVAL_CANONICAL_TEMPLATE_CONTINUE_V1_COMPLETION_EVIDENCE.tar.gz",
+      "member": "evidence/ifeval/completion_v1/check_environment.py",
+      "sha256": "26d7db2b99a07b5c37fa7fe8445368043b74cdd27455b4681bd2183da7f22061",
+      "bytes": 1914
+    },
+    {
+      "path": "run/ifeval/completion_v1/deliver.py",
+      "archive": "PETITGPT_IFEVAL_CANONICAL_TEMPLATE_CONTINUE_V1_COMPLETION_EVIDENCE.tar.gz",
+      "member": "evidence/ifeval/completion_v1/deliver.py",
+      "sha256": "2f2f5e9fdd75702af3b9b2f12e87c66a8bfbff5176928bc755ae10cd17b40026",
+      "bytes": 20125
+    },
+    {
+      "path": "run/ifeval/completion_v1/generate_ifeval_pre_continuation.py",
+      "archive": "PETITGPT_IFEVAL_CANONICAL_TEMPLATE_CONTINUE_V1_COMPLETION_EVIDENCE.tar.gz",
+      "member": "evidence/ifeval/completion_v1/generate_ifeval_pre_continuation.py",
+      "sha256": "a564414868353b05a512a4155efef1cc22207ca23c63cbfc82015350ac236c9d",
+      "bytes": 9033
+    },
+    {
+      "path": "run/ifeval/completion_v2/audit_and_deliver.py",
+      "archive": "PETITGPT_IFEVAL_EFFECTIVE_CONFIG_FIX_V2_COMPLETION_EVIDENCE.tar.gz",
+      "member": "ifeval/completion_v2/audit_and_deliver.py",
+      "sha256": "146eb2a7e459ae2b95fbac2933f7db74283a06b3ffe598ea168a57ea895b4c4b",
+      "bytes": 15556
+    },
+    {
+      "path": "run/ifeval/completion_v2/progress.py",
+      "archive": "PETITGPT_IFEVAL_EFFECTIVE_CONFIG_FIX_V2_COMPLETION_EVIDENCE.tar.gz",
+      "member": "ifeval/completion_v2/progress.py",
+      "sha256": "fa17cd49d240b914cfb8d12580732ff42b5e566b7f70de81f0cbc8a5b76da3e8",
+      "bytes": 776
+    },
+    {
+      "path": "run/ifeval/completion_v2/runtime/build_routing.py",
+      "archive": "PETITGPT_IFEVAL_EFFECTIVE_CONFIG_FIX_V2_COMPLETION_EVIDENCE.tar.gz",
+      "member": "ifeval/completion_v2/runtime/build_routing.py",
+      "sha256": "ca752e0eea40295663e588e2db58e099a4bdf015ceca83e175f252e9a8fe78a2",
+      "bytes": 7024
+    },
+    {
+      "path": "run/ifeval/completion_v2/runtime/effective_config.py",
+      "archive": "PETITGPT_IFEVAL_EFFECTIVE_CONFIG_FIX_V2_COMPLETION_EVIDENCE.tar.gz",
+      "member": "ifeval/completion_v2/runtime/effective_config.py",
+      "sha256": "c542f126db91d7069a23202e0bf39acb0aeb17e0e5e71eba2e5efe1e5fc4631c",
+      "bytes": 5221
+    },
+    {
+      "path": "run/ifeval/completion_v2/runtime/freeze_and_bridge.py",
+      "archive": "PETITGPT_IFEVAL_EFFECTIVE_CONFIG_FIX_V2_COMPLETION_EVIDENCE.tar.gz",
+      "member": "ifeval/completion_v2/runtime/freeze_and_bridge.py",
+      "sha256": "503683944bf7a592d482076d315a4c979426adcd377f411dd1720ae99a10948d",
+      "bytes": 11152
+    },
+    {
+      "path": "run/ifeval/completion_v2/runtime/generate_ifeval_v2.py",
+      "archive": "PETITGPT_IFEVAL_EFFECTIVE_CONFIG_FIX_V2_COMPLETION_EVIDENCE.tar.gz",
+      "member": "ifeval/completion_v2/runtime/generate_ifeval_v2.py",
+      "sha256": "4ee1a8880cb0aca1fb28c11af0660c1f0cafeefb45a2bd685f474be6dd30811c",
+      "bytes": 10201
+    },
+    {
+      "path": "run/ifeval/completion_v2/runtime/test_effective_config.py",
+      "archive": "PETITGPT_IFEVAL_EFFECTIVE_CONFIG_FIX_V2_COMPLETION_EVIDENCE.tar.gz",
+      "member": "ifeval/completion_v2/runtime/test_effective_config.py",
+      "sha256": "6ecc9d08c22b979a972aa2612480e153ccbe11985b80b6d31f6c0805dfebdfe4",
+      "bytes": 5396
+    },
+    {
+      "path": "run/ifeval/completion_v2/runtime/verify_ifeval_v2.py",
+      "archive": "PETITGPT_IFEVAL_EFFECTIVE_CONFIG_FIX_V2_COMPLETION_EVIDENCE.tar.gz",
+      "member": "ifeval/completion_v2/runtime/verify_ifeval_v2.py",
+      "sha256": "56f903bfb7f7bc77f02aeae625b486351898b200642b35fcbe0ddcb53aee3ecb",
+      "bytes": 9117
+    },
+    {
+      "path": "run/protocol/SOURCE_IDENTITIES.json",
+      "archive": "PETITGPT_IFEVAL_EFFECTIVE_CONFIG_FIX_V2_COMPLETION_EVIDENCE.tar.gz",
+      "member": "protocol/SOURCE_IDENTITIES.json",
+      "sha256": "dd2911e1d4a2ef2f6f59b9a97cf6db009e1eecce934e15ab3d552406820afea1",
+      "bytes": 3094
+    },
+    {
+      "path": "run/runtime/aggregate_likelihood.py",
+      "archive": "PETITGPT_THREE_TASK_BENCHMARK_EXTENSION_V1_EVIDENCE.tar.gz",
+      "member": "evidence/runtime/aggregate_likelihood.py",
+      "sha256": "b61ee0003c0a4c65351a8ba6268225947a1361d14dfb4c97d99329c450e47249",
+      "bytes": 4569
+    },
+    {
+      "path": "run/runtime/generate_ifeval.py",
+      "archive": "PETITGPT_IFEVAL_EFFECTIVE_CONFIG_FIX_V2_COMPLETION_EVIDENCE.tar.gz",
+      "member": "runtime/generate_ifeval.py",
+      "sha256": "2c3ba4af5d877b0a14b9c8288001df7124d7a3b58409be31dcd97757011dc288",
+      "bytes": 9046
+    },
+    {
+      "path": "run/runtime/likelihood.py",
+      "archive": "PETITGPT_THREE_TASK_BENCHMARK_EXTENSION_V1_EVIDENCE.tar.gz",
+      "member": "evidence/runtime/likelihood.py",
+      "sha256": "1b9699a354fc529645408f1e17a5df9b34c977f623e63aa61bd99fe52015119f",
+      "bytes": 8260
+    },
+    {
+      "path": "run/runtime/package_report.py",
+      "archive": "PETITGPT_THREE_TASK_BENCHMARK_EXTENSION_V1_EVIDENCE.tar.gz",
+      "member": "evidence/runtime/package_report.py",
+      "sha256": "4bb1ce1b43417b7d9c25d8596bb903ce2f6d4dd4819cb552852511e1bf55ae38",
+      "bytes": 13259
+    },
+    {
+      "path": "run/runtime/prepare.py",
+      "archive": "PETITGPT_THREE_TASK_BENCHMARK_EXTENSION_V1_EVIDENCE.tar.gz",
+      "member": "evidence/runtime/prepare.py",
+      "sha256": "287d63575eb84025d311d4bfbf344baf8e3c2b9c7bb7bcc78cddbe03b25f5ee1",
+      "bytes": 10067
+    },
+    {
+      "path": "run/runtime/verify_ifeval.py",
+      "archive": "PETITGPT_IFEVAL_EFFECTIVE_CONFIG_FIX_V2_COMPLETION_EVIDENCE.tar.gz",
+      "member": "runtime/verify_ifeval.py",
+      "sha256": "e5704ba4718a0faba5fd498e7d3577ef3946cb7a87f7d3ead52c8e011f95d46a",
+      "bytes": 9029
+    },
+    {
+      "path": "run/upstream/lm_eval/tasks/arc/arc_challenge.yaml",
+      "archive": "PETITGPT_THREE_TASK_BENCHMARK_EXTENSION_V1_EVIDENCE.tar.gz",
+      "member": "evidence/upstream/lm_eval/tasks/arc/arc_challenge.yaml",
+      "sha256": "682621c26ae24b1065a2d732460a55a8ef2b9f2544574431666c9309a9efd7bd",
+      "bytes": 71
+    },
+    {
+      "path": "run/upstream/lm_eval/tasks/arc/arc_easy.yaml",
+      "archive": "PETITGPT_THREE_TASK_BENCHMARK_EXTENSION_V1_EVIDENCE.tar.gz",
+      "member": "evidence/upstream/lm_eval/tasks/arc/arc_easy.yaml",
+      "sha256": "96da1d9efe1df88659481cedc13985cb347dc068554a2eae561303fa39bfab3f",
+      "bytes": 579
+    },
+    {
+      "path": "run/upstream/lm_eval/tasks/hellaswag/hellaswag.yaml",
+      "archive": "PETITGPT_THREE_TASK_BENCHMARK_EXTENSION_V1_EVIDENCE.tar.gz",
+      "member": "evidence/upstream/lm_eval/tasks/hellaswag/hellaswag.yaml",
+      "sha256": "e9ef8ac3fed02bf283777d946ae76cbf906152e9c92533c9794e5a9dad78d1cf",
+      "bytes": 480
+    },
+    {
+      "path": "run/upstream/lm_eval/tasks/hellaswag/utils.py",
+      "archive": "PETITGPT_THREE_TASK_BENCHMARK_EXTENSION_V1_EVIDENCE.tar.gz",
+      "member": "evidence/upstream/lm_eval/tasks/hellaswag/utils.py",
+      "sha256": "07d23b60b28f2a4f658dcf8440623a63fe6644854ce9b846a114dde980dc1214",
+      "bytes": 717
+    },
+    {
+      "path": "run/upstream/lm_eval/tasks/ifeval/ifeval.yaml",
+      "archive": "PETITGPT_THREE_TASK_BENCHMARK_EXTENSION_V1_EVIDENCE.tar.gz",
+      "member": "evidence/upstream/lm_eval/tasks/ifeval/ifeval.yaml",
+      "sha256": "3d8a3eb32de03f6a23ac87b46951d972a4ec7cb137e753365c0271594e38f84b",
+      "bytes": 729
+    },
+    {
+      "path": "run/upstream/lm_eval/tasks/ifeval/instructions.py",
+      "archive": "PETITGPT_THREE_TASK_BENCHMARK_EXTENSION_V1_EVIDENCE.tar.gz",
+      "member": "evidence/upstream/lm_eval/tasks/ifeval/instructions.py",
+      "sha256": "511cc41a53787d818c292d8335c8e98aa833296a0789ac470db56bcd6496345e",
+      "bytes": 57806
+    },
+    {
+      "path": "run/upstream/lm_eval/tasks/ifeval/instructions_registry.py",
+      "archive": "PETITGPT_THREE_TASK_BENCHMARK_EXTENSION_V1_EVIDENCE.tar.gz",
+      "member": "evidence/upstream/lm_eval/tasks/ifeval/instructions_registry.py",
+      "sha256": "9db1c062cdb70a91420d3789a588235a1064c2b9a1a66e09e5fb9df9e7584a6c",
+      "bytes": 7237
+    },
+    {
+      "path": "run/upstream/lm_eval/tasks/ifeval/instructions_util.py",
+      "archive": "PETITGPT_THREE_TASK_BENCHMARK_EXTENSION_V1_EVIDENCE.tar.gz",
+      "member": "evidence/upstream/lm_eval/tasks/ifeval/instructions_util.py",
+      "sha256": "e8c4d9187bac1482d93941fb46469609c3ae78d896195bfcb300a0707d492567",
+      "bytes": 26830
+    },
+    {
+      "path": "run/upstream/lm_eval/tasks/ifeval/utils.py",
+      "archive": "PETITGPT_THREE_TASK_BENCHMARK_EXTENSION_V1_EVIDENCE.tar.gz",
+      "member": "evidence/upstream/lm_eval/tasks/ifeval/utils.py",
+      "sha256": "1ab8f14808c826f93f2364883487ed63cf4267980bf4761fda8053899c013632",
+      "bytes": 4510
+    }
+  ],
+  "ifeval_v2_code_freeze_bindings": [
+    {
+      "scope": "snapshot",
+      "path": "run/runtime/generate_ifeval.py",
+      "sha256": "2c3ba4af5d877b0a14b9c8288001df7124d7a3b58409be31dcd97757011dc288"
+    },
+    {
+      "scope": "snapshot",
+      "path": "run/runtime/likelihood.py",
+      "sha256": "1b9699a354fc529645408f1e17a5df9b34c977f623e63aa61bd99fe52015119f"
+    },
+    {
+      "scope": "snapshot",
+      "path": "run/runtime/verify_ifeval.py",
+      "sha256": "e5704ba4718a0faba5fd498e7d3577ef3946cb7a87f7d3ead52c8e011f95d46a"
+    },
+    {
+      "scope": "repository",
+      "path": "recipes/research-v1/sources/benchmark/runs/petitgpt_frozen_reference_public_benchmark_fp32_v2/runtime/common.py",
+      "sha256": "88f7c092d17625f44e2bfbf185c97ee74498735a448678a69e3cf15577061ed8"
+    },
+    {
+      "scope": "repository",
+      "path": "recipes/research-v1/sources/benchmark/sft/train_sft.py",
+      "sha256": "997201f1c280ece1d54b796f3b2a05fd3bda38b4cd14f7eeaa08a3c3b13b31e4"
+    },
+    {
+      "scope": "repository",
+      "path": "recipes/research-v1/sources/native_inference/src/special_tokens.py",
+      "sha256": "f767b864d7c8e0cb5e2c166c4f019f3f14666dcbf2b944c7909db050e4cf1e96"
+    },
+    {
+      "scope": "repository",
+      "path": "recipes/research-v1/sources/native_inference/src/model.py",
+      "sha256": "2bc9fa8ae16636837c4a2937301a2419d0ac92faa2cc27560dacbd29a5144dc2"
+    },
+    {
+      "scope": "repository",
+      "path": "recipes/research-v1/sources/native_inference/src/chat_template.py",
+      "sha256": "c25068dcb7d3a907dba7b7405d53a2962d91886abcaa25b0d5832a82e8bc821b"
+    },
+    {
+      "scope": "repository",
+      "path": "recipes/research-v1/sources/native_inference/src/accepted_generate.py",
+      "sha256": "5c4214f0d2a985ee7b24da431ce1bf521c96ae6f7dfa816ef800b505eb68013c"
+    },
+    {
+      "scope": "repository",
+      "path": "recipes/research-v1/sources/native_inference/src/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "scope": "snapshot",
+      "path": "run/upstream/lm_eval/tasks/ifeval/instructions_util.py",
+      "sha256": "e8c4d9187bac1482d93941fb46469609c3ae78d896195bfcb300a0707d492567"
+    },
+    {
+      "scope": "snapshot",
+      "path": "run/upstream/lm_eval/tasks/ifeval/instructions_registry.py",
+      "sha256": "9db1c062cdb70a91420d3789a588235a1064c2b9a1a66e09e5fb9df9e7584a6c"
+    },
+    {
+      "scope": "snapshot",
+      "path": "run/upstream/lm_eval/tasks/ifeval/instructions.py",
+      "sha256": "511cc41a53787d818c292d8335c8e98aa833296a0789ac470db56bcd6496345e"
+    },
+    {
+      "scope": "snapshot",
+      "path": "run/upstream/lm_eval/tasks/ifeval/utils.py",
+      "sha256": "1ab8f14808c826f93f2364883487ed63cf4267980bf4761fda8053899c013632"
+    },
+    {
+      "scope": "snapshot",
+      "path": "run/ifeval/completion_v2/runtime/freeze_and_bridge.py",
+      "sha256": "503683944bf7a592d482076d315a4c979426adcd377f411dd1720ae99a10948d"
+    },
+    {
+      "scope": "snapshot",
+      "path": "run/ifeval/completion_v2/runtime/verify_ifeval_v2.py",
+      "sha256": "56f903bfb7f7bc77f02aeae625b486351898b200642b35fcbe0ddcb53aee3ecb"
+    },
+    {
+      "scope": "snapshot",
+      "path": "run/ifeval/completion_v2/runtime/generate_ifeval_v2.py",
+      "sha256": "4ee1a8880cb0aca1fb28c11af0660c1f0cafeefb45a2bd685f474be6dd30811c"
+    },
+    {
+      "scope": "snapshot",
+      "path": "run/ifeval/completion_v2/runtime/build_routing.py",
+      "sha256": "ca752e0eea40295663e588e2db58e099a4bdf015ceca83e175f252e9a8fe78a2"
+    },
+    {
+      "scope": "snapshot",
+      "path": "run/ifeval/completion_v2/runtime/test_effective_config.py",
+      "sha256": "6ecc9d08c22b979a972aa2612480e153ccbe11985b80b6d31f6c0805dfebdfe4"
+    },
+    {
+      "scope": "snapshot",
+      "path": "run/ifeval/completion_v2/runtime/effective_config.py",
+      "sha256": "c542f126db91d7069a23202e0bf39acb0aeb17e0e5e71eba2e5efe1e5fc4631c"
+    }
+  ],
+  "original_ifeval_v2_code_freeze_sha256": "05e5a676237a5d28efe9f6aa6027a981fe5eac084dff3fbde2aa625c59342a20",
+  "omitted": "Weights, datasets, encoded prompts, model responses, private requests, environment dumps, logs, historical gate/identity receipts and raw result rows."
+}
