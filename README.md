@@ -91,7 +91,7 @@ Generation was zero-shot and greedy with no sampling and `max_new_tokens=1280`, 
 
 **Benchmark scores are not chat reliability.** In the separate, versioned full-answer review, alpha075 produced a correct Python interface on 42/46 prompts but a correct complete answer on 0/46. Ordinary QA, faithful rewriting, and context-dependent instructions also remain limited. The report's [success, failure, and scoring-boundary cases](docs/petitgpt-v1/TECHNICAL_REPORT.md#85-qualitative-cases-successes-and-failures) show what these judgments mean, with content, format, interface, and finite test evidence kept separate.
 
-The actual ARC-Challenge/HellaSwag and final IFEval V2 programs are available in the [historical benchmark source directory](recipes/research-v1/sources/benchmark_extension/README.md), with provenance and documentation of the required runtime inputs.
+**Evaluation source:** The original ARC-Easy/PIQA FP32 V2 driver is [evaluate_v2.py](recipes/research-v1/sources/benchmark/runs/petitgpt_frozen_reference_public_benchmark_fp32_v2/runtime/evaluate_v2.py), with scoring and aggregation helpers in its [runtime directory](recipes/research-v1/sources/benchmark/runs/petitgpt_frozen_reference_public_benchmark_fp32_v2/runtime). The ARC-Challenge/HellaSwag and final IFEval V2 programs are in the [benchmark extension source directory](recipes/research-v1/sources/benchmark_extension/README.md). That directory's README maps all five tasks to their execution code and describes provenance and required runtime inputs; the snapshots do not include all data and evidence needed for replay.
 
 ## Run the released model
 
