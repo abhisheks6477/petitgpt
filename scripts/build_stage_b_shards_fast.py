@@ -22,7 +22,7 @@ from tokenizers import Tokenizer
 BOS_ID = 2
 EOS_ID = 3
 _HASH_SPACE = 1 << 64
-BATCH_SIZE = 25000
+BATCH_SIZE = 4000
 
 
 def is_validation_holdout(text: str, *, train_target: int, val_target: int, seed: int) -> bool:
