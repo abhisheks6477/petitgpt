@@ -424,16 +424,25 @@ def assert_token_ids_ok(
     src: str,
     text_preview: str,
 ) -> None:
-    # type + sign checks
-    for x in ids:
-        if not isinstance(x, int):
-            raise AssertionError(f"[token-id] non-int id: {type(x)} from src={src}")
-        if x < 0:
-            raise AssertionError(f"[token-id] negative id={x} from src={src}")
+    # Vectorized equivalent of the original per-id Python loop (same checks,
+    # same exceptions) -- the O(n) pure-Python loop over every output token
+    # was the dominant cost of the whole build (~17.6K tokens/sec observed,
+    # projecting to ~47h for a 3B-token target). Perf-only change, logged in
+    # PROJECT_LOG.md; semantics are unchanged.
+    if not ids:
+        return
+    arr = np.asarray(ids)
+    if arr.dtype.kind not in ("i", "u") or (arr < 0).any():
+        for x in ids:
+            if not isinstance(x, int):
+                raise AssertionError(f"[token-id] non-int id: {type(x)} from src={src}")
+            if x < 0:
+                raise AssertionError(f"[token-id] negative id={x} from src={src}")
+
+    mx = int(arr.max())
 
     # vocab range checks (strong)
     if vocab_size is not None:
-        mx = max(ids)
         if mx >= vocab_size:
             raise AssertionError(
                 f"[token-id] out-of-range id={mx} >= vocab_size={vocab_size} from src={src}\n"
@@ -442,7 +451,6 @@ def assert_token_ids_ok(
 
     # dtype overflow checks
     if dtype == np.uint16:
-        mx = max(ids)
         if mx > 65535:
             raise AssertionError(
                 f"[token-id] uint16 overflow risk: max_id={mx} > 65535 from src={src}\n"
