@@ -13,6 +13,7 @@ logged deviation for this one Stage B build. See PROJECT_LOG.md.
 import hashlib
 import json
 import sys
+from collections import deque
 from pathlib import Path
 
 import numpy as np
@@ -63,7 +64,7 @@ class SourceQueue:
         self.weight = weight
         self.tok = tok
         self._it = iter_texts(path)
-        self._queue: list[tuple[str, list[int]]] = []
+        self._queue: deque[tuple[str, list[int]]] = deque()
         self._exhausted = False
 
     def _refill(self):
@@ -76,16 +77,16 @@ class SourceQueue:
             self._exhausted = True
             return
         encs = self.tok.encode_batch(batch_texts)
-        self._queue = [
+        self._queue.extend(
             (t, [BOS_ID] + e.ids + [EOS_ID]) for t, e in zip(batch_texts, encs)
-        ]
+        )
 
     def next(self):
         if not self._queue:
             self._refill()
         if not self._queue:
             return None
-        return self._queue.pop(0)
+        return self._queue.popleft()
 
 
 def allocate(total: int, weights: dict[str, float]) -> dict[str, int]:
